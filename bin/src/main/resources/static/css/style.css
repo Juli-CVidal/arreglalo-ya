@@ -1,0 +1,24 @@
+.indeximgs{
+    display: flex;
+    width: 600px;
+    height: 400px;
+}
+section img{
+    width: 0px;
+    flex-grow: 1;
+    object-fit: cover;
+    opacity: .3;
+    transition: .5s ease;
+}
+section img:hover{
+    cursor: pointer;
+    width: 300px;
+    opacity: 1;
+    filter: contrast(120%);
+}
+main {
+    margin: 50px auto;
+    max-width: 800px;
+    text-align: center;
+}
+

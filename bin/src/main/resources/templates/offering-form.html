@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhml"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/staticsFragments :: head">
+</head>
+
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+	<div class="p-5 d-flex justify-content-center align-items-center">
+		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
+			<div class="container">
+				<h2 class="text-center mb-4 text-black">New service</h2>
+				<form method="POST" class="needs-validation" th:object="${offering}"
+					th:action="@{/offering/save}" novalidate>
+
+					<div class="col mb-3">
+						<label for="offering" class="form-label">Name your new service</label>
+						<input type="text" id="offering" name="offering" class="form-control border border-black"
+							required />
+						<div class="invalid-feedback">Must enter a service</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col">
+							<label for="description" class="form-label">Describe your service</label>
+							<textarea type="password" id="password" name="password"
+								class="form-control border border-black" autocomplete="off"></textarea>
+						</div>
+					</div>
+
+			</div>
+
+
+			<div class="d-grid">
+				<button class="btn btn-primary" type="submit">
+					Send
+				</button>
+			</div>
+			</form>
+
+		</div>
+	</div>
+	</form>
+	</div>
+	</div>
+
+	</div>
+	<footer th:replace="layout/staticsFragments :: footer"></footer>
+	<script th:src="@{../js/bootstrap-validation.js}"></script>
+</body>
+
+</html>

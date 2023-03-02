@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/staticsFragments :: head"> </head>
+
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+
+		<div class="p-5 d-flex justify-content-center align-items-center">
+		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
+			<div class="container">
+				<h1>Offerings</h1>
+				<table class="table table-dark table-striped table-hover">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Service type</th>
+							<th scope="col">Supplier</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="offering, contador : ${offerings}">
+							<td>[[${contador.count}]]</td>
+							<td>[[${offering.serviceType}]]</td>
+							<td>[[${offering.supplier.name}]]</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="layout/staticsFragments :: footer"></footer>
+</body>
+
+</html>

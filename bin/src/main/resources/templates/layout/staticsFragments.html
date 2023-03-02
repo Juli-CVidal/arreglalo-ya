@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhml"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+	<meta charset="UTF-8" />
+	<title>[[#{nombre.logo}]]</title>
+	<!-- BOOTSTRAP CSS CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+	<!-- BOOTSTRAP JS CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+		crossorigin="anonymous"></script>
+	<!-- STYLE CSS -->
+	<link rel="stylesheet" href="./css/style.css" />
+	<!-- REMIX ICONS CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:fragment="navbar">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Fourth navbar example">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">[[#{nombre.logo}]]</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarsExample04">
+					<ul class="navbar-nav mb-2 mb-md-0">
+						<li class="nav-item">
+							<a sec:authorize="isAuthenticated()" class="nav-link active"
+								aria-current="page">[[#{navbar.pagina.principal}]]</a>
+						</li>
+						<li class="nav-item">
+							<a sec:authorize="isAuthenticated()" class="nav-link"
+								th:href="@{/supplier/}">[[#{navbar.nuestros.profesionales}]]</a>
+						</li>
+					</ul>
+					<ul class="navbar-nav mb-2 mb-md-1 ms-auto me-5 me-2">
+						<li class="nav-item dropdown ">
+							<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+								aria-expanded="false">[[#{navbar.idiomas}]]</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" th:href="@{?(lang=es)}"><img class="mr-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/argentina-circular.png " />Español</a>
+								</li>
+								<li><a class="dropdown-item" th:href="@{?(lang=en)}"><img class="mr-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/usa-circular.png " />Ingles</a>
+								</li>
+								<li><a class="dropdown-item" th:href="@{?(lang=pt)}"><img class="mr-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/brazil-circular.png " />Portugues</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<form sec:authorize="isAuthenticated()" role="search">
+						<input class="form-control" type="search" th:placeholder="#{navbar.buscar.placeholder}"
+							aria-label="Search">
+					</form>
+				</div>
+			</div>
+		</nav>
+	</header>
+</body>
+<div th:fragment="footer">
+	<div class="container-fluid fixed-bottom">
+		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+			<form method="POST" th:action="@{/logout}">
+				<!-- <b>User:</b><span sec:authentication="name">Usuario que hizo login</span>
+    <b>Roles:</b><span sec:authentication="principal.authorities">Roles</span> -->
+				<a href="#" class="text-muted" onclick="this.parentNode.submit();">Salir</a>
+			</form>
+			<a href="/"
+				class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+				<svg class="bi me-2" width="40" height="32">
+					<use xlink:href="#bootstrap" />
+				</svg>
+			</a>
+			<ul class="nav col-md-4 justify-content-end">
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">[[#{footer.precios}]]</a></li>
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">[[#{footer.preguntas.frecuentes}]]</a>
+				</li>
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">[[#{footer.sobre.nosotros}]]</a></li>
+			</ul>
+		</footer>
+	</div>
+</div>
+
+
+</html>

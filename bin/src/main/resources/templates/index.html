@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhml"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/staticsFragments :: head">
+</head>
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+	
+	<div clas="vh-100 d-flex">
+        <div
+          id="bootstrap-carousel"
+          class="carousel slide carousel-fade h-100"
+          data-bs-ride="carousel"
+        >
+          <div class="position-absolute fixed-bottom w-100">
+            <div
+              class="container d-flex justify-content-center mt-4 gap-4 mb-3"
+            >
+              <button type="button" class="btn btn-primary me-2">
+                Gasista
+              </button>
+              <button type="button" class="btn btn-primary me-2">
+                Plomero
+              </button>
+              <button type="button" class="btn btn-primary me-2">
+                Electricista
+              </button>
+              <a th:href="@{/offering/save}" class="btn btn-primary me-2">Otro</a>
+              <!-- Agrega más botones según sea necesario -->
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-12 col-md-6 mx-auto mb-3">
+                  <form>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Qué desea buscar?"
+                      />
+                      <button type="submit" class="btn btn-primary">
+                        <i class="ri-search-2-line"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img th:src="@{../img/carpintero.jpg}" class="d-block w-100" alt="..." />
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{../img/pileta.jpg}" class="d-block w-100" alt="..." />
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{../img/metalurgico.jpg}" class="d-block w-100" alt="..." />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#bootstrap-carousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#bootstrap-carousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="p-4 d-flex justify-content-center align-items-center bg-dark text-white"
+      >
+        Somos una plataforma en línea que se dedica a conectar a personas que
+        necesitan servicios domiciliarios con proveedores confiables y de
+        calidad en su área local. Nuestro objetivo es hacer que la contratación
+        de servicios en el hogar sea más fácil, segura y eficiente para todos.
+        Contamos con un equipo de expertos que selecciona cuidadosamente a cada
+        proveedor para garantizar que cumplan con nuestros altos estándares de
+        calidad. Además, ofrecemos una experiencia de usuario intuitiva y
+        amigable para que puedas solicitar y gestionar tus servicios en línea
+        desde la comodidad de tu hogar.
+      </div>
+    </main>
+    
+    
+	
+	 <footer class="bg-light py-2 fixed-bottom">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <form method="POST" th:action="@{/logout}"></form>
+            <h4>ArréglaloYa!</h4>
+            <ul class="list-unstyled">
+              <li>Correo electrónico: arreglaloya@contact.com</li>
+            </ul>
+          </div>
+          <div class="col-md-6 d-flex">
+            <div class="ms-auto">
+              <h4>Enlaces útiles</h4>
+              <ul class="list-unstyled">
+                <li><a href="#">Términos de uso</a></li>
+                <li><a href="#">Acerca de nosotros</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
