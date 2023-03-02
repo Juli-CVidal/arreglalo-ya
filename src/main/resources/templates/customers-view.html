@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/staticsFragments :: head"> </head>
+
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+
+	<div class="p-5 d-flex justify-content-center align-items-center">
+		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
+			<div class="container">
+				<h1>Customers</h1>
+				<table class="table table-dark table-striped table-hover">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Barrio</th>
+							<th scope="col">Direccion</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="customer, contador : ${customers}">
+							<td>[[${contador.count}]]</td>
+							<td>[[${customer.name}]]</td>
+							<td>[[${customer.mail}]]</td>
+							<td>[[${customer.neighborhood}]]</td>
+							<td>[[${customer.street}]] [[${customer.height}]]</td>
+							<td><a href="#"><i class="ri-flag-2-line"></i></a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	<footer th:replace="layout/staticsFragments :: footer"></footer>
+</body>
+
+</html>
