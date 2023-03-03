@@ -1,6 +1,5 @@
 package com.egg.sp.services;
 
-
 import com.egg.sp.entities.Message;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.MessageRepository;

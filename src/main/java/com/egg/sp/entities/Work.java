@@ -1,8 +1,6 @@
 package com.egg.sp.entities;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +50,5 @@ public class Work {
 	private int customer_id;
 	@NotNull
 	private int supplier_id;
-
 
 }

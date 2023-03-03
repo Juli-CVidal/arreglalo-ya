@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface UsersRepository extends JpaRepository<Users,Integer> {
+	
     @Query("SELECT u FROM Users u WHERE u.id = :id")
     Optional<Users> findById(@Param("id") Integer id);
 
