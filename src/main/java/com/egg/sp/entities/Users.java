@@ -6,10 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import com.egg.sp.enums.Rol;
 
@@ -31,30 +28,30 @@ public class Users {
     protected Integer id;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su nombre")
+    @NotBlank(message = "Inserte su nombre")
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
     protected String name;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su apellido")
+    @NotBlank(message = "Inserte su apellido")
     @Size(min = 3, max = 30, message = "El apellido debe tener entre 3 y 30 caracteres")
     protected String lastname;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su número de teléfono")
+    @NotBlank(message = "Inserte su número de teléfono")
     @Size(min = 7, max = 20, message = "El número debe tener entre 7 y 20 digitos")
     protected String phoneNumber;
 
     @Column(nullable = false, unique = true)
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
-    @NotNull(message = "Inserte un mail válido")
+    @NotBlank(message = "Inserte un mail válido")
     protected String email;
 
     @Column(nullable = false, columnDefinition="MEDIUMTEXT")
     protected String imagen;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte una contraseña")
+    @NotBlank(message = "Inserte una contraseña")
     protected String password;
 
     @Column(nullable = false)
@@ -62,11 +59,11 @@ public class Users {
     protected Rol rol;
     
     @Column(nullable = false)
-    @NotNull(message = "Inserte su barrio")
+    @NotBlank(message = "Inserte su barrio")
     protected String neighborhood;
     
     @Column(nullable = false)
-    @NotNull(message = "Inserte su calle")
+    @NotBlank(message = "Inserte su calle")
     protected String street;
     
     @Column(nullable = false)

@@ -21,8 +21,8 @@ public class Message {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
-    @Column(columnDefinition = "TEXT", nullable = true)
+    @NotBlank(message = "Debe ingresar el contenido del mensaje")
+    @Column(columnDefinition = "TEXT")
     private String content;
     
     @Temporal(TemporalType.DATE)
