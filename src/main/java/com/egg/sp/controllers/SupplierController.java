@@ -57,13 +57,14 @@ public class SupplierController {
         if (result.hasErrors()){
             model.put("errors",result.getAllErrors());
             model.put("supplier",supplier);
-            return "profile";
+            return "profile-form";
         }
         try {
             supplierService.update(supplier);
         }catch(ServicesException se){
             model.put("error",se.getMessage());
-            return "profile";
+            model.put("supplier",supplier);
+            return "profile-form";
         }
         model.put("success", "El perfil de proveedor ha sido actualizado!");
         return "redirect:/" + supplier.getId();
