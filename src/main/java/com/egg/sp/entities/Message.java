@@ -40,13 +40,11 @@ public class Message {
     //Messages are to be sent from a supplier to a user or vice versa.
     //Supplier is subclass of user
 
-    /*
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "sender_id")
     private Users sender;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "reciever_id")
     private Users reciever;
-    */
 }
