@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -40,18 +42,16 @@ public class Work {
 	private String description;
 	
 	@Enumerated(EnumType.STRING)
-	private Enum acceptance = Acceptance.ENVIADO;
+	private Acceptance acceptance = Acceptance.ENVIADO;
 
 	private double price;
-
-	private String date = obtainDate();
+	
+	@Temporal(TemporalType.DATE)
+	private Date createDate;
 	@NotNull
 	private int customer_id;
+	@NotNull
+	private int supplier_id;
 
-	public static String obtainDate() {
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Buenos_Aires"));
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int month = calendar.get(Calendar.MONTH) + 1;
-		return String.format("%02d/%02d", day, month);
-	}
+
 }

@@ -28,53 +28,53 @@ public class Users {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte su nombre")
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
-    private String name;
+    protected String name;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte su apellido")
     @Size(min = 3, max = 30, message = "El apellido debe tener entre 3 y 30 caracteres")
-    private String lastname;
+    protected String lastname;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte su número de teléfono")
     @Size(min = 7, max = 20, message = "El número debe tener entre 7 y 20 digitos")
-    private String phoneNumber;
+    protected String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
     @NotNull(message = "Inserte un mail válido")
-    private String email;
+    protected String email;
 
     @Column(nullable = false, columnDefinition="MEDIUMTEXT")
-    private String imagen;
+    protected String imagen;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte una contraseña")
-    private String password;
+    protected String password;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte un rol")
-    private Rol rol;
+    protected Rol rol;
     
     @Column(nullable = false)
     @NotNull(message = "Inserte su barrio")
-    private String neighborhood;
+    protected String neighborhood;
     
     @Column(nullable = false)
     @NotNull(message = "Inserte su calle")
-    private String street;
+    protected String street;
     
     @Column(nullable = false)
     @Min(value = 0, message = "Inserte un número válido")
     @NotNull(message = "Ingrese su altura")
-    private Integer height;
+    protected Integer height;
     
     @Column(nullable = false)
-    private Boolean state;
+    protected Boolean state;
     
 }
