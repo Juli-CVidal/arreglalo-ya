@@ -21,7 +21,7 @@ public class WorkService {
 	@Transactional
 	public void createWork(Work work) throws ServicesException {
 
-		work.setCreateDate(new Date());
+		work.setCreationDate(new Date(System.currentTimeMillis()));
 
 		workRepository.save(work);
 	}
@@ -38,7 +38,7 @@ public class WorkService {
 		work.setAcceptance(acceptance);
 		work.setPrice(price);
 		workRepository.save(work);
-		
+
 
 	}
 
