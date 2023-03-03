@@ -18,13 +18,13 @@ public interface ReviewRepository extends JpaRepository<Review,Integer>{
 
 	@Query("SELECT r FROM Review r WHERE r.content = :content")
 	Optional<Review> findByContent(@Param("content") String content);
-	
+
 	@Query("SELECT r FROM Review r ORDER BY r.score DESC")
 	List<Review> orderByScore();
 
-	@Query("SELECT r FROM Review r WHERE r.supplier_id = :id")
+	@Query("SELECT r FROM Review r WHERE r.supplier.id = :id")
 	List<Review> getFromSupplier(@Param("id") Integer id);
 
-	@Query("SELECT r FROM Review r WHERE r.customer_id = :id")
+	@Query("SELECT r FROM Review r WHERE r.user.id = :id")
 	List<Review> getFromCustomer(@Param("id") Integer id);
 }

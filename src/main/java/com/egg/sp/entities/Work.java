@@ -1,17 +1,10 @@
 package com.egg.sp.entities;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -38,17 +31,24 @@ public class Work {
 	@NotNull(message = "La descripcion no puede estar vacia")
 	@Size(min = 6, max = 50, message = "La descripcion debe tener entre 6 y 50 caracteres")
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Acceptance acceptance = Acceptance.ENVIADO;
 
 	private double price;
-	
+
 	@Temporal(TemporalType.DATE)
-	private Date createDate;
-	@NotNull
-	private int customer_id;
-	@NotNull
-	private int supplier_id;
+	private Date creationDate;
+
+
+
+	@ManyToOne
+	@JoinColumn(name = "users_id")
+	private Users user;
+
+	@ManyToOne
+	@JoinColumn(name = "supplier_id")
+	private Supplier supplier;
+
 
 }
