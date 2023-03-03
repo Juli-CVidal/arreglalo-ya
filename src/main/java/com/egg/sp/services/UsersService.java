@@ -1,6 +1,5 @@
 package com.egg.sp.services;
 
-
 import com.egg.sp.entities.Users;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
@@ -8,13 +7,13 @@ import com.egg.sp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UsersService {
+	
     @Autowired
     private UsersRepository usersRepository;
 
@@ -52,12 +51,12 @@ public class UsersService {
     }
 
     @Transactional(readOnly = true)
-    public Users findById(@NotNull Integer id) throws  ServicesException{
+    public Users findById(@NotNull Integer id) throws ServicesException{
        return getFromOptional(usersRepository.findById(id));
     }
 
     @Transactional(readOnly = true)
-    public Users findByName(@NotNull String name) throws  ServicesException{
+    public Users findByName(@NotNull String name) throws ServicesException{
         return getFromOptional(usersRepository.findByName(name));
     }
 
@@ -67,7 +66,6 @@ public class UsersService {
         }
         throw new ServicesException("No se ha encontrado un usuario");
     }
-
 
     // ======== UPDATE ========
 

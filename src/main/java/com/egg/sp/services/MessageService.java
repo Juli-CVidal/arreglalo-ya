@@ -1,13 +1,11 @@
 package com.egg.sp.services;
 
-
 import com.egg.sp.entities.Message;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;

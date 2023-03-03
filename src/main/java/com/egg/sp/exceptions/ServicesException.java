@@ -2,7 +2,9 @@ package com.egg.sp.exceptions;
 
 public class ServicesException extends Exception{
 
-    public ServicesException() {
+    private static final long serialVersionUID = 1L;
+    
+	public ServicesException() {
 
     }
     public ServicesException(String msg) {
