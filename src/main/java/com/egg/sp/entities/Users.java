@@ -22,8 +22,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class Users {
-	
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
@@ -47,7 +47,7 @@ public class Users {
     @NotBlank(message = "Inserte un mail válido")
     protected String email;
 
-    @Column(nullable = false, columnDefinition="MEDIUMTEXT")
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     protected String imagen;
 
     @Column(nullable = false)
@@ -57,21 +57,21 @@ public class Users {
     @Column(nullable = false)
     @NotNull(message = "Inserte un rol")
     protected Rol rol;
-    
+
     @Column(nullable = false)
     @NotBlank(message = "Inserte su barrio")
     protected String neighborhood;
-    
+
     @Column(nullable = false)
     @NotBlank(message = "Inserte su calle")
     protected String street;
-    
+
     @Column(nullable = false)
     @Min(value = 0, message = "Inserte un número válido")
     @NotNull(message = "Ingrese su altura")
     protected Integer height;
-    
+
     @Column(nullable = false)
     protected Boolean state;
-    
+
 }

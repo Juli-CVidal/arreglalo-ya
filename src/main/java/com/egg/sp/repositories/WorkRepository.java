@@ -23,6 +23,9 @@ public interface WorkRepository extends JpaRepository<Work, Integer> {
     @Query("SELECT w FROM Work w WHERE w.supplier.id = :id")
     public List<Work> getFromSupplier(@Param("id") Integer id);
 
+    @Query("SELECT w FROM Work w WHERE w.user.id = :idUser AND w.supplier.id = :idSupplier")
+    public List<Work> getFromSupplierAndUser(@Param("idUser") Integer idUser, @Param("idSupplier") Integer idSupplier);
+
     @Query("SELECT w FROM Work w WHERE w.supplier.id = :id AND w.acceptance = com.egg.sp.enums.Acceptance.ENVIADO")
     public List<Work> getFromSupplierJobOffer(@Param("id") Integer id);
 

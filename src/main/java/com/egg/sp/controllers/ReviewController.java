@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.egg.sp.entities.Review;
+import com.egg.sp.entities.Users;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ReviewService;
 
@@ -21,98 +22,79 @@ import com.egg.sp.services.ReviewService;
 @RequestMapping("/review")
 public class ReviewController {
 
-	@Autowired
-	private ReviewService reviewService;
+    @Autowired
+    private ReviewService reviewService;
 
-	@GetMapping("/all")
-	public String getAll(ModelMap model) {
+    @GetMapping("/all")
+    public String getAll(ModelMap model) {
 
-		List<Review> reviews = reviewService.getAll();
-		model.put("reviews", reviews);
-		return "reviews-view";
-	}
+        List<Review> reviews = reviewService.getAll();
+        model.put("reviews", reviews);
+        return "reviews-view";
+    }
 
-	@GetMapping("/{id}")
-	public String getReview(@PathVariable("id") Integer id, ModelMap model) throws ServicesException {
-		try {
-			Review review = reviewService.getById(id);
-			model.put("review", review);
-		} catch (ServicesException se) {
-			model.put("error", se.getMessage());
-			return "index";
-		}
-		return "review-view";
-	}
+    @GetMapping("/{id}")
+    public String getReview(@PathVariable("id") Integer id, ModelMap model) throws ServicesException {
+        try {
+            Review review = reviewService.getById(id);
+            model.put("review", review);
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            return "index";
+        }
+        return "review-view";
+    }
 
-	@GetMapping("/save")
-	public String getForm(ModelMap model) {
+    @GetMapping("/save")
+    public String getForm(ModelMap model) {
 
-		return "review-form";
-	}
+        return "review-form";
+    }
 
-	@PostMapping("/save")
-	public String create(@Valid Review review, ModelMap model, BindingResult result) {
+    @PostMapping("/save")
+    public String create(@Valid Review review, ModelMap model, BindingResult result, Users user, Integer supplierId) {
 
-		if (result.hasErrors()){
-            model.put("errors",result.getAllErrors());
-            model.put("review",review);
+        if (result.hasErrors()) {
+            model.put("errors", result.getAllErrors());
+            model.put("review", review);
             return "redirect:/" + review.getSupplier().getId();
         }
 
-		try {
-			reviewService.create(review);
-			model.put("success", "review added successfully");
-		} catch (ServicesException se) {
-			model.put("error", se.getMessage());
-			model.put("review", review);
-			return "review-form";
-		}
+        try {
+            reviewService.create(review, user, supplierId);
+            model.put("success", "review added successfully");
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            model.put("review", review);
+            return "review-form";
+        }
 
-		return "redirect:/review";
-	}
+        return "redirect:/review";
+    }
 
-	@GetMapping("/modify/{id}")
-	public String modify(Integer id, ModelMap model) {
+    @GetMapping("/modify/{id}")
+    public String modify(Integer id, ModelMap model) {
 
-		try {
-			Review review = reviewService.getById(id);
-			model.put("review", review);
-		} catch (ServicesException se) {
-			model.put("error", se.getMessage());
-			return "reviews-view";
-		}
-		return "review-form";
-	}
+        try {
+            Review review = reviewService.getById(id);
+            model.put("review", review);
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            return "reviews-view";
+        }
+        return "review-form";
+    }
 
-	@PostMapping("/modify")
-	public String modify(@Valid Review review, ModelMap model, BindingResult result) {
+    @PostMapping("/delete/{id}")
+    public String delete(Integer id, ModelMap model) {
 
-		if (result.hasErrors()){
-            model.put("errors",result.getAllErrors());
-            model.put("review",review);
-            return "redirect:/" + review.getSupplier().getId();
-		}
-		try {
-			reviewService.update(review);
-			model.put("success", "review modified successfully");
-		} catch (ServicesException se) {
-			model.put("error", se.getMessage());
-			model.put("review", review);
-			return "review-form";
-		}
-		return "redirect:/review";
-	}
-
-	@PostMapping("/delete/{id}")
-	public String delete(Integer id, ModelMap model) {
-
-		try {
-			reviewService.delete(id);
-			model.put("success", "review dissmissed successfully");
-		} catch (ServicesException se) {
-			model.put("error", se.getMessage());
-		}
-		return "redirect:/review";
-	}
+        try {
+            reviewService.delete(id);
+            model.put("success", "review dissmissed successfully");
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+        }
+        return "redirect:/review";
+    }
 
 }

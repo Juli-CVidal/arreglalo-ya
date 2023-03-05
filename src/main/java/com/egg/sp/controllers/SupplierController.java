@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.sp.entities.Supplier;
 import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
+import com.egg.sp.enums.Acceptance;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ReviewService;
 import com.egg.sp.services.SupplierService;
@@ -25,41 +26,36 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/supplier")
 public class SupplierController {
-	
-	@Autowired
+
+    @Autowired
     private SupplierService supplierService;
-        
-         @Autowired
+
+    @Autowired
     private WorkService workService;
 
     @Autowired
     private ReviewService reviewService;
-	
-	@GetMapping("/{id}")
-   public String getProfile(@PathVariable("id") Integer id, HttpSession session, ModelMap model) throws ServicesException {
 
-        Users user = (Users) session.getAttribute("usserSesion");
-        Integer userId = user.getId();
+    @GetMapping("/{id}")
+    public String getProfile(@PathVariable("id") Integer id, ModelMap model) throws ServicesException {
 
         try {
             Supplier supplier = supplierService.findById(id);
-            
+
             model.put("supplier", supplier);
-            
-            
+
             //Use this method to validate if the user can leave a review
             //If the method returns a number less a than one, the review form is hidden
             /*
             <div th:if="${numberCustomers > 1}">
             (form)
             </div>
-            */
+             */
             model.put("numberCustomers", workService.countDistinctCustomers(id));
 
             //this is the average score
             model.put("averageRating", reviewService.averageRating(id));
 
-            
             List<Work> workRequest = workService.getFromSupplierJobOffer(id);
             List<Work> activeWork = workService.getFromSupplierAcceptWork(id);
             List<Work> workCompleted = workService.getFromSupplierCompletedWork(id);
@@ -74,25 +70,14 @@ public class SupplierController {
         }
         return "profile";
     }
-   
-   @PostMapping("/{id}/create-work")
-    public String createWork(HttpSession session, ModelMap model, Work work, Integer supplierId) throws ServicesException {
+
+    @PostMapping("/{id}/create-work")
+    public String createWork(HttpSession session, ModelMap model, Work work, Integer supplierId,double price) throws ServicesException {
 
         Users user = (Users) session.getAttribute("usserSesion");
         Supplier supplier = supplierService.findById(supplierId);
 
-        try {
-            workService.CreateAcceptRefuseCompletedJob(work, user, supplier, "Enviado");
-
-            model.put("supplier", supplier);
-            model.put("success", "¡Solicitud de trabajo realizada correctamente!");
-        } catch (ServicesException se) {
-            model.put("error", se.getMessage());
-            model.put("work", work);
-            return "profile";
-        }
-
-        return "redirect:/supplier/{id}";
+        return createWork(user, supplier, work, model, price, Acceptance.ENVIADO);
     }
 
     @PostMapping("/{id}/accept-work")
@@ -101,18 +86,7 @@ public class SupplierController {
         Users user = (Users) session.getAttribute("usserSesion");
         Supplier supplier = supplierService.findById(supplierId);
 
-        try {
-            workService.CreateAcceptRefuseCompletedJob(work, user, supplier, "Aceptado");
-
-            model.put("supplier", supplier);
-            model.put("success", "¡Este trabajo se ha añadido a su lista de trabajos!");
-        } catch (ServicesException se) {
-            model.put("error", se.getMessage());
-            model.put("work", work);
-            return "profile";
-        }
-
-        return "redirect:/supplier/{id}";
+        return modifyState(supplier, work, model, Acceptance.ACEPTADO);
     }
 
     @PostMapping("/{id}/refuse-work")
@@ -121,18 +95,7 @@ public class SupplierController {
         Users user = (Users) session.getAttribute("usserSesion");
         Supplier supplier = supplierService.findById(supplierId);
 
-        try {
-            workService.CreateAcceptRefuseCompletedJob(work, user, supplier, "Rechazado");
-
-            model.put("supplier", supplier);
-            model.put("success", "¡El trabajo fue rechazado!");
-        } catch (ServicesException se) {
-            model.put("error", se.getMessage());
-            model.put("work", work);
-            return "profile";
-        }
-
-        return "redirect:/supplier/{id}";
+        return modifyState(supplier, work, model, Acceptance.RECHAZADO);
     }
 
     @PostMapping("/{id}/complete-work")
@@ -141,29 +104,16 @@ public class SupplierController {
         Users user = (Users) session.getAttribute("usserSesion");
         Supplier supplier = supplierService.findById(supplierId);
 
-        try {
-            workService.CreateAcceptRefuseCompletedJob(work, user, supplier, "Finalizado");
-
-            model.put("supplier", supplier);
-            model.put("success", "¡El trabajo fue dado como finalizado!");
-        } catch (ServicesException se) {
-            model.put("error", se.getMessage());
-            model.put("work", work);
-            return "profile";
-        }
-
-        return "redirect:/supplier/{id}";
+        return modifyState(supplier, work, model, Acceptance.FINALIZADO);
     }
 
-    //revisar validacion
     @PostMapping("/{id}/review")
     public String createReview(@Valid Review review, ModelMap model, HttpSession session, Integer supplierId) {
 
         Users user = (Users) session.getAttribute("usserSesion");
-        Integer userId = user.getId();
         try {
-            reviewService.validateContratacion(userId, supplierId);
-            reviewService.create(review);
+            //reviewService.validateContracting(user.getId(), supplierId);
+            reviewService.create(review, user, supplierId);
 
             model.put("success", "¡Reseña añadida correctamente!");
         } catch (ServicesException se) {
@@ -171,7 +121,7 @@ public class SupplierController {
             model.put("review", review);
             return "profile";
         }
-        return "redirect:/supplier/{id}";
+        return "redirect:/supplier/" + supplierId;
     }
 
     @PostMapping("/delete_review/{id}")
@@ -185,41 +135,73 @@ public class SupplierController {
         }
         return "redirect:/review";
     }
-	
-	@GetMapping("/all")
-    public String getAllSuppliers(ModelMap model){
+
+    @GetMapping("/all")
+    public String getAllSuppliers(ModelMap model) {
         model.put("supplierList", supplierService.getAll());
         return "all-suppliers";
     }
-	
-	@GetMapping("/update/{id}")
-    public String getForm(@PathVariable("id") Integer id, ModelMap model){
-        try{
+
+    @GetMapping("/update/{id}")
+    public String getForm(@PathVariable("id") Integer id, ModelMap model) {
+        try {
             Supplier supplier = supplierService.findById(id);
-            model.put("supplier",supplier);
+            model.put("supplier", supplier);
             return "profile-form";
-        }catch (ServicesException se){
-            model.put("error",se.getMessage());
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
             return "index.html";
         }
     }
-	
-	@PostMapping("/{id}")
-    public String updateProfile(@ModelAttribute("supplier") Supplier supplier, BindingResult result, ModelMap model){
-        if (result.hasErrors()){
-            model.put("errors",result.getAllErrors());
-            model.put("supplier",supplier);
+
+    @PostMapping("/{id}")
+    public String updateProfile(@ModelAttribute("supplier") Supplier supplier, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.put("errors", result.getAllErrors());
+            model.put("supplier", supplier);
             return "profile-form";
         }
         try {
             supplierService.update(supplier);
-        }catch(ServicesException se){
-            model.put("error",se.getMessage());
-            model.put("supplier",supplier);
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            model.put("supplier", supplier);
             return "profile-form";
         }
         model.put("success", "El perfil de proveedor ha sido actualizado!");
         return "redirect:/" + supplier.getId();
+    }
+
+    private String createWork(Users user, Supplier supplier, Work work, ModelMap model, double price, Acceptance acceptance) {
+
+        try {
+            workService.createJob(work, user, supplier, price, acceptance);
+
+            model.put("supplier", supplier);
+            model.put("success", "¡El trabajo fue creado exitosamente");
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            model.put("work", work);
+        } finally {
+            return "redirect:/supplier/" + supplier.getId();
+        }
+
+    }
+
+    private String modifyState(Supplier supplier, Work work, ModelMap model, Acceptance acceptance) {
+
+        try {
+            workService.modifyState(work, acceptance);
+
+            model.put("supplier", supplier);
+            model.put("success", "¡El trabajo fue " + acceptance.toString().toLowerCase());
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            model.put("work", work);
+        } finally {
+            return "redirect:/supplier/" + supplier.getId();
+        }
+
     }
 
 }

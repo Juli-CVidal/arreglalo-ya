@@ -21,74 +21,80 @@ public class WorkService {
     @Autowired
     private WorkRepository workRepository;
 
-    @Transactional
+    /*@Transactional
     public void createWork(Work work) throws ServicesException {
 
         work.setCreationDate(new Date(System.currentTimeMillis()));
 
         workRepository.save(work);
-    }
+    }*/
 
+    @Transactional(readOnly = true)
+    public Optional<Work> getById(Integer workId){
+        return workRepository.findById(workId);
+    }
+    
+    @Transactional(readOnly = true)
     public List<Work> getWorksSupplier(Integer id) {
         return workRepository.getFromSupplier(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getWorksUser(Integer id) {
         return workRepository.getFromCustomer(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getFromSupplierJobOffer(Integer id) {
         return workRepository.getFromSupplierJobOffer(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getFromSupplierAcceptWork(Integer id) {
         return workRepository.getFromSupplierAcceptWork(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getFromSupplierCompletedWork(Integer id) {
         return workRepository.getFromSupplierCompletedWork(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getWorksByPriceAsc() {
         return workRepository.orderByPriceAsc();
     }
 
+    @Transactional(readOnly = true)
     public List<Work> getWorksByPriceDesc() {
         return workRepository.orderByPriceDesc();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Work> getByDate(Date date) {
         return workRepository.getByDate(date);
     }
 
+    @Transactional(readOnly = true)
     public int countDistinctCustomers(int supplierId) {
         return workRepository.countDistinctCustomers(supplierId);
     }
 
     @Transactional
-    public Work CreateAcceptRefuseCompletedJob(Work work, Users user, Supplier supplier, String acceptance) throws ServicesException {
-
-        work.setCreationDate(new Date(System.currentTimeMillis()));
+    public Work createJob(Work work, Users user, Supplier supplier,double price, Acceptance state) throws ServicesException {
 
         work.setUser(user);
         work.setSupplier(supplier);
+        work.setPrice(price);
+        work.setAcceptance(state);
 
-        switch (acceptance) {
-            case "Enviado":
-                work.setAcceptance(Acceptance.ENVIADO);
-                break;
-            case "Aceptado":
-                work.setAcceptance(Acceptance.ACEPTADO);
-                break;
-            case "Rechazado":
-                work.setAcceptance(Acceptance.RECHAZADO);
-                break;
-            case "Finalizado":
-                work.setAcceptance(Acceptance.FINALIZADO);
-                break;
-            default:
-                break;
-        }
+        workRepository.save(work);
+        return work;
+    }
+    
+    @Transactional
+    public Work modifyState(Work work, Acceptance state) throws ServicesException {
+
+        work.setAcceptance(state);
 
         workRepository.save(work);
         return work;
