@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Coming+Soon&family=Open+Sans&display=swap");
+
+body{
+    scroll-behavior: smooth;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+/* ======== NAVBAR ======== */
+.right__menu .nav-link{
+    display: flex;
+    align-items: center;
+}
+
+
+/* ======== HERO SECTION ======== */
+
+#hero {
+    width: 100%;
+}
+
+.hero__slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.hero__slide div {
+    color: white;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(0, 0, 0, 0.6) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 1rem;
+}
+
+.hero__slide div h1 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 3rem;
+}
+.hero__slide div p {
+    font-size: 1.5rem;
+    font-family: "Coming Soon", cursive;
+}
+
+.hero__slide img {
+    width: 100%;
+    min-height: 100%;
+}
+
+/* ======== WORKS SECTION ======== */
+
+#search-work{
+    box-shadow: 21px 15px 54px -3px rgba(0,0,0,0.22);
+}
+
+.works__container {
+    width: 90%;
+}
+
+.works__container.swiper {
+    padding: 10px !important;
+    box-shadow: inset 16px 0px 25px -11px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    width: 250px;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.work__image {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+.card h1 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
