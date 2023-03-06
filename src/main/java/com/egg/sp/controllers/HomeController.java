@@ -1,10 +1,9 @@
 package com.egg.sp.controllers;
 
 
-import com.egg.sp.entities.Supplier;
 import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
-import com.egg.sp.services.SupplierService;
 import com.egg.sp.services.UsersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +24,18 @@ public class HomeController {
 
     @Autowired
     private UsersService usersService;
-    
-    @Autowired
-    private SupplierService supplierService;
+
 
     @GetMapping
     public String getIndex(ModelMap model) {
-        List<Supplier> supplierList = supplierService.getAll();
+        List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
         supplierList.sort(Comparator.comparing(Users::getName));
         model.put("suppliers", supplierList);
         return "index.html";
     }
 
     @GetMapping("/login")
-    public String getLoginForm(){
+    public String getLoginForm() {
         return "login.html";
     }
 
@@ -49,47 +46,37 @@ public class HomeController {
     }
 
     @PostMapping("/signup/user")
-    public String signUpUser(@Valid Users user, ModelMap model, BindingResult result){
-        if (result.hasErrors()){
-            model.put("user", user);
-            model.put("errors", result.getAllErrors());
-            return "new-user";
-        }
-
-        try {
-            usersService.create(user);
-        } catch (ServicesException se){
-            model.put("user", user);
-            model.put("error",se.getMessage());
-            return "new-user";
-        }
-
-        model.put("success", "su cuenta ha sido creada exitosamente!");
-        //To the account profile
-        return "redirect:/user";
+    public String signUpUser(@Valid Users user, ModelMap model, BindingResult result) {
+        return createAccount(user, Rol.CUSTOMER, model, result);
     }
 
 
     @GetMapping("/signup/supplier")
-    public String getFormSupplier(ModelMap model){
-        model.put("supplier", new Supplier());
-        return "new-supplier";
+    public String getFormSupplier(ModelMap model) {
+        model.put("rol", "supplier");
+        model.put("user", new Users());
+        return "new-user";
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Supplier supplier, ModelMap model, BindingResult result){
-        if (result.hasErrors()){
-            model.put("user", supplier);
+    public String signUpSupplier(Users supplier, ModelMap model, BindingResult result) {
+        return createAccount(supplier, Rol.SUPPLIER, model, result);
+    }
+
+    private String createAccount(@Valid Users user, Rol accountType, ModelMap model, BindingResult result) {
+        if (result.hasErrors()) {
+            model.put("user", user);
             model.put("errors", result.getAllErrors());
-            return "new-supplier";
+            return "new-user";
         }
 
         try {
-            supplierService.create(supplier);
-        } catch (ServicesException se){
-            model.put("supplier", supplier);
-            model.put("error",se.getMessage());
-            return "new-supplier";
+            user.setRol(accountType);
+            usersService.create(user);
+        } catch (ServicesException se) {
+            model.put("users", user);
+            model.put("error", se.getMessage());
+            return "new-user";
         }
 
         model.put("success", "su cuenta ha sido creada exitosamente!");

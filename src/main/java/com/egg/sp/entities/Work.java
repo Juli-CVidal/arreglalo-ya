@@ -44,5 +44,5 @@ public class Work {
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    private Users supplier;
 }

@@ -48,30 +48,29 @@ public class Users {
     protected String email;
 
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
-    protected String imagen;
+    protected String image;
 
     @Column(nullable = false)
     @NotBlank(message = "Inserte una contraseña")
     protected String password;
 
-    @Column(nullable = false)
-    @NotNull(message = "Inserte un rol")
     protected Rol rol;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte su barrio")
+    //Proper to the Rol.CUSTOMER
     protected String neighborhood;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte su calle")
+    //Proper to the Rol.CUSTOMER
     protected String street;
 
-    @Column(nullable = false)
-    @Min(value = 0, message = "Inserte un número válido")
-    @NotNull(message = "Ingrese su altura")
+    //Proper to the Rol.CUSTOMER
     protected Integer height;
+
+    //Proper to the Rol.SUPPLIER
+    protected String biography;
+
+    //Proper to the Rol.SUPPLIER
+    private String principalService;
 
     @Column(nullable = false)
     protected Boolean state;
-
 }

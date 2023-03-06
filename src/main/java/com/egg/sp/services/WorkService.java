@@ -1,7 +1,7 @@
 package com.egg.sp.services;
 
-import com.egg.sp.entities.Supplier;
 import com.egg.sp.entities.Users;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -13,6 +13,7 @@ import com.egg.sp.entities.Work;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.WorkRepository;
 import com.egg.sp.enums.Acceptance;
+
 import java.util.List;
 
 @Service
@@ -21,19 +22,23 @@ public class WorkService {
     @Autowired
     private WorkRepository workRepository;
 
-    /*@Transactional
-    public void createWork(Work work) throws ServicesException {
+    //======== CREATE ========
 
+    @Transactional
+    public void create(Work work, Users supplier) throws ServicesException {
+        work.setSupplier(supplier);
         work.setCreationDate(new Date(System.currentTimeMillis()));
-
+        work.setAcceptance(Acceptance.ENVIADO);
         workRepository.save(work);
-    }*/
+    }
+
+    //======== READ =======
 
     @Transactional(readOnly = true)
-    public Optional<Work> getById(Integer workId){
-        return workRepository.findById(workId);
+    public Work findById(Integer id) throws ServicesException {
+        return getFromOptional(workRepository.findById(id));
     }
-    
+
     @Transactional(readOnly = true)
     public List<Work> getWorksSupplier(Integer id) {
         return workRepository.getFromSupplier(id);
@@ -59,6 +64,12 @@ public class WorkService {
         return workRepository.getFromSupplierCompletedWork(id);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<Work> findWorksHistory(Integer customerId, Integer supplierId) {
+        return workRepository.findWorksHistory(customerId, supplierId);
+    }
+
     @Transactional(readOnly = true)
     public List<Work> getWorksByPriceAsc() {
         return workRepository.orderByPriceAsc();
@@ -79,52 +90,38 @@ public class WorkService {
         return workRepository.countDistinctCustomers(supplierId);
     }
 
-    @Transactional
-    public Work createJob(Work work, Users user, Supplier supplier,double price, Acceptance state) throws ServicesException {
 
-        work.setUser(user);
-        work.setSupplier(supplier);
-        work.setPrice(price);
+
+    // ======== UPDATE ========
+    @Transactional
+    public void modifyState(Integer id, Acceptance state) throws ServicesException {
+        Work work = findById(id);
         work.setAcceptance(state);
 
         workRepository.save(work);
-        return work;
-    }
-    
-    @Transactional
-    public Work modifyState(Work work, Acceptance state) throws ServicesException {
 
-        work.setAcceptance(state);
-
-        workRepository.save(work);
-        return work;
     }
 
     @Transactional
-    public void responseWork(int workId, Acceptance acceptance, double price) throws ServicesException {
+    public void acceptWork(Integer id, Double price) throws ServicesException {
+        Work work = findById(id);
+        work.setAcceptance(Acceptance.ACEPTADO);
 
-        Optional<Work> response = workRepository.findById(workId);
-        if (response.isEmpty()) {
-            throw new ServicesException("No existe un trabajo con el identificador solicitado");
-        }
-
-        Work work = response.get();
-        validatePrice(price);
-        work.setAcceptance(acceptance);
-        work.setPrice(price);
-        workRepository.save(work);
-
-    }
-
-    public void validateDescription(String description) throws ServicesException {
-        if (description == null || description.isEmpty()) {
-            throw new ServicesException("La descripcion no puede estar vacia");
-        }
-    }
-
-    public void validatePrice(double price) throws ServicesException {
         if (price <= 0) {
-            throw new ServicesException("Debe indicar un precio para este trabajo");
+            throw new ServicesException("No se ha ingresado un precio válido");
         }
+        work.setPrice(price);
+        workRepository.save(work);
     }
+
+    private Work getFromOptional(Optional<Work> workOpt) throws ServicesException {
+        if (workOpt.isEmpty()) {
+            throw new ServicesException("No se ha encontrado el supplier");
+        }
+        return workOpt.get();
+    }
+
+
+    //======== DELETE ========
+    //It is not necessary, we change the status to REJECTED, and we can show it in the history.
 }
