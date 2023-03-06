@@ -1,122 +1,308 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns="http://www.w3.org/1999/xhml"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="layout/staticsFragments :: head">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- BOOTSTRAP -->
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous"
+  />
+
+  <!-- REMIX ICONS -->
+  <link
+          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+          rel="stylesheet"
+  />
+
+  <!-- SWIPER CSS -->
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.css"
+  />
+
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet" th:href="@{../css/index.css}" />
+  <title>ArreglaloYa!</title>
 </head>
 <body>
-	<header th:replace="layout/staticsFragments :: navbar"></header>
-	
-	<div clas="vh-100 d-flex">
-        <div
-          id="bootstrap-carousel"
-          class="carousel slide carousel-fade h-100"
-          data-bs-ride="carousel"
-        >
-          <div class="position-absolute fixed-bottom w-100">
-            <div
-              class="container d-flex justify-content-center mt-4 gap-4 mb-3"
-            >
-              <button type="button" class="btn btn-primary me-2">
-                Gasista
-              </button>
-              <button type="button" class="btn btn-primary me-2">
-                Plomero
-              </button>
-              <button type="button" class="btn btn-primary me-2">
-                Electricista
-              </button>
-              <a th:href="@{/offering/save}" class="btn btn-primary me-2">Otro</a>
-              <!-- Agrega más botones según sea necesario -->
-            </div>
-            <div class="container">
-              <div class="row">
-                <div class="col-12 col-md-6 mx-auto mb-3">
-                  <form>
-                    <div class="input-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Qué desea buscar?"
-                      />
-                      <button type="submit" class="btn btn-primary">
-                        <i class="ri-search-2-line"></i>
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img th:src="@{../img/carpintero.jpg}" class="d-block w-100" alt="..." />
-            </div>
-            <div class="carousel-item">
-              <img th:src="@{../img/pileta.jpg}" class="d-block w-100" alt="..." />
-            </div>
-            <div class="carousel-item">
-              <img th:src="@{../img/metalurgico.jpg}" class="d-block w-100" alt="..." />
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#bootstrap-carousel"
-            data-bs-slide="prev"
+<header>
+  <nav
+          class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand h1" href="#">Arreglalo Ya</a>
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="navbar-nav ms-auto">
+          <a
+                  class="nav-link mx-2 text-uppercase active"
+                  aria-current="page"
+                  href="#"
           >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#bootstrap-carousel"
-            data-bs-slide="next"
+            Home
+          </a>
+          <a class="nav-link mx-2 text-uppercase" href="#works">Works</a>
+          <a class="nav-link mx-2 text-uppercase" href="#suppliers"
+          >Suppliers</a
           >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          <a class="nav-link mx-2 text-uppercase" href="#">About</a>
         </div>
+        <div class="navbar-nav ms-auto right__menu">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                      class="nav-link dropdown-toggle mx-2"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+              >Idioma</a
+              >
+              <ul class="dropdown-menu mb-2">
+                <li>
+                  <a class="dropdown-item" th:href="@{?(lang=es)}"
+                  ><img
+                          class="me-1 mb-1"
+                          src="https://img.icons8.com/fluency/32/000000/spain-circular.png "
+                  />Español</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" th:href="@{?(lang=en)}"
+                  ><img
+                          class="me-1 mb-1"
+                          src="https://img.icons8.com/fluency/32/000000/usa-circular.png "
+                  />Ingles</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" th:href="@{?(lang=pt)}"
+                  ><img
+                          class="me-1 mb-1"
+                          src="https://img.icons8.com/fluency/32/000000/brazil-circular.png "
+                  />Portugues</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <a class="nav-link mx-2" href="#">
+            <i class="ri-user-add-line me-1"></i> Account
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section id="hero" class="shadow-lg">
+    <div class="hero__swiper swiper">
+      <div class="swiper-wrapper">
+        <div class="hero__slide swiper-slide">
+          <img th:src="@{../img/img1.jpg}" alt="" />
+          <div>
+            <h1>ArreglaloYa</h1>
+            <p>A clicks de su casa soñada</p>
+          </div>
+        </div>
+        <div class="hero__slide swiper-slide">
+          <img th:src="@{../img/img2.webp}" alt="" />
+          <div>
+            <h1>Los mejores proveedores</h1>
+            <p>En un lugar</p>
+          </div>
+        </div>
+        <div class="hero__slide swiper-slide">
+          <img th:src="@{../img/img3.jpg}" alt="" />
+          <div>
+            <h1>Todos los servicios</h1>
+            <p>A su alcance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+          id="works"
+          class="w-100 p-3 shadow-sm border rounded-bottom border-black"
+  >
+    <div class="container-fluid mt-3">
+      <div
+              class="search__container container mb-3 d-flex justify-content-center"
+      >
+        <input
+                class="form-control w-50"
+                type="text"
+                name="search-work"
+                id="search-work"
+                placeholder="Qué desea buscar?"
+        />
       </div>
       <div
-        class="p-4 d-flex justify-content-center align-items-center bg-dark text-white"
+              class="swiper works__container rounded-3 rounded-start rounded-end"
       >
-        Somos una plataforma en línea que se dedica a conectar a personas que
-        necesitan servicios domiciliarios con proveedores confiables y de
-        calidad en su área local. Nuestro objetivo es hacer que la contratación
-        de servicios en el hogar sea más fácil, segura y eficiente para todos.
-        Contamos con un equipo de expertos que selecciona cuidadosamente a cada
-        proveedor para garantizar que cumplan con nuestros altos estándares de
-        calidad. Además, ofrecemos una experiencia de usuario intuitiva y
-        amigable para que puedas solicitar y gestionar tus servicios en línea
-        desde la comodidad de tu hogar.
-      </div>
-    </main>
-    
-    
-	
-	 <footer class="bg-light py-2 fixed-bottom">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <form method="POST" th:action="@{/logout}"></form>
-            <h4>ArréglaloYa!</h4>
-            <ul class="list-unstyled">
-              <li>Correo electrónico: arreglaloya@contact.com</li>
-            </ul>
+        <div class="swiper-wrapper">
+          <!-- CARD 1 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Electrónica</h1>
+            </div>
           </div>
-          <div class="col-md-6 d-flex">
-            <div class="ms-auto">
-              <h4>Enlaces útiles</h4>
-              <ul class="list-unstyled">
-                <li><a href="#">Términos de uso</a></li>
-                <li><a href="#">Acerca de nosotros</a></li>
-              </ul>
+          <!-- CARD 2 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Fontanería</h1>
+            </div>
+          </div>
+          <!-- CARD 3 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Albañilería</h1>
+            </div>
+          </div>
+          <!-- CARD 4 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Plomería</h1>
+            </div>
+          </div>
+          <!-- CARD 5 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Jardinería</h1>
+            </div>
+          </div>
+          <!-- CARD 6 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Carpintería</h1>
+            </div>
+          </div>
+          <!-- CARD 7 -->
+          <div class="card swiper-slide rounded-4 border shadow-sm mx-3">
+            <img
+                    th:src="@{../img/ArreglaloYa.png}"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>Diseño</h1>
+            </div>
+          </div>
+          <!-- NO RESULTS CARD -->
+          <div
+                  id="no-results"
+                  class="card swiper-slide rounded-4 border shadow-sm mx-3"
+                  style="display: none"
+          >
+            <img
+                    src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
+                    class="work__image rounded-circle"
+                    alt="..."
+            />
+            <div class="card-body text-center">
+              <h1>No encuentras lo que buscas?</h1>
             </div>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
+
+  <section
+          id="suppliers"
+          class="w-100 p-3 shadow-sm border rounded-bottom border-black"
+  >
+    <div class="container-fluid d-flex justify-content-center">
+      <h1>Nuestros mejores proveedores</h1>
+    </div>
+    <div class="container-fluid mt-3">
+      <div class="suppliers__container container-fluid swiper">
+        <div class="swiper-wrapper">
+          <div class="card swiper-slide shadow">
+            <img
+                    src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
+                    class="card-img-top rounded-top imagenstyle"
+            />
+            <div class="card-body">
+              <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
+              <p class="card-text">Cantante</p>
+            </div>
+          </div>
+          <div class="card swiper-slide shadow">
+            <img
+                    src="https://this-person-does-not-exist.com/img/avatar-117e0c35a4725d8d49143adf9c9a5a92.jpg"
+                    class="card-img-top rounded-top imagenstyle"
+            />
+            <div class="card-body">
+              <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
+              <p class="card-text">Cantante</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BOOTSTRAP -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"
+></script>
+
+<!-- SWIPER JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.js"></script>
+
+<!-- CUSTOM JS -->
+<script th:src="@{../js/index.js}"></script>
 </body>
 </html>
