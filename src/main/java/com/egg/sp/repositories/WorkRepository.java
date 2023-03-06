@@ -49,4 +49,7 @@ public interface WorkRepository extends JpaRepository<Work, Integer> {
 
     @Query("SELECT w FROM Work w ORDER BY w.price DESC")
     public List<Work> orderByPriceDesc();
+
+    @Query("SELECT w FROM Work w WHERE w.user.id = :customerId AND w.supplier.id = :supplierId")
+    public List<Work> findWorksHistory(@Param("customerId") Integer customerId, @Param("supplierId") Integer supplierId);
 }
