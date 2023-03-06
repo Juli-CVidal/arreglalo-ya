@@ -1,10 +1,13 @@
 package com.egg.sp.controllers;
 
 
-import com.egg.sp.entities.Supplier;
 import com.egg.sp.entities.Users;
+import com.egg.sp.entities.Work;
+import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
+import com.egg.sp.services.ReviewService;
 import com.egg.sp.services.UsersService;
+import com.egg.sp.services.WorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -19,6 +23,12 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private WorkService workService;
+
+    @Autowired
+    private ReviewService reviewService;
 
 
     /**
@@ -30,11 +40,10 @@ public class UsersController {
     @GetMapping()
     public String getProfile(HttpSession session, ModelMap model) {
         Users user = (Users) session.getAttribute("usserSesion");
-        if (user instanceof Supplier){
-            model.put("supplier",(Supplier) user);
-            return "profile";
+        if (user.getRol() == Rol.SUPPLIER){
+            addSupplierFields(model, user.getId());
         }
-        model.put("user", user);
+        model.put("users", user);
         return "profile";
     }
 
@@ -45,11 +54,16 @@ public class UsersController {
      * @return the profile document
      */
     @GetMapping("/{id}")
-    public String getProfile(@PathVariable("id") Integer id, ModelMap model) {
+    public String getProfile(HttpSession session,@PathVariable("id") Integer id, ModelMap model) {
 
         try {
             Users user = usersService.findById(id);
             model.put("user", user);
+            if (user.getRol() == Rol.SUPPLIER){
+                //The login id is that of the customer, and the one received as parameter is that of the supplier.
+                Users customer = (Users) session.getAttribute("userSession");
+                model.put("history",workService.findWorksHistory(customer.getId(), id));
+            }
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
             return "index";
@@ -99,5 +113,20 @@ public class UsersController {
         }
         model.put("success", "El perfil ha sido actualizado!");
         return "redirect:/user";
+    }
+
+    private void addSupplierFields(ModelMap model, Integer id){
+        model.put("numberCustomers", workService.countDistinctCustomers(id));
+
+        //this is the average score
+        model.put("averageRating", reviewService.averageRating(id));
+
+        List<Work> workRequest = workService.getFromSupplierJobOffer(id);
+        List<Work> activeWork = workService.getFromSupplierAcceptWork(id);
+        List<Work> workCompleted = workService.getFromSupplierCompletedWork(id);
+
+        model.put("workRequest", workRequest);
+        model.put("activeWork", activeWork);
+        model.put("workCompleted", workCompleted);
     }
 }

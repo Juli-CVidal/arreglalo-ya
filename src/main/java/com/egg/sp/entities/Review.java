@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +38,8 @@ public class Review {
 	private String image;
 	
 	@NotNull(message = "Inserte su calificacion")
+	@Min(value = 1, message = "Por favor ingrese una calificación válida")
+	@Max(value = 5, message = "Por favor ingrese una calificación válida")
 	private Double score;
 	
 	@Temporal(TemporalType.DATE)
@@ -47,5 +51,5 @@ public class Review {
 	
 	@ManyToOne
 	@JoinColumn(name = "supplier_id")
-	private Supplier supplier;
+	private Users supplier;
 }

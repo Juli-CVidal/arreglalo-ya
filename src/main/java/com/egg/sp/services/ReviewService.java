@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.egg.sp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +23,14 @@ public class ReviewService {
 
     @Autowired
     private WorkRepository workRepository;
-    
+
     @Autowired
-    private SupplierService supplierService;
+    private UsersService usersService;
 
     @Transactional
     public void create(Review review, Users user, Integer supplierId) throws ServicesException {
-        
-        validateScore(review);
-        
         review.setUser(user);
-        review.setSupplier(supplierService.findById(supplierId));
-        
+        review.setSupplier(usersService.findSupplierById(supplierId));
         review.setCreationDate(new Date(System.currentTimeMillis()));
         reviewRepository.save(review);
     }
@@ -54,17 +51,20 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Review getById(Integer id) throws ServicesException {
-        Optional<Review> reviewOpt = reviewRepository.findById(id);
-        if (reviewOpt.isEmpty()) {
-            throw new ServicesException("No Review found");
-        }
-        return reviewOpt.get();
+    public Review findById(Integer id) throws ServicesException {
+        return getFromOptional(reviewRepository.findById(id));
+    }
+
+    @Transactional
+    public void censure(Integer id) throws ServicesException {
+        Review review = findById(id);
+        review.setContent("CENSURADO");
+        reviewRepository.save(review);
     }
 
     @Transactional
     public void delete(Integer id) throws ServicesException {
-        Review review = getById(id);
+        Review review = findById(id);
         reviewRepository.delete(review);
 
     }
@@ -72,29 +72,13 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public double averageRating(Integer idSupplier) {
         List<Review> reviews = reviewRepository.getFromSupplier(idSupplier);
-        if (reviews.isEmpty()) {
-            return 0;
-        }
-        double sum = 0;
-        for (Review review : reviews) {
-            sum += review.getScore();
-        }
-        return sum / reviews.size();
+        return reviews.stream().mapToDouble(review -> review.getScore()).average().orElse(0d);
     }
 
-    private void validateScore(Review review) throws ServicesException {
-
-        if (null == review.getScore() || review.getScore() < 0 || review.getScore() > 5) {
-            throw new ServicesException("Reiew inválida");
+    private Review getFromOptional(Optional<Review> reviewOpt) throws ServicesException {
+        if (reviewOpt.isEmpty()) {
+            throw new ServicesException("No Review found");
         }
+        return reviewOpt.get();
     }
-
-    /*@Transactional(readOnly = true)
-    public void validateContracting(Integer userId, Integer supplierId) throws ServicesException {
-
-        if (workRepository.countContractedTimes(userId, supplierId) == 0) {
-            throw new ServicesException("Debes haber contratado este servicio para poder dejar tu reseña");
-        }
-
-    }*/
 }
