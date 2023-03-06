@@ -1,17 +1,8 @@
 package com.egg.sp.entities;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,28 +21,28 @@ import lombok.Setter;
 @Table(name = "work")
 public class Work {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(nullable = false)
-	@NotNull(message = "La descripcion no puede estar vacia")
-	@Size(min = 6, max = 50, message = "La descripcion debe tener entre 6 y 50 caracteres")
-	private String description;
-	
-	@Enumerated(EnumType.STRING)
-	private Enum acceptance = Acceptance.ENVIADO;
+    @Column(nullable = false)
+    @NotNull(message = "La descripcion no puede estar vacia")
+    @Size(min = 6, max = 50, message = "La descripcion debe tener entre 6 y 50 caracteres")
+    private String description;
 
-	private double price;
+    @Enumerated(EnumType.STRING)
+    private Acceptance acceptance = Acceptance.ENVIADO;
 
-	private String date = obtainDate();
-	@NotNull
-	private int customer_id;
+    private double price;
 
-	public static String obtainDate() {
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Buenos_Aires"));
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int month = calendar.get(Calendar.MONTH) + 1;
-		return String.format("%02d/%02d", day, month);
-	}
+    @Temporal(TemporalType.DATE)
+    private Date creationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 }

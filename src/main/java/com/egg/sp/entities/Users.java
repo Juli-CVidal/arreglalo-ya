@@ -6,10 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import com.egg.sp.enums.Rol;
 
@@ -25,56 +22,56 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class Users {
-	
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su nombre")
+    @NotBlank(message = "Inserte su nombre")
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
-    private String name;
+    protected String name;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su apellido")
+    @NotBlank(message = "Inserte su apellido")
     @Size(min = 3, max = 30, message = "El apellido debe tener entre 3 y 30 caracteres")
-    private String lastname;
+    protected String lastname;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte su número de teléfono")
+    @NotBlank(message = "Inserte su número de teléfono")
     @Size(min = 7, max = 20, message = "El número debe tener entre 7 y 20 digitos")
-    private String phoneNumber;
+    protected String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
-    @NotNull(message = "Inserte un mail válido")
-    private String email;
+    @NotBlank(message = "Inserte un mail válido")
+    protected String email;
 
-    @Column(nullable = false, columnDefinition="MEDIUMTEXT")
-    private String imagen;
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    protected String imagen;
 
     @Column(nullable = false)
-    @NotNull(message = "Inserte una contraseña")
-    private String password;
+    @NotBlank(message = "Inserte una contraseña")
+    protected String password;
 
     @Column(nullable = false)
     @NotNull(message = "Inserte un rol")
-    private Rol rol;
-    
+    protected Rol rol;
+
     @Column(nullable = false)
-    @NotNull(message = "Inserte su barrio")
-    private String neighborhood;
-    
+    @NotBlank(message = "Inserte su barrio")
+    protected String neighborhood;
+
     @Column(nullable = false)
-    @NotNull(message = "Inserte su calle")
-    private String street;
-    
+    @NotBlank(message = "Inserte su calle")
+    protected String street;
+
     @Column(nullable = false)
     @Min(value = 0, message = "Inserte un número válido")
     @NotNull(message = "Ingrese su altura")
-    private Integer height;
-    
+    protected Integer height;
+
     @Column(nullable = false)
-    private Boolean state;
-    
+    protected Boolean state;
+
 }

@@ -1,6 +1,5 @@
 package com.egg.sp.entities;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +16,10 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Table(name = "supplier")
-public class Supplier extends Users{
+public class Supplier extends Users {
 
     @NotBlank
-    @Size(min=20, message= "Please enter a longer description")
-    @Size(max=255, message= "Please enter a shorter description")
+    @Size(min = 20, max = 255, message = "Por favor ingrese una descripción que contenga entre 20 y 255 carácteres")
     private String biography;
 
 }
