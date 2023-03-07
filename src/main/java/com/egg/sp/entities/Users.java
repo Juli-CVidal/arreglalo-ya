@@ -47,7 +47,7 @@ public class Users {
     @NotBlank(message = "Inserte un mail válido")
     protected String email;
 
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+
     protected String image;
 
     @Column(nullable = false)
@@ -69,7 +69,7 @@ public class Users {
     protected String biography;
 
     //Proper to the Rol.SUPPLIER
-    private String principalService;
+    private String profession;
 
     @Column(nullable = false)
     protected Boolean state;
