@@ -23,6 +23,7 @@ public class UsersService {
     @Transactional
     public void create(Users user) throws ServicesException {
         validateFields(user);
+        user.setState(true);
         usersRepository.save(user);
     }
     // ======= READ ========
@@ -82,7 +83,7 @@ public class UsersService {
         if (user.getRol() == Rol.CUSTOMER) {
             validateCustomerFields(user.getNeighborhood(), user.getStreet(), user.getHeight());
         } else if (user.getRol() == Rol.SUPPLIER) {
-            validateSupplierFields(user.getBiography(), user.getPrincipalService());
+            validateSupplierFields(user.getBiography(), user.getProfession());
         }
     }
 

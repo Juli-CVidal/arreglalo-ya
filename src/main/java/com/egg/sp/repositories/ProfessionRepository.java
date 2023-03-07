@@ -12,6 +12,6 @@ import com.egg.sp.entities.Profession;
 @Repository
 public interface ProfessionRepository extends JpaRepository<Profession,Integer>{
 	
-	@Query("SELECT s FROM ServiceType s WHERE s.name = :name")
+	@Query("SELECT p FROM Profession p WHERE p.name = :name")
 	Optional<Profession> findByName(@Param("name")String name);
 }

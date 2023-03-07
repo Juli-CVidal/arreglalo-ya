@@ -48,27 +48,17 @@ function addValidation() {
 	})();
 }
 
-function enterThFields(type) {
-	let div = type == "SUPPLIER" ? SUPPLIER_FIELDS : CUSTOMER_FIELDS;
-	const inputs = type == "SUPPLIER" ? div.getElementsByTagName("textarea") : div.getElementsByTagName("input");
-	for (let input of inputs){
-		console.log(input)
-		input.setAttribute("th:field", "*{" + input.id + "}");
-	}
-}
+
 
 function enterFields(type) {
-	enterThFields(type);
 	if (type === 'SUPPLIER') {
 		CUSTOMER_DIV.innerHTML = '';
 		SUPPLIER_DIV.innerHTML = SUPPLIER_FIELDS.innerHTML;
-	} else if (type === 'CUSTOMER') {
+	} else if (type === 'USER') {
 		SUPPLIER_DIV.innerHTML = '';
 		CUSTOMER_DIV.innerHTML = CUSTOMER_FIELDS.innerHTML;
 	}
-	form.setAttribute("th:object", "${" + type.toLowerCase() + "}")
-	form.setAttribute("th:action", "/save");
-	
+	form.setAttribute("action", "/signup/" + type.toLowerCase());
 }
 
 
@@ -87,9 +77,9 @@ function initFields() {
 }
 
 function checkPreviousType() {
-	const element = document.getElementById("accountType")?.innerHTML;
+	const element = window.location.href.split("/").slice(-1)[0];
 	if (element) {
-		enterFields(element.toLocaleUpperCase());
+		enterFields(element.toUpperCase());
 		ACCOUNT_SELECT.value = element.toUpperCase();
 	}
 }
