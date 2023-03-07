@@ -25,7 +25,7 @@ const noResults = document.getElementById("no-results");
 const searchInput = document.getElementById("search-work");
 
 //The last card is shown when search returns no results
-const worksCards = Array.from(document.querySelectorAll(".card")).slice(0, -1);
+const worksCards = Array.from(document.querySelectorAll(".supplier")).slice(0, -1);
 
 searchInput.addEventListener("keyup", (event) => {
     let results = false;
