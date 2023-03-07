@@ -62,111 +62,203 @@
 	</header>
 	<div class="p-5 d-flex justify-content-center align-items-center">
 		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
-			<h2 class="text-center mb-4 text-black" th:text="#{users.Rol}">
-				Usuario
-			</h2>
-			<form method="POST" class="needs-validation" th:object="${users}" th:action="@{/user/new-user}" novalidate>
+			<h2 class="text-center mb-4 text-black">Create An Account</h2>
+			<form method="POST" class="needs-validation" th:object="${users}" novalidate>
 				<div class="row mb-3">
 					<div class="col">
-						<label for="name" class="form-label">Nombre</label>
-						<input type="text" id="name" name="name" class="form-control border border-black"
-							autocomplete="off" th:field="*{name}" required />
-						<div class="invalid-feedback">Error</div>
+						<label for="name" class="form-label">[[#{signup.form.nombre}]]</label>
+						<input
+								type="text"
+								id="name"
+								name="name"
+								class="form-control border border-black"
+								autocomplete="off"
+								th:field="*{name}"
+								required
+						/>
+						<div class="invalid-feedback">[[#{signup.form.nombre.error}]]</div>
 					</div>
 					<div class="col">
-						<label for="lastname" class="form-label">Apellido</label>
-						<input type="text" id="lastname" name="lastname" class="form-control border border-black"
-							autocomplete="off" th:field="*{lastname}" required />
-						<div class="invalid-feedback">Error</div>
+						<label for="lastname" class="form-label">[[#{signup.form.apellido}]]</label>
+						<input
+								type="text"
+								id="lastname"
+								name="lastname"
+								class="form-control border border-black"
+								autocomplete="off"
+								th:field="*{lastname}"
+								required
+						/>
+						<div class="invalid-feedback">[[#{signup.form.apellido.error}]]</div>
 					</div>
 				</div>
 				<div class="col mb-3">
-					<label for="phoneNumber" class="form-label">Teléfono</label>
-					<input type="tel" id="phoneNumber" name="phoneNumber" class="form-control border border-black"
-						th:field="*{phoneNumber}" required />
-					<div class="invalid-feedback">Error</div>
+					<label for="email" class="form-label">[[#{signup.form.mail}]]</label>
+					<input
+							type="email"
+							id="email"
+							name="email"
+							class="form-control border border-black"
+							th:field="*{email}"
+							required
+					/>
+					<div class="invalid-feedback">[[#{signup.form.mail.error}]]</div>
 				</div>
 				<div class="col mb-3">
-					<label for="email" class="form-label">Email</label>
-					<input type="email" id="email" name="email" class="form-control border border-black"
-						th:field="*{mail}" required />
-					<div class="invalid-feedback">Error</div>
+					<label for="phoneNumber" class="form-label">[[#{signup.form.phone}]]</label>
+					<input
+							type="number"
+							id="phoneNumber"
+							name="phoneNumber"
+							class="form-control border border-black"
+							th:field="*{phoneNumber}"
+							required
+					/>
+					<div class="invalid-feedback">[[#{signup.form.phone.error}]]</div>
 				</div>
 
 				<div class="row mb-3">
 					<div class="col">
-						<label for="username" class="form-label">Password</label>
-						<input type="password" id="password" name="password" class="form-control border border-black"
-							th:placeholder="#{signup.form.contra.placeholder}" th:field="*{password}" autocomplete="off"
-							required />
+						<label for="password" class="form-label">[[#{signup.form.contra}]]</label>
+						<input
+								type="password"
+								id="password"
+								name="password"
+								class="form-control border border-black"
+								th:placeholder="#{signup.form.contra.placeholder}"
+								th:field="*{password}"
+								autocomplete="off"
+								required
+						/>
 					</div>
 					<div class="col">
-						<label for="repeat" class="form-label">Repetir password</label>
-						<input type="password" id="repeat" name="repeat" class="form-control border border-black"
-							autocomplete="off" required />
-						<div class="invalid-feedback">Error]</div>
+						<label for="repeat" class="form-label">[[#{signup.form.contra.repetir}]]</label>
+						<input
+								type="password"
+								id="repeat"
+								name="repeat"
+								class="form-control border border-black"
+								autocomplete="off"
+								required
+						/>
+						<div class="invalid-feedback">[[#{signup.form.contra.error}]]</div>
 					</div>
 				</div>
-				<div th:if="${user.rol == CUSTOMER}">
-					<div class="d-flex justify-content-center mb-3">
-						<select name="neighborhood" id="neighborhood" class="form-select w-50" required>
-							<option value="BARRIO1">Barrio 1</option>
-							<option value="BARRIO2">Barrio 2</option>
-							<option value="BARRIO2">Barrio 3</option>
+
+				<div class="d-flex flex-column justify-content-center mb-3">
+					<div class="mx-auto">
+						<label for="account-type" class="form-label">[[#{signup.form.proveedor}]]</label>
+					</div>
+					<div class="mx-auto">
+						<select
+								name="account-select"
+								id="account-select"
+								class="form-select"
+								required
+						>
+							<option value="" disabled selected>[[#{signup.form.seleccione}]]</option>
+							<option value="SUPPLIER">[[#{signup.form.si}]]</option>
+							<option value="USER">[[#{signup.form.no}]]</option>
 						</select>
 					</div>
-
+				</div>
+				<div id="supplier" class="row mb-3 d-none">
+					<!-- SUPPLIER -->
 					<div class="col mb-3">
-						<label for="street" class="form-label">Calle</label>
-						<input type="text" id="street" name="street" class="form-control border border-black"
-							autocomplete="off" required />
+						<label for="biography" class="form-label">[[#{signup.form.cuentenos}]]</label>
+						<textarea
+								name="biography"
+								id="biography"
+								th:field="*{biography}"
+								class="form-control"
+								required
+						></textarea>
 					</div>
+					<label for="profession" class="form-label">[[#{signup.form.cuentenos}]]</label>
+					<input
+							type="text"
+							id="profession"
+							name="profession"
+							th:field="*{profession}"
+							class="form-control border border-black"
+							autocomplete="off"
+							required
+					/>
 					<div class="col mb-3">
-						<label for="number" class="form-label">Altura</label>
-						<input type="number" id="height" name="height" class="form-control border border-black"
-							autocomplete="off" min="0" required />
 					</div>
 				</div>
-				<div th:if="${user.rol == SUPPLIER}">
+				<div id="customer" class="row d-none">
+					<!-- CUSTOMER -->
+					<div class="col mb-3">
+						<label for="street" class="form-label">[[#{signup.form.calle}]]</label>
+						<input
+								type="text"
+								id="street"
+								name="street"
+								th:field="*{street}"
+								class="form-control border border-black"
+								autocomplete="off"
+								required
+						/>
+					</div>
+					<div class="col mb-3">
+						<label for="height" class="form-label">[[#{signup.form.altura}]]</label>
+						<input
+								type="number"
+								id="height"
+								name="height"
+								th:field="*{height}"
+								class="form-control border border-black"
+								autocomplete="off"
+								min="0"
+								required
+						/>
+					</div>
 					<div class="d-flex justify-content-center mb-3">
-						<select name="principalService" id="principalService" class="form-select w-50" required>
-							<option value="">Gasista</option>
-							<option value="">Plomero</option>
-							<option value="">Electricista</option>
+						<select
+								name="neighborhood"
+								id="neighborhood"
+								th:field="*{neighborhood}"
+								class="form-select w-50"
+								required
+						>
+							<option value="" disabled selected>[[#{signup.barrio}]]</option>
+							<option value="BARRIO1">[[#{signup.barrio.1}]]</option>
+							<option value="BARRIO2">[[#{signup.barrio.2}]]</option>
+							<option value="BARRIO2">[[#{signup.barrio.3}]]</option>
 						</select>
 					</div>
-
-					<div class="d-flex justify-content-center mb-3">
-						<textarea name="biography" id="biography" cols="100" rows="10"
-							placeholder="Biografia"></textarea>
-					</div>
 				</div>
-
 				<div class="d-grid">
 					<button class="btn btn-primary" type="submit">
-						Registrarse
+						[[#{signup.ingresar}]]
 					</button>
 				</div>
 			</form>
-			<script th:src="@{../js/sign_up_form.js}"></script>
-			<div class="mb-3 mt-3">
+			<div class="mb-3">
 				<p class="mb-0 text-center">
-					Ya tienes cuenta?<a th:href="@{/login}" class="text-primary fw-bold">
-						Ingresá aquí</a>
+					[[#{login.form.sin.cuenta}]]<a
+						href="login.html"
+						class="text-primary fw-bold"
+				>[[#{login.form.crear.cuenta}]]</a
+				>
 				</p>
 			</div>
-			<div th:if="${success}" class="alert alert-success" role="alert">
-				<span th:text="${success}"></span>
-			</div>
-			<div th:if="${error}" class="alert alert-danger" role="alert">
-				<span th:text="${error}"></span>
-			</div>
+		</div>
+		<div th:if="${success}" class="alert alert-success" role="alert">
+			<span th:text="${success}"></span>
+		</div>
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<span th:text="${error}"></span>
 		</div>
 	</div>
 	<!-- BOOTSTRAP -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
+
+	<!-- CUSTOM JS -->
+	<script th:src="@{../js/sign_up_form.js}"></script>
 </body>
 
 </html>

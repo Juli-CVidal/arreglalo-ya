@@ -41,47 +41,53 @@ public class HomeController {
 
     @GetMapping("/signup/user")
     public String getFormUser(ModelMap model) {
-        model.put("user", new Users());
-        return "new-user";
+        model.put("users", new Users());
+        return "new-user.html";
     }
 
     @PostMapping("/signup/user")
     public String signUpUser(@Valid Users user, ModelMap model, BindingResult result) {
-        return createAccount(user, Rol.CUSTOMER, model, result);
+        if (result.hasErrors()) {
+            model.put("users", user);
+            model.put("errors", result.getAllErrors());
+            return "new-user.html";
+        }
+
+        return createAccount(user, Rol.CUSTOMER, model);
     }
 
 
     @GetMapping("/signup/supplier")
     public String getFormSupplier(ModelMap model) {
         model.put("rol", "supplier");
-        model.put("user", new Users());
-        return "new-user";
+        model.put("users", new Users());
+        return "new-user.html";
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(Users supplier, ModelMap model, BindingResult result) {
-        return createAccount(supplier, Rol.SUPPLIER, model, result);
-    }
-
-    private String createAccount(@Valid Users user, Rol accountType, ModelMap model, BindingResult result) {
+    public String signUpSupplier(@Valid Users supplier, ModelMap model, BindingResult result) {
         if (result.hasErrors()) {
-            model.put("user", user);
+            model.put("users", supplier);
             model.put("errors", result.getAllErrors());
-            return "new-user";
+            return "new-user.html";
         }
 
+        return createAccount(supplier, Rol.SUPPLIER, model);
+    }
+
+    private String createAccount(Users user, Rol accountType, ModelMap model) {
         try {
             user.setRol(accountType);
             usersService.create(user);
         } catch (ServicesException se) {
             model.put("users", user);
             model.put("error", se.getMessage());
-            return "new-user";
+            return "new-user.html";
         }
 
         model.put("success", "su cuenta ha sido creada exitosamente!");
         //To the account profile
-        return "redirect:/user";
+        return "redirect:/";
     }
 
 }
