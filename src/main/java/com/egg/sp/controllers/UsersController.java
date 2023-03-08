@@ -71,10 +71,10 @@ public class UsersController {
         return "profile";
     }
 
-    @GetMapping("/all")
-    public String getAllUsers(ModelMap model) {
-        model.put("usersList", usersService.getAll());
-        return "all-users";
+    @GetMapping("/suppliers")
+    public String getAllSuppliers(ModelMap model) {
+        model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+        return "suppliers-view";
     }
 
 

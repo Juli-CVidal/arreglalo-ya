@@ -29,6 +29,9 @@ public class UsersService implements UserDetailsService {
 
 	@Autowired
 	private UsersRepository usersRepository;
+    
+    @Autowired
+    private ReviewService reviewService;
 
 	// ======== CREATE ========
 
@@ -56,10 +59,15 @@ public class UsersService implements UserDetailsService {
 		} else {
 
 			throw new UsernameNotFoundException("Error al crear usuario");
-
+    
 		}
 
 	}
+	
+    @Transactional(readOnly = true)
+    public Double getGeneralScore(Integer idSupplier) {
+    	return reviewService.averageRating(idSupplier);
+    }
 
 	@Transactional
 	public void create(Users user) throws ServicesException {

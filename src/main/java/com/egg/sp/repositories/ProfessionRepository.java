@@ -10,8 +10,11 @@ import org.springframework.stereotype.Repository;
 import com.egg.sp.entities.Profession;
 
 @Repository
-public interface ProfessionRepository extends JpaRepository<Profession,Integer>{
-	
-	@Query("SELECT p FROM Profession p WHERE p.name = :name")
-	Optional<Profession> findByName(@Param("name")String name);
+public interface ProfessionRepository extends JpaRepository<Profession, Integer> {
+
+    @Query("SELECT p FROM Profession p WHERE p.name = :name")
+    Optional<Profession> findByName(@Param("name") String name);
+
+    @Query("SELECT p FROM Profession p WHERE p.id = :id")
+    Optional<Profession> findById(@Param("id") Integer id);
 }

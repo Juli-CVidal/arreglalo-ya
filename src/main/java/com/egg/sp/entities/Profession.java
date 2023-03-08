@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.egg.sp.enums.Rol;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,12 +24,13 @@ import lombok.Setter;
 @Entity
 @Table(name = "profession")
 public class Profession {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(nullable = false)
-	@NotBlank
-	@Size(min = 3, message = "El tipo de servicio debe tener mas de 3 caracteres")
-	private String name;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    @NotBlank
+    @Size(min = 3, message = "El tipo de servicio debe tener mas de 3 caracteres")
+    private String name;
 }
