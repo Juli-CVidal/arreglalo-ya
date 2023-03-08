@@ -63,15 +63,15 @@
 					<div class="invalid-feedback">[[#{signup.form.phone.error}]]</div>
 				</div>
 				<div class="col mb-3">
-					<label for="image" class="form-label">Ingrese una foto de perfil</label>
+					<label for="image" class="form-label">[[#{signup.form.image}]]</label>
 					<input
 							type="file"
 							id="image"
 							name="image"
 							class="form-control border border-black"
 							th:field="*{image}"
-							accept="image/png, image/jpg, image/gif, image/jpeg" required>
-					<div class="invalid-feedback">[[#{signup.form.phone.error}]]</div>
+							accept="image/png, image/jpg, image/gif, image/jpeg">
+					<div class="invalid-feedback">[[#{signup.form.image.error}]]</div>
 				</div>
 				
 				<div class="row mb-3">
