@@ -26,6 +26,9 @@ public class Work {
     private Integer id;
 
     @Column(nullable = false)
+    private String type; //Electricista, gasista, plomero....
+
+    @Column(nullable = false)
     @NotNull(message = "La descripcion no puede estar vacia")
     @Size(min = 6, max = 50, message = "La descripcion debe tener entre 6 y 50 caracteres")
     private String description;

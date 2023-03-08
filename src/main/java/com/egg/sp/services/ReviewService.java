@@ -29,16 +29,29 @@ public class ReviewService {
 
     @Transactional
     public void create(Review review, Users user, Integer supplierId) throws ServicesException {
+        if (countContractedTimes(user.getId(),supplierId) == 0){
+            throw new ServicesException("El usuario no ha contratado anteriormente al proveedor");
+        }
         review.setUser(user);
         review.setSupplier(usersService.findSupplierById(supplierId));
         review.setCreationDate(new Date(System.currentTimeMillis()));
+
+
+        usersService.updateGeneralScore(supplierId, reviewRepository.getGeneralScore(supplierId));
         reviewRepository.save(review);
     }
 
+
     @Transactional(readOnly = true)
-    public List<Review> getAll() {
-        return reviewRepository.findAll();
+    public List<Review> getBySupplier(Integer supplierId){
+        return reviewRepository.getFromSupplier(supplierId);
     }
+
+    @Transactional(readOnly = true)
+    public List<Review> getByUser(Integer supplierId){
+        return reviewRepository.getFromCustomer(supplierId);
+    }
+
 
     @Transactional(readOnly = true)
     public List<Review> orderByScore() {
@@ -69,11 +82,6 @@ public class ReviewService {
 
     }
 
-    @Transactional(readOnly = true)
-    public double averageRating(Integer idSupplier) {
-        List<Review> reviews = reviewRepository.getFromSupplier(idSupplier);
-        return reviews.stream().mapToDouble(review -> review.getScore()).average().orElse(0d);
-    }
 
     private Review getFromOptional(Optional<Review> reviewOpt) throws ServicesException {
         if (reviewOpt.isEmpty()) {

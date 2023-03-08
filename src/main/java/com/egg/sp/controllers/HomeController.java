@@ -41,32 +41,34 @@ public class HomeController {
         model.put("suppliers", supplierList);
         return "index.html";
     }
+
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_SUPPLIER','ROLE_ADMIN')")
     @GetMapping("/index")
     public String index(HttpSession session) {
-    	
-    	Users log = (Users) session.getAttribute("usersession");
-		
-    	if(log.getRol().toString().equals("ADMIN")) {
-    		return "redirect:/admin/dashboard";
-    	}
-    	
-    	return "index.html";
-    	
+
+        Users log = (Users) session.getAttribute("userSession");
+
+        if (log.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }
+
+        return "index.html";
+
     }
 
     @GetMapping("/login")
     public String getLoginForm(@RequestParam(required = false) String error, ModelMap model) {
-    	
-    	if(error != null) {
-    		model.put("error", "Usuario o contraseña invalida");
-    	}
-    	
-        return "complaint-form.html";
+
+        if (error != null) {
+            model.put("error", "Usuario o contraseña invalida");
+        }
+
+        return "login.html";
     }
 
     @GetMapping("/signup/user")
     public String getFormUser(ModelMap model) {
+        model.put("professions",professionService.findAll());
         model.put("users", new Users());
         return "new-user.html";
     }
@@ -78,39 +80,27 @@ public class HomeController {
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-    
+
         return createAccount(user, Rol.CUSTOMER, model);
     }
 
     @GetMapping("/signup/supplier")
     public String getFormSupplier(ModelMap model) {
-        List<Profession> professions = professionService.findAll();
-
-        model.put("professions", professions);
+        model.put("professions",  professionService.findAll());
         model.put("rol", "supplier");
         model.put("users", new Users());
         return "new-user.html";
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Users supplier, Integer idProfession, ModelMap model, BindingResult result) {
+    public String signUpSupplier(@Valid Users supplier, ModelMap model, BindingResult result) {
 
         if (result.hasErrors()) {
             model.put("users", supplier);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-
-        try {
-
-            String nameProfession = professionService.getNameById(idProfession);
-            supplier.setProfession(nameProfession);
-            return createAccount(supplier, Rol.SUPPLIER, model);
-
-        } catch (ServicesException ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "new-user.html";
+        return createAccount(supplier, Rol.SUPPLIER, model);
     }
 
     private String createAccount(Users user, Rol accountType, ModelMap model) {

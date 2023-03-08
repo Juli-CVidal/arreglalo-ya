@@ -1,0 +1,37 @@
+.profile__photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.ri-star-half-fill,
+.ri-star-fill {
+    font-size: 1.75rem;
+    color: gold;
+}
+
+.reviews__container .card-body {
+    --max-lines: 4;
+    max-height: calc(var(--max-lines) * 1em * 1.4); /*1.4 is the line height*/
+    position: relative;
+    overflow: hidden;
+}
+
+.reviews__container .card-body::before {
+    content: "";
+    position: absolute;
+    height: calc(1em * 1.4);
+    width: 100%;
+    bottom: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, white);
+}
+
+.card .card-body.expanded {
+    max-height: none;
+}
+
+.reviews__container .swiper-button-prev::after,
+.reviews__container .swiper-button-next::after {
+    color: black;
+}
