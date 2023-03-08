@@ -62,7 +62,7 @@ public class HomeController {
     		model.put("error", "Usuario o contraseña invalida");
     	}
     	
-        return "complaint-form.html";
+        return "login.html";
     }
 
     @GetMapping("/signup/user")
