@@ -2,46 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns="http://www.w3.org/1999/xhml"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head th:replace="layout/staticsFragments :: head"></head>
-  </head>
-  <body>
-    <header th:replace="layout/staticsFragments :: navbar"></header>
-    <div
-      class="container position-absolute top-50 start-50 translate-middle shadow-lg p-2 mb-5 bg-body rounded border border-secondary"
-    >
-      <form>
-        <input type="hidden" />
-        <div class="mb-3">
-          <label for="name">Name</label>
-          <input name="name" class="text" placeholder="Usuario que denuncia"/>
-        </div>
-        <div class="mb-3">
-            <label for="reason">Complaints reason</label>
-            <select id="reason" name="reason" required>
-              <option value="">Selecciona una opción</option>
-              <option value="acoso">Acoso</option>
-              <option value="discriminacion">Discriminación</option>
-              <option value="violencia">Violencia</option>
-              <option value="otro">Otro</option>
-            </select>
-        </div>
-        <div class="mb-3">
-          <label for="cuerpoNoticia" class="form-label"
-            >Description</label
-          >
-          <br />
-          <textarea
-            name="cuerpo"
-            type="text"
-            class="form-control"
-            id="cuerpoNoticia"
-          >
-          </textarea>
-        </div>
-        <button type="submit" class="btn btn-warning">Cargar</button>
-      </form>
-      <br />
-    </div>
-    <footer th:replace="layout/staticsFragments :: footer"></footer>
-  </body>
+<head th:replace="layout/staticsFragments :: head"></head>
+</head>
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+	<div class="container-fluid">
+		<div class="row mx-0 justify-content-center pt-3 ">		
+			<div class="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
+				<form method="POST" class="w-100 rounded-1 p-4 border bg-white border rounded-5 border-black">
+					<label class="d-block mb-4"> <span class="form-label d-block">Nombre</span> 
+					<input name="name"type="text" class="form-control" /></label> 
+					
+					<label class="d-block mb-4"><span class="form-label d-block">Email</span> 
+					<input name="email"type="email" class="form-control" /></label> 
+					
+					<label class="d-block mb-4"> <span class="form-label d-block">Imagen del problema</span> 
+					<input name="receipt" type="file" class="form-control" /></label> 
+					
+					<label class="d-block mb-4"> <span class="form-label d-block">Problema</span> 
+					<textarea name="message" class="form-control" rows="3" placeholder="Por favor describe tu problema"></textarea></label>
+					
+					<div class="d-grid gap-2">
+						<button class="btn btn-danger" type="button">Denunciar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/staticsFragments :: footer"></footer>
+</body>
 </html>
