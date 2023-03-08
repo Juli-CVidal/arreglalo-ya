@@ -3,34 +3,48 @@
 	xmlns="http://www.w3.org/1999/xhml"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/staticsFragments :: head"></head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
-    <header th:replace="layout/staticsFragments :: navbar"></header>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
 
-        <div class="p-5 d-flex justify-content-center align-items-center">
-            <div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
-                <h2 class="text-center mb-4 text-black">[[#{login.form.bienvenida}]]</h2>
-                <form method="POST" th:action="@{/login}" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">[[#{login.form.usuario}]]</label>
-                        <input autocomplete="off" type="text" name="username" class="form-control border border-black" id="username" required>
-                         <div class="invalid-feedback">[[#{login.form.usuario.error}]]</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">[[#{login.form.contra}]]</label>
-                        <input autocomplete="off" class="form-control border border-black" type="password" name="password" id="password" required>
-                        <div class="invalid-feedback">[[#{login.form.contra.error}]]</div>               
-                    </div>
-                    <p class="small"><a class="text-primary" href="forget-password.html">[[#{login.form.contra.olvidada}]]</a></p>
-                    <div class="d-grid">
-                        <button class="btn btn-primary" type="submit" value="Login">[[#{login.form.ingresar}]]</button>
-                    </div>
-                </form>
-                <div class="mt-3">
-                    <p class="mb-0 text-center">[[#{login.form.sin.cuenta}]]<a th:href="@{/customer/new-customer}" class="text-primary fw-bold"> [[#{login.form.crear.cuenta}]]</a></p>
-                </div>
-            </div>
-              <script th:src="@{../js/login_form.js}"></script> 
-        </div>
-    </body>
+	<div th:if="${error}" class="alert alert-danger container-fluid"
+		role="alert">
+		<span th:text="${error}"></span>
+	</div>
+	<div class="p-5 d-flex justify-content-center align-items-center">
+		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
+			<h2 class="text-center mb-4 text-black">[[#{login.form.bienvenida}]]</h2>
+			<form method="POST" th:action="@{/logincheck}"
+				class="needs-validation" novalidate>
+				<div class="mb-3">
+					<label for="email" class="form-label">[[#{login.form.usuario}]]</label>
+					<input autocomplete="off" type="email" name="email"
+						class="form-control border border-black" id="email" required>
+					<div class="invalid-feedback">[[#{login.form.usuario.error}]]</div>
+				</div>
+				<div class="mb-3">
+					<label for="password" class="form-label">[[#{login.form.contra}]]</label>
+					<input autocomplete="off" class="form-control border border-black"
+						type="password" name="password" id="password" required>
+					<div class="invalid-feedback">[[#{login.form.contra.error}]]</div>
+				</div>
+				<p class="small">
+					<a class="text-primary" href="forget-password.html">[[#{login.form.contra.olvidada}]]</a>
+				</p>
+				<div class="d-grid">
+					<button class="btn btn-primary" type="submit" value="Login">[[#{login.form.ingresar}]]</button>
+				</div>
+			</form>
+			<div class="mt-3">
+				<p class="mb-0 text-center">
+					[[#{login.form.sin.cuenta}]]<a th:href="@{/signup/user}"
+						class="text-primary fw-bold"> [[#{login.form.crear.cuenta}]]</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div th:replace="layout/staticsFragments :: footer"></div>
+	<script th:src="@{../js/login_form.js}"></script>
+</body>
 </html>
 

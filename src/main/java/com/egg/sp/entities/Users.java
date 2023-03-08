@@ -2,6 +2,8 @@ package com.egg.sp.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,13 +49,13 @@ public class Users {
     @NotBlank(message = "Inserte un mail válido")
     protected String email;
 
-
     protected String image;
 
     @Column(nullable = false)
     @NotBlank(message = "Inserte una contraseña")
     protected String password;
 
+	@Enumerated(EnumType.STRING)
     protected Rol rol;
 
     //Proper to the Rol.CUSTOMER
