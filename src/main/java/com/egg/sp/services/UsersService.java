@@ -4,6 +4,7 @@ import com.egg.sp.entities.Users;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.UsersRepository;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.iharder.Base64;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -34,6 +37,18 @@ public class UsersService implements UserDetailsService {
     private ProfessionService professionService;
 
 
+    public Users addImage(Users user,MultipartFile image){
+        if(!image.isEmpty()){
+            try {
+                user.setImage(Base64.encodeBytes(image.getBytes()));
+            } catch (IOException e) {
+                
+                e.printStackTrace();
+            }
+        }
+        return usersRepository.save(user);
+   
+    }
     // ======== CREATE ========
 
     @Override

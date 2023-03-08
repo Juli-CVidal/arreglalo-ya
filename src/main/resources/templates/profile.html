@@ -50,13 +50,13 @@
         >
             <div class="col-6">
                 <div class="d-flex">
-                    <!--
+                   
                     <img
                             class="profile__photo rounded-circle border shadow-lg"
-                            th:src="${profile.image}"
+                            th:src="@{'data:image/jpeg;base64,'+${profile.image}}"
                             alt=""
                     />
-                    -->
+                   
                     <div class="row ms-3 me-3">
                         <div class="h-25">
                             <h2 th:text="${profile.name}" class="mb-0"></h2>

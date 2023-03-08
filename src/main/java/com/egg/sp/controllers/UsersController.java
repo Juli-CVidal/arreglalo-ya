@@ -1,6 +1,5 @@
 package com.egg.sp.controllers;
 
-
 import com.egg.sp.entities.Review;
 import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
@@ -31,14 +30,15 @@ public class UsersController {
     private WorkService workService;
 
     /**
-     * This method is going to be used when an account wants to see his proper profile
+     * This method is going to be used when an account wants to see his proper
+     * profile
      *
      * @param session the current session (Here we obtain the account's info)
      * @param model
      * @return the profile document
      */
     @GetMapping()
-    public String getProfile(HttpSession session, ModelMap model) {
+    public String getProfile(HttpSession session, String image, ModelMap model) {
         Users user = (Users) session.getAttribute("userSession");
         if (user.getRol() == Rol.SUPPLIER) {
             model.put("reviews", reviewService.getBySupplier(user.getId()));
@@ -47,19 +47,21 @@ public class UsersController {
             model.put("works", workService.getWorksUser(user.getId()));
             model.put("reviews", reviewService.getByUser(user.getId()));
         }
+        model.put("image", image);
         model.put("profile", user);
         return "profile";
     }
 
     /**
-     * This method is going to be used when an account wants to see another profile
+     * This method is going to be used when an account wants to see another
+     * profile
      *
-     * @param id    - the other account's id
+     * @param id - the other account's id
      * @param model
      * @return the profile document
      */
     @GetMapping("/{id}")
-    public String getProfile(HttpSession session, @PathVariable("id") Integer id, ModelMap model) {
+    public String getProfile(HttpSession session, String image, @PathVariable("id") Integer id, ModelMap model) {
 
         try {
             Users user = usersService.findById(id);
@@ -68,6 +70,7 @@ public class UsersController {
                 throw new ServicesException("Sólo se pueden ver perfiles de proveedores");
             }
             model.put("profile", user);
+            model.put("image", image);
             model.put("reviews", reviewService.getBySupplier(id));
 
             //The login id is that of the customer, and the one received as parameter is that of the supplier.
@@ -86,7 +89,6 @@ public class UsersController {
         model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
         return "suppliers-view";
     }
-
 
     /**
      * This method is going to be used
