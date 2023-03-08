@@ -55,24 +55,28 @@ public class Users {
     @NotBlank(message = "Inserte una contraseña")
     protected String password;
 
-	@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     protected Rol rol;
-
-    //Proper to the Rol.CUSTOMER
-    protected String neighborhood;
-
-    //Proper to the Rol.CUSTOMER
-    protected String street;
-
-    //Proper to the Rol.CUSTOMER
-    protected Integer height;
-
-    //Proper to the Rol.SUPPLIER
-    protected String biography;
-
-    //Proper to the Rol.SUPPLIER
-    private String profession;
 
     @Column(nullable = false)
     protected Boolean state;
+
+    // ======= ROL.CUSTOMER ========
+
+    protected String neighborhood;
+
+
+    protected String street;
+
+
+    protected Integer height;
+
+    // ======= ROL.SUPPLIER ========
+
+    protected String biography;
+
+    private String profession;
+
+    private Double generalScore;
+
 }

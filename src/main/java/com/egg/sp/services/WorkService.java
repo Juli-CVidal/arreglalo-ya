@@ -22,11 +22,19 @@ public class WorkService {
     @Autowired
     private WorkRepository workRepository;
 
+    @Autowired
+    private ProfessionService professionService;
+
     //======== CREATE ========
 
     @Transactional
     public void create(Work work, Users supplier) throws ServicesException {
         work.setSupplier(supplier);
+
+        if (!professionService.exists(work.getType())){
+            throw new ServicesException("La solicitud no contiene un tipo de servicio actual");
+        }
+
         work.setCreationDate(new Date(System.currentTimeMillis()));
         work.setAcceptance(Acceptance.ENVIADO);
         workRepository.save(work);

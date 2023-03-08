@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.egg.sp.entities.Profession;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.ProfessionRepository;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -31,26 +32,8 @@ public class ProfessionService {
         return professionRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Profession findById(Integer professionId) throws ServicesException {
-        return getFromOptional(professionRepository.findById(professionId));
-    }
-
-    @Transactional(readOnly = true)
-    public String getNameById(Integer professionId) throws ServicesException {
-        Profession profession = getFromOptional(professionRepository.findById(professionId));
-        return profession.getName();
-    }
-
-    public List<String> returnJobTypes() {
-
-        List<Profession> listProffesions = findAll();
-        List<String> nameProfession = new ArrayList<>();
-
-        for (Profession profession : listProffesions) {
-            nameProfession.add(profession.getName());
-        }
-        return nameProfession;
+    public Boolean exists(String profession) {
+        return professionRepository.findByName(profession).isPresent();
     }
 
     // ======== VALIDATE ========
@@ -58,13 +41,5 @@ public class ProfessionService {
         if (name == null || name.isEmpty()) {
             throw new ServicesException("Debe ingresar el tipo de servicio que ofrece");
         }
-    }
-
-    // ======== AUXILIAR METHOD ========
-    private Profession getFromOptional(Optional<Profession> professionOpt) throws ServicesException {
-        if (professionOpt.isEmpty()) {
-            throw new ServicesException("No se encontró el trabajo");
-        }
-        return professionOpt.get();
     }
 }

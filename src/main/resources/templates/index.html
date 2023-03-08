@@ -2,221 +2,222 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!-- BOOTSTRAP -->
-  <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-          crossorigin="anonymous"
-  />
+    <!-- BOOTSTRAP -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+            crossorigin="anonymous"
+    />
 
-  <!-- REMIX ICONS -->
-  <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-          rel="stylesheet"
-  />
+    <!-- REMIX ICONS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+            rel="stylesheet"
+    />
 
-  <!-- SWIPER CSS -->
-  <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.css"
-  />
+    <!-- SWIPER CSS -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.css"
+    />
 
-  <!-- CUSTOM CSS -->
-  <link rel="stylesheet" th:href="@{../css/index.css}" />
-  <title>ArreglaloYa!</title>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{../css/index.css}"/>
+    <title>ArreglaloYa!</title>
 </head>
 <body>
-    <header th:replace="layout/staticsFragments :: navbar"></header>
+<header th:replace="layout/staticsFragments :: navbar"></header>
 <main>
 
-  <section id="hero" class="shadow-lg">
-    <div class="hero__swiper swiper">
-      <div class="swiper-wrapper">
-        <div class="hero__slide swiper-slide">
-          <img th:src="@{../img/img1.jpg}" alt="" />
-          <div>
-            <h1>[[#{nombre.logo}]]</h1>
-            <p>A clicks de su casa soñada</p>
-          </div>
+    <section id="hero" class="shadow-lg">
+        <div class="hero__swiper swiper">
+            <div class="swiper-wrapper">
+                <div class="hero__slide swiper-slide">
+                    <img th:src="@{../img/img1.jpg}" alt=""/>
+                    <div>
+                        <h1>[[#{nombre.logo}]]</h1>
+                        <p>A clicks de su casa soñada</p>
+                    </div>
+                </div>
+                <div class="hero__slide swiper-slide">
+                    <img th:src="@{../img/img2.webp}" alt=""/>
+                    <div>
+                        <h1>Los mejores proveedores</h1>
+                        <p>En un lugar</p>
+                    </div>
+                </div>
+                <div class="hero__slide swiper-slide">
+                    <img th:src="@{../img/img3.jpg}" alt=""/>
+                    <div>
+                        <h1>Todos los servicios</h1>
+                        <p>A su alcance</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="hero__slide swiper-slide">
-          <img th:src="@{../img/img2.webp}" alt="" />
-          <div>
-            <h1>Los mejores proveedores</h1>
-            <p>En un lugar</p>
-          </div>
-        </div>
-        <div class="hero__slide swiper-slide">
-          <img th:src="@{../img/img3.jpg}" alt="" />
-          <div>
-            <h1>Todos los servicios</h1>
-            <p>A su alcance</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section
-          id="works"
-          class="w-100 p-3 shadow-sm border rounded-bottom border-black"
-  >
-    <div class="container-fluid mt-3">
-      <div
-              class="search__container container mb-3 d-flex justify-content-center"
-      >
-        <input
-                class="form-control w-50"
-                type="text"
-                name="search-work"
-                id="search-work"
-                placeholder="Qué desea buscar?"
-        />
-      </div>
-      <div
-              class="swiper works__container rounded-3 rounded-start rounded-end"
-      >
-        <div class="swiper-wrapper">
-          <!-- CARD 1 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
+    <section
+            id="works"
+            class="w-100 p-3 shadow-sm border rounded-bottom border-black"
+    >
+        <div class="container-fluid mt-3">
+            <div
+                    class="search__container container mb-3 d-flex justify-content-center"
+            >
+                <input
+                        class="form-control w-50"
+                        type="text"
+                        name="search-work"
+                        id="search-work"
+                        placeholder="Qué desea buscar?"
+                />
+            </div>
+            <div
+                    class="swiper works__container rounded-3 rounded-start rounded-end"
+            >
+                <div class="swiper-wrapper">
+                    <!-- CARD 1 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
 
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Electrónica</h1>
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Electrónica</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 2 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Fontanería</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 3 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Albañilería</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 4 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Plomería</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 5 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Jardinería</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 6 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Carpintería</h1>
+                        </div>
+                    </div>
+                    <!-- CARD 7 -->
+                    <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                        <img
+                                th:src="@{../img/ArreglaloYa.png}"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>Diseño</h1>
+                        </div>
+                    </div>
+                    <!-- NO RESULTS CARD -->
+                    <div
+                            id="no-results"
+                            class="card supplier swiper-slide rounded-4 border shadow-sm mx-3"
+                            style="display: none"
+                    >
+                        <img
+                                src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
+                                class="work__image rounded-circle"
+                                alt="..."
+                        />
+                        <div class="card-body text-center">
+                            <h1>No encuentras lo que buscas?</h1>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <!-- CARD 2 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Fontanería</h1>
-            </div>
-          </div>
-          <!-- CARD 3 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Albañilería</h1>
-            </div>
-          </div>
-          <!-- CARD 4 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Plomería</h1>
-            </div>
-          </div>
-          <!-- CARD 5 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Jardinería</h1>
-            </div>
-          </div>
-          <!-- CARD 6 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Carpintería</h1>
-            </div>
-          </div>
-          <!-- CARD 7 -->
-          <div class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
-            <img
-                    th:src="@{../img/ArreglaloYa.png}"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>Diseño</h1>
-            </div>
-          </div>
-          <!-- NO RESULTS CARD -->
-          <div
-                  id="no-results"
-                  class="card supplier swiper-slide rounded-4 border shadow-sm mx-3"
-                  style="display: none"
-          >
-            <img
-                    src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
-                    class="work__image rounded-circle"
-                    alt="..."
-            />
-            <div class="card-body text-center">
-              <h1>No encuentras lo que buscas?</h1>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section
-          id="suppliers"
-          class="w-100 p-3 shadow-sm border rounded-bottom border-black"
-  >
-    <div class="container-fluid d-flex justify-content-center">
-      <h1>Nuestros mejores proveedores</h1>
-    </div>
-    <div class="container-fluid mt-3">
-      <div class="suppliers__container container-fluid swiper">
-        <div class="swiper-wrapper">
-          <div class="card swiper-slide shadow">
-            <img
-                    src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
-                    class="card-img-top rounded-top imagenstyle"
-            />
-            <div class="card-body">
-              <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
-              <p class="card-text">Cantante</p>
-            </div>
-          </div>
-          <div class="card swiper-slide shadow">
-            <img
-                    src="https://this-person-does-not-exist.com/img/avatar-117e0c35a4725d8d49143adf9c9a5a92.jpg"
-                    class="card-img-top rounded-top imagenstyle"
-            />
-            <div class="card-body">
-              <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
-              <p class="card-text">Cantante</p>
-            </div>
-          </div>
+    <section
+            id="suppliers"
+            class="w-100 p-3 shadow-sm border rounded-bottom border-black"
+    >
+        <div class="container-fluid d-flex justify-content-center">
+            <h1>Nuestros mejores proveedores</h1>
         </div>
-      </div>
-    </div>
-  </section>
-      <header th:replace="layout/staticsFragments :: footer"></header>
- 
+        <div class="container-fluid mt-3">
+            <div class="suppliers__container container-fluid swiper">
+                <div class="swiper-wrapper">
+                    <div class="card swiper-slide shadow">
+                        <img
+                                src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
+                                class="card-img-top rounded-top imagenstyle"
+                        />
+                        <div class="card-body">
+                            <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
+                            <p class="card-text">Cantante</p>
+                        </div>
+                    </div>
+                    <div class="card swiper-slide shadow">
+                        <img
+                                src="https://this-person-does-not-exist.com/img/avatar-117e0c35a4725d8d49143adf9c9a5a92.jpg"
+                                class="card-img-top rounded-top imagenstyle"
+                        />
+                        <div class="card-body">
+                            <h3 class="card-title text-capitalize fs-2">Rick Astley</h3>
+                            <p class="card-text">Cantante</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
+
+<footer th:replace="layout/staticsFragments :: footer"></footer>
 <!-- SWIPER JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
