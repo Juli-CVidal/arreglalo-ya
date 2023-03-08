@@ -1,264 +1,214 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Document</title>
-	<!-- BOOTSTRAP -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
-</head>
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/staticsFragments :: head"></head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
-			<div class="container-fluid">
-				<a class="navbar-brand h1" href="#">Arreglalo Ya</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-					data-bs-target="#navbarNavDropdown">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+<header th:replace="layout/staticsFragments :: navbar"></header>
 
-				<div class="collapse navbar-collapse" id="navbarNavDropdown">
-					<div class="navbar-nav ms-auto">
-						<a class="nav-link mx-2 text-uppercase active" aria-current="page" href="#">
-							Home
-						</a>
-						<a class="nav-link mx-2 text-uppercase" href="#works">Works</a>
-						<a class="nav-link mx-2 text-uppercase" href="#suppliers">Suppliers</a>
-						<a class="nav-link mx-2 text-uppercase" href="#">About</a>
-					</div>
-					<div class="navbar-nav ms-auto right__menu">
-						<ul class="navbar-nav">
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle mx-2" href="#" data-bs-toggle="dropdown"
-									aria-expanded="false">Idioma</a>
-								<ul class="dropdown-menu mb-2">
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=es)}"><img class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/spain-circular.png " />Español</a>
-									</li>
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=en)}"><img class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/usa-circular.png " />Ingles</a>
-									</li>
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=pt)}"><img class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/brazil-circular.png " />Portugues</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
+<div class="p-5 d-flex justify-content-center align-items-center">
+    <div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
+        <h2 class="text-center mb-4 text-black">Create An Account</h2>
+        <form th:action="@{/signup/user}" method="POST" class="needs-validation" th:object="${users}" novalidate>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="name" class="form-label">[[#{signup.form.nombre}]]</label>
+                    <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            th:field="*{name}"
+                            required
+                    />
+                    <div class="invalid-feedback">[[#{signup.form.nombre.error}]]</div>
+                </div>
+                <div class="col">
+                    <label for="lastname" class="form-label">[[#{signup.form.apellido}]]</label>
+                    <input
+                            type="text"
+                            id="lastname"
+                            name="lastname"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            th:field="*{lastname}"
+                            required
+                    />
+                    <div class="invalid-feedback">[[#{signup.form.apellido.error}]]</div>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <label for="email" class="form-label">[[#{signup.form.mail}]]</label>
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control border border-black"
+                        th:field="*{email}"
+                        required
+                />
+                <div class="invalid-feedback">[[#{signup.form.mail.error}]]</div>
+            </div>
+            <div class="col mb-3">
+                <label for="phoneNumber" class="form-label">[[#{signup.form.phone}]]</label>
+                <input
+                        type="number"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        class="form-control border border-black"
+                        th:field="*{phoneNumber}"
+                        required
+                />
+                <div class="invalid-feedback">[[#{signup.form.phone.error}]]</div>
+            </div>
+            <div class="col mb-3">
+                <label for="image" class="form-label">[[#{signup.form.image}]]</label>
+                <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control border border-black"
+                        th:field="*{image}"
+                        accept="image/png, image/jpg, image/gif, image/jpeg">
+                <div class="invalid-feedback">[[#{signup.form.image.error}]]</div>
+            </div>
 
-						<a class="nav-link mx-2" href="#">
-							<i class="ri-user-add-line me-1"></i> Account
-						</a>
-					</div>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<div class="p-5 d-flex justify-content-center align-items-center">
-		<div class="col-md-4 p-5 shadow-sm border rounded-5 border-black">
-			<h2 class="text-center mb-4 text-black">Create An Account</h2>
-			<form method="POST" class="needs-validation" th:object="${users}" novalidate>
-				<div class="row mb-3">
-					<div class="col">
-						<label for="name" class="form-label">[[#{signup.form.nombre}]]</label>
-						<input
-								type="text"
-								id="name"
-								name="name"
-								class="form-control border border-black"
-								autocomplete="off"
-								th:field="*{name}"
-								required
-						/>
-						<div class="invalid-feedback">[[#{signup.form.nombre.error}]]</div>
-					</div>
-					<div class="col">
-						<label for="lastname" class="form-label">[[#{signup.form.apellido}]]</label>
-						<input
-								type="text"
-								id="lastname"
-								name="lastname"
-								class="form-control border border-black"
-								autocomplete="off"
-								th:field="*{lastname}"
-								required
-						/>
-						<div class="invalid-feedback">[[#{signup.form.apellido.error}]]</div>
-					</div>
-				</div>
-				<div class="col mb-3">
-					<label for="email" class="form-label">[[#{signup.form.mail}]]</label>
-					<input
-							type="email"
-							id="email"
-							name="email"
-							class="form-control border border-black"
-							th:field="*{email}"
-							required
-					/>
-					<div class="invalid-feedback">[[#{signup.form.mail.error}]]</div>
-				</div>
-				<div class="col mb-3">
-					<label for="phoneNumber" class="form-label">[[#{signup.form.phone}]]</label>
-					<input
-							type="number"
-							id="phoneNumber"
-							name="phoneNumber"
-							class="form-control border border-black"
-							th:field="*{phoneNumber}"
-							required
-					/>
-					<div class="invalid-feedback">[[#{signup.form.phone.error}]]</div>
-				</div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="password" class="form-label">[[#{signup.form.contra}]]</label>
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control border border-black"
+                            th:placeholder="#{signup.form.contra.placeholder}"
+                            th:field="*{password}"
+                            autocomplete="off"
+                            required
+                    />
+                </div>
+                <div class="col">
+                    <label for="repeat" class="form-label">[[#{signup.form.contra.repetir}]]</label>
+                    <input
+                            type="password"
+                            id="repeat"
+                            name="repeat"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            required
+                    />
+                    <div class="invalid-feedback">[[#{signup.form.contra.error}]]</div>
+                </div>
+            </div>
 
-				<div class="row mb-3">
-					<div class="col">
-						<label for="password" class="form-label">[[#{signup.form.contra}]]</label>
-						<input
-								type="password"
-								id="password"
-								name="password"
-								class="form-control border border-black"
-								th:placeholder="#{signup.form.contra.placeholder}"
-								th:field="*{password}"
-								autocomplete="off"
-								required
-						/>
-					</div>
-					<div class="col">
-						<label for="repeat" class="form-label">[[#{signup.form.contra.repetir}]]</label>
-						<input
-								type="password"
-								id="repeat"
-								name="repeat"
-								class="form-control border border-black"
-								autocomplete="off"
-								required
-						/>
-						<div class="invalid-feedback">[[#{signup.form.contra.error}]]</div>
-					</div>
-				</div>
+            <div class="d-flex flex-column justify-content-center mb-3">
+                <div class="mx-auto">
+                    <label for="account-type" class="form-label">[[#{signup.form.proveedor}]]</label>
+                </div>
+                <div class="mx-auto">
+                    <select
+                            name="account-select"
+                            id="account-select"
+                            class="form-select"
+                            required
+                    >
+                        <option value="" disabled selected>[[#{signup.form.seleccione}]]</option>
+                        <option value="SUPPLIER">[[#{signup.form.si}]]</option>
+                        <option value="USER">[[#{signup.form.no}]]</option>
+                    </select>
+                </div>
+            </div>
+            <div id="supplier" class="row mb-3 d-none">
+                <!-- SUPPLIER -->
+                <div class="col mb-3">
+                    <label for="biography" class="form-label">[[#{signup.form.cuentenos}]]</label>
+                    <textarea
+                            name="biography"
+                            id="biography"
+                            th:field="*{biography}"
+                            class="form-control"
+                            required
+                    ></textarea>
+                </div>
+                <label for="profession" class="form-label">[[#{signup.form.cuentenos}]]</label>
 
-				<div class="d-flex flex-column justify-content-center mb-3">
-					<div class="mx-auto">
-						<label for="account-type" class="form-label">[[#{signup.form.proveedor}]]</label>
-					</div>
-					<div class="mx-auto">
-						<select
-								name="account-select"
-								id="account-select"
-								class="form-select"
-								required
-						>
-							<option value="" disabled selected>[[#{signup.form.seleccione}]]</option>
-							<option value="SUPPLIER">[[#{signup.form.si}]]</option>
-							<option value="USER">[[#{signup.form.no}]]</option>
-						</select>
-					</div>
-				</div>
-				<div id="supplier" class="row mb-3 d-none">
-					<!-- SUPPLIER -->
-					<div class="col mb-3">
-						<label for="biography" class="form-label">[[#{signup.form.cuentenos}]]</label>
-						<textarea
-								name="biography"
-								id="biography"
-								th:field="*{biography}"
-								class="form-control"
-								required
-						></textarea>
-					</div>
-					<label for="profession" class="form-label">[[#{signup.form.cuentenos}]]</label>
-					<input
-							type="text"
-							id="profession"
-							name="profession"
-							th:field="*{profession}"
-							class="form-control border border-black"
-							autocomplete="off"
-							required
-					/>
-					<div class="col mb-3">
-					</div>
-				</div>
-				<div id="customer" class="row d-none">
-					<!-- CUSTOMER -->
-					<div class="col mb-3">
-						<label for="street" class="form-label">[[#{signup.form.calle}]]</label>
-						<input
-								type="text"
-								id="street"
-								name="street"
-								th:field="*{street}"
-								class="form-control border border-black"
-								autocomplete="off"
-								required
-						/>
-					</div>
-					<div class="col mb-3">
-						<label for="height" class="form-label">[[#{signup.form.altura}]]</label>
-						<input
-								type="number"
-								id="height"
-								name="height"
-								th:field="*{height}"
-								class="form-control border border-black"
-								autocomplete="off"
-								min="0"
-								required
-						/>
-					</div>
-					<div class="d-flex justify-content-center mb-3">
-						<select
-								name="neighborhood"
-								id="neighborhood"
-								th:field="*{neighborhood}"
-								class="form-select w-50"
-								required
-						>
-							<option value="" disabled selected>[[#{signup.barrio}]]</option>
-							<option value="BARRIO1">[[#{signup.barrio.1}]]</option>
-							<option value="BARRIO2">[[#{signup.barrio.2}]]</option>
-							<option value="BARRIO2">[[#{signup.barrio.3}]]</option>
-						</select>
-					</div>
-				</div>
-				<div class="d-grid">
-					<button class="btn btn-primary" type="submit">
-						[[#{signup.ingresar}]]
-					</button>
-				</div>
-			</form>
-			<div class="mb-3">
-				<p class="mb-0 text-center">
-					[[#{login.form.sin.cuenta}]]<a
-						href="login.html"
-						class="text-primary fw-bold"
-				>[[#{login.form.crear.cuenta}]]</a
-				>
-				</p>
-			</div>
-		</div>
-		<div th:if="${success}" class="alert alert-success" role="alert">
-			<span th:text="${success}"></span>
-		</div>
-		<div th:if="${error}" class="alert alert-danger" role="alert">
-			<span th:text="${error}"></span>
-		</div>
-	</div>
-	<!-- BOOTSTRAP -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-		crossorigin="anonymous"></script>
+                <select name="profession" id="profession" th:field="*{profession}" required>
+                    <option value="" dislabed selected>Select profession</option>
+                    <option
+                            th:each="profession: ${professions}"
+                            th:value="${profession.name}"
+                            th:text="${profession.name}"/>
+                </select>
 
-	<!-- CUSTOM JS -->
-	<script th:src="@{../js/sign_up_form.js}"></script>
+            </div>
+            <div id="customer" class="row d-none">
+                <!-- CUSTOMER -->
+                <div class="col mb-3">
+                    <label for="street" class="form-label">[[#{signup.form.calle}]]</label>
+                    <input
+                            type="text"
+                            id="street"
+                            name="street"
+                            th:field="*{street}"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            required
+                    />
+                </div>
+                <div class="col mb-3">
+                    <label for="height" class="form-label">[[#{signup.form.altura}]]</label>
+                    <input
+                            type="number"
+                            id="height"
+                            name="height"
+                            th:field="*{height}"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            min="0"
+                            required
+                    />
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                    <select
+                            name="neighborhood"
+                            id="neighborhood"
+                            th:field="*{neighborhood}"
+                            class="form-select w-50"
+                            required
+                    >
+                        <option value="" disabled selected>[[#{signup.barrio}]]</option>
+                        <option value="BARRIO1">[[#{signup.barrio.1}]]</option>
+                        <option value="BARRIO2">[[#{signup.barrio.2}]]</option>
+                        <option value="BARRIO2">[[#{signup.barrio.3}]]</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">
+                    [[#{signup.ingresar}]]
+                </button>
+            </div>
+        </form>
+        <div class="mt-3">
+            <p class="mb-0 text-center">[[#{signup.tiene.cuenta}]]
+                <a th:href="@{/login}" class="text-primary fw-bold"> [[#{signup.ingresa.aqui}]]</a>
+            </p>
+        </div>
+    </div>
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+</div>
+
+
+<div th:replace="layout/staticsFragments :: footer"></div>
+
+<!-- CUSTOM JS -->
+<script th:src="@{../js/sign_up_form.js}"></script>
 </body>
 
 </html>

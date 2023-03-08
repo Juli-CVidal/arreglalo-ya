@@ -5,25 +5,65 @@ import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersService {
+public class UsersService implements UserDetailsService {
 
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private ProfessionService professionService;
+
+
     // ======== CREATE ========
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Users users = usersRepository.findByEmail(email);
+        if (users == null) {
+            throw new UsernameNotFoundException("Error al crear usuario");
+        }
+
+        List<GrantedAuthority> permissions = new ArrayList<>();
+
+        GrantedAuthority grantedAuth = new SimpleGrantedAuthority("ROLE_" + users.getRol().toString());
+
+        permissions.add(grantedAuth);
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+        HttpSession session = attr.getRequest().getSession(true);
+
+        session.setAttribute("userSession", users);
+
+        return new User(users.getEmail(), users.getPassword(), permissions);
+    }
 
     @Transactional
     public void create(Users user) throws ServicesException {
         validateFields(user);
         user.setState(true);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         usersRepository.save(user);
     }
     // ======= READ ========
@@ -59,7 +99,6 @@ public class UsersService {
         return getFromOptional(usersRepository.findByName(name));
     }
 
-
     // ======== UPDATE ========
 
     @Transactional
@@ -67,18 +106,24 @@ public class UsersService {
         create(user);
     }
 
+
+    @Transactional
+    public void updateGeneralScore(Integer supplierId, Double generalScore) throws ServicesException {
+        Users supplier = findSupplierById(supplierId);
+        supplier.setGeneralScore(generalScore);
+        usersRepository.save(supplier);
+    }
     // ======== DELETE ========
 
     @Transactional
-    //soft delete (change state to false)
+    // soft delete (change state to false)
     public void delete(@NotNull Integer id) throws ServicesException {
         Users user = findById(id);
         user.setState(false);
         usersRepository.save(user);
     }
 
-
-    //VALIDATIONS
+    // VALIDATIONS
     private void validateFields(Users user) throws ServicesException {
         if (user.getRol() == Rol.CUSTOMER) {
             validateCustomerFields(user.getNeighborhood(), user.getStreet(), user.getHeight());
@@ -101,12 +146,12 @@ public class UsersService {
         }
     }
 
-    private void validateSupplierFields(String biography, String principalService) throws ServicesException {
+    private void validateSupplierFields(String biography, String profession) throws ServicesException {
         if (null == biography || biography.isBlank()) {
             throw new ServicesException("Por favor, ingrese una biografía");
         }
 
-        if (null == principalService || principalService.isBlank()) {
+        if (null == profession || !professionService.exists(profession)) {
             throw new ServicesException("No ha ingresado su profesión");
         }
     }
@@ -123,7 +168,8 @@ public class UsersService {
         }
     }
 
-    //Auxiliar method
+
+    // Auxiliar method
     private Users getFromOptional(Optional<Users> userOpt) throws ServicesException {
         if (userOpt.isPresent()) {
             return userOpt.get();

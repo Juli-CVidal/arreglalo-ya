@@ -1,6 +1,7 @@
 package com.egg.sp.controllers;
 
 
+import com.egg.sp.entities.Review;
 import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
 import com.egg.sp.enums.Rol;
@@ -25,45 +26,54 @@ public class UsersController {
     private UsersService usersService;
 
     @Autowired
-    private WorkService workService;
-
-    @Autowired
     private ReviewService reviewService;
-
+    @Autowired
+    private WorkService workService;
 
     /**
      * This method is going to be used when an account wants to see his proper profile
+     *
      * @param session the current session (Here we obtain the account's info)
      * @param model
      * @return the profile document
      */
     @GetMapping()
     public String getProfile(HttpSession session, ModelMap model) {
-        Users user = (Users) session.getAttribute("usserSesion");
-        if (user.getRol() == Rol.SUPPLIER){
-            addSupplierFields(model, user.getId());
+        Users user = (Users) session.getAttribute("userSession");
+        if (user.getRol() == Rol.SUPPLIER) {
+            model.put("reviews", reviewService.getBySupplier(user.getId()));
+            model.put("works", workService.getWorksSupplier(user.getId()));
+        } else {
+            model.put("works", workService.getWorksUser(user.getId()));
+            model.put("reviews", reviewService.getByUser(user.getId()));
         }
-        model.put("users", user);
+        model.put("profile", user);
         return "profile";
     }
 
     /**
      * This method is going to be used when an account wants to see another profile
+     *
      * @param id    - the other account's id
      * @param model
      * @return the profile document
      */
     @GetMapping("/{id}")
-    public String getProfile(HttpSession session,@PathVariable("id") Integer id, ModelMap model) {
+    public String getProfile(HttpSession session, @PathVariable("id") Integer id, ModelMap model) {
 
         try {
             Users user = usersService.findById(id);
-            model.put("user", user);
-            if (user.getRol() == Rol.SUPPLIER){
-                //The login id is that of the customer, and the one received as parameter is that of the supplier.
-                Users customer = (Users) session.getAttribute("userSession");
-                model.put("history",workService.findWorksHistory(customer.getId(), id));
+
+            if (user.getRol() != Rol.SUPPLIER) {
+                throw new ServicesException("Sólo se pueden ver perfiles de proveedores");
             }
+            model.put("profile", user);
+            model.put("reviews", reviewService.getBySupplier(id));
+
+            //The login id is that of the customer, and the one received as parameter is that of the supplier.
+            Users customer = (Users) session.getAttribute("userSession");
+            model.put("userId", customer.getId());
+            model.put("works", workService.findWorksHistory(customer.getId(), id));
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
             return "index";
@@ -71,15 +81,16 @@ public class UsersController {
         return "profile";
     }
 
-    @GetMapping("/all")
-    public String getAllUsers(ModelMap model) {
-        model.put("usersList", usersService.getAll());
-        return "all-users";
+    @GetMapping("/suppliers")
+    public String getAllSuppliers(ModelMap model) {
+        model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+        return "suppliers-view";
     }
 
 
     /**
      * This method is going to be used
+     *
      * @param id
      * @param model
      * @return
@@ -113,20 +124,5 @@ public class UsersController {
         }
         model.put("success", "El perfil ha sido actualizado!");
         return "redirect:/user";
-    }
-
-    private void addSupplierFields(ModelMap model, Integer id){
-        model.put("numberCustomers", workService.countDistinctCustomers(id));
-
-        //this is the average score
-        model.put("averageRating", reviewService.averageRating(id));
-
-        List<Work> workRequest = workService.getFromSupplierJobOffer(id);
-        List<Work> activeWork = workService.getFromSupplierAcceptWork(id);
-        List<Work> workCompleted = workService.getFromSupplierCompletedWork(id);
-
-        model.put("workRequest", workRequest);
-        model.put("activeWork", activeWork);
-        model.put("workCompleted", workCompleted);
     }
 }
