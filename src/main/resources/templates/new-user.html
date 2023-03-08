@@ -174,18 +174,16 @@
 								required
 						></textarea>
 					</div>
-					<label for="profession" class="form-label">[[#{signup.form.cuentenos}]]</label>
-					<input
-							type="text"
-							id="profession"
-							name="profession"
-							th:field="*{profession}"
-							class="form-control border border-black"
-							autocomplete="off"
-							required
-					/>
-					<div class="col mb-3">
-					</div>
+					<label for="profession" class="form-label">[[#{signup.form.cuentenos}]]</label>				
+                                        
+                                        <select name ="idProfession" required>
+                                            <option dislabed selected>Select profession</option>
+                                            <option
+                                                th:each="profession:${professions}"
+                                                th:value="${profession.id}"
+                                                th:text="${profession.name}"/>
+                                        </select>
+                                                 
 				</div>
 				<div id="customer" class="row d-none">
 					<!-- CUSTOMER -->
