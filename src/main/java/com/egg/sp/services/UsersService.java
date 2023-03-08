@@ -17,6 +17,9 @@ public class UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+    
+    @Autowired
+    private ReviewService reviewService;
 
     // ======== CREATE ========
 
@@ -57,6 +60,10 @@ public class UsersService {
     @Transactional(readOnly = true)
     public Users findByName(@NotNull String name) throws ServicesException {
         return getFromOptional(usersRepository.findByName(name));
+    }
+    @Transactional(readOnly = true)
+    public Double getGeneralScore(Integer idSupplier) {
+    	return reviewService.averageRating(idSupplier);
     }
 
 
