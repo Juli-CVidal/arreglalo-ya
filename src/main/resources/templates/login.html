@@ -7,7 +7,8 @@
 <body>
 	<header th:replace="layout/staticsFragments :: navbar"></header>
 
-	<div th:if="${error}" class="alert alert-danger container-fluid" role="alert">
+	<div th:if="${error}" class="alert alert-danger container-fluid"
+		role="alert">
 		<span th:text="${error}"></span>
 	</div>
 	<div class="p-5 d-flex justify-content-center align-items-center">
@@ -41,10 +42,9 @@
 				</p>
 			</div>
 		</div>
-		
-		<script th:src="@{../js/login_form.js}"></script>
-		<!-- BOOTSTRAP JS CDN -->
-
+	</div>
+	<div th:replace="layout/staticsFragments :: footer"></div>
+	<script th:src="@{../js/login_form.js}"></script>
 </body>
 </html>
 
