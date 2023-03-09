@@ -12,10 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -46,9 +43,9 @@ public class HomeController {
     @GetMapping("/index")
     public String index(HttpSession session) {
 
-        Users log = (Users) session.getAttribute("userSession");
+        Users user = (Users) session.getAttribute("userSession");
 
-        if (log.getRol().toString().equals("ADMIN")) {
+        if (user.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
 
@@ -68,7 +65,7 @@ public class HomeController {
 
     @GetMapping("/signup/user")
     public String getFormUser(ModelMap model) {
-        model.put("professions",professionService.findAll());
+        model.put("professions", professionService.findAll());
         model.put("users", new Users());
         return "new-user.html";
     }
@@ -86,7 +83,7 @@ public class HomeController {
 
     @GetMapping("/signup/supplier")
     public String getFormSupplier(ModelMap model) {
-        model.put("professions",  professionService.findAll());
+        model.put("professions", professionService.findAll());
         model.put("rol", "supplier");
         model.put("users", new Users());
         return "new-user.html";
@@ -118,4 +115,14 @@ public class HomeController {
         return "redirect:/login";
     }
 
+
+    @GetMapping("/complaint/{id}")
+    public String complaint(@PathVariable("id") Integer id, HttpSession session, ModelMap model) {
+
+        Users user = (Users) session.getAttribute("userSession");
+        model.put("user", user);
+
+        model.put("supplierId", id);
+        return "complaint-form.html";
+    }
 }

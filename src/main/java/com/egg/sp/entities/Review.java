@@ -34,7 +34,7 @@ public class Review {
 	
 	private String content;
 	
-	@Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+	//@Column(nullable = false, columnDefinition = "MEDIUMTEXT")
 	private String image;
 	
 	@NotNull(message = "Inserte su calificacion")
