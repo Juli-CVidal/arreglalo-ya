@@ -39,15 +39,22 @@ public class UsersController {
      */
     @GetMapping()
     public String getProfile(HttpSession session, ModelMap model) {
+        List<Review> reviewList;
+        List<Work> workList;
         Users user = (Users) session.getAttribute("userSession");
-        if (user.getRol() == Rol.SUPPLIER) {
-            model.put("reviews", reviewService.getBySupplier(user.getId()));
-            model.put("works", workService.getWorksSupplier(user.getId()));
-        } else {
-            model.put("works", workService.getWorksUser(user.getId()));
-            model.put("reviews", reviewService.getByUser(user.getId()));
-        }
         model.put("profile", user);
+        model.put("userId", user.getId());
+        if (user.getRol() == Rol.SUPPLIER){
+            reviewList = reviewService.getBySupplier(user.getId());
+            workList = workService.getWorksSupplier(user.getId());
+            System.out.println(workList);
+        }else{
+            reviewList = reviewService.getByUser(user.getId());
+            workList = workService.getWorksUser(user.getId());
+        }
+
+        model.put("reviews",reviewList);
+        model.put("works", workList);
         return "profile";
     }
 
@@ -60,19 +67,19 @@ public class UsersController {
      */
     @GetMapping("/{id}")
     public String getProfile(HttpSession session, @PathVariable("id") Integer id, ModelMap model) {
-
+        //The login id is that of the customer, and the one received as parameter is that of the supplier.
+        Users customer = (Users) session.getAttribute("userSession");
+        if (customer.getId() == id){
+            return "redirect:/user";
+        }
         try {
+            model.put("userId", customer.getId());
             Users user = usersService.findById(id);
-
             if (user.getRol() != Rol.SUPPLIER) {
                 throw new ServicesException("Sólo se pueden ver perfiles de proveedores");
             }
             model.put("profile", user);
             model.put("reviews", reviewService.getBySupplier(id));
-
-            //The login id is that of the customer, and the one received as parameter is that of the supplier.
-            Users customer = (Users) session.getAttribute("userSession");
-            model.put("userId", customer.getId());
             model.put("works", workService.findWorksHistory(customer.getId(), id));
         } catch (ServicesException se) {
             model.put("error", se.getMessage());

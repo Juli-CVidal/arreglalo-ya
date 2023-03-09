@@ -12,16 +12,14 @@ import javax.validation.constraints.*;
 
 import com.egg.sp.enums.Rol;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "users")
 public class Users {
 

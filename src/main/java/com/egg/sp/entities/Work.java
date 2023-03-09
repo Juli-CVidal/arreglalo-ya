@@ -30,7 +30,7 @@ public class Work {
 
     @Column(nullable = false)
     @NotNull(message = "La descripcion no puede estar vacia")
-    @Size(min = 6, max = 50, message = "La descripcion debe tener entre 6 y 50 caracteres")
+    @Size(min = 6, message = "La descripcion debe tener más de 6 carácteres")
     private String description;
 
     @Enumerated(EnumType.STRING)

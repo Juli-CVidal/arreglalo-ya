@@ -7,9 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.egg.sp.entities.Review;
 import com.egg.sp.entities.Users;
@@ -23,27 +21,38 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping("/create/{supplierId}")
-    public String create(@Valid Review review, @PathVariable("supplierId") Integer supplierId, ModelMap model, HttpSession session) {
+    @GetMapping("/create/{supplierId}")
+    public String getForm(@PathVariable("supplierId") Integer supplierId, HttpSession session, ModelMap model) {
+        model.put("supplierId", supplierId);
+        model.put("user", (Users) session.getAttribute("userSession"));
+        model.put("review", new Review());
+        return "review-form.html";
+    }
 
-        Users user = (Users) session.getAttribute("usserSesion");
+    @PostMapping("/create")
+    public String create(@Valid Review review, Integer supplierId, ModelMap model, HttpSession session) {
+        Users user = (Users) session.getAttribute("userSession");
         try {
-            reviewService.create(review, user, supplierId);
+            review.setUser(user);
+            reviewService.create(review, supplierId);
             model.put("success", "¡Reseña añadida correctamente!");
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
+            model.put("user",  user);
             model.put("review", review);
-            return "profile";
+            return "review-form.html";
         }
-        return "redirect:/supplier/" + supplierId;
+        return "redirect:/user/" + supplierId;
     }
 
 
-    @PostMapping("/censure/{id}")
-    public String censure(@PathVariable("id") Integer id, Integer supplierId, ModelMap model) {
+    @PostMapping("/censure")
+    public String censure(@RequestParam("reviewId") Integer reviewId,
+                          @RequestParam("supplierId") Integer supplierId,
+                          ModelMap model) {
         try {
-            reviewService.censure(id);
-            model.put("success","La review se ha censurado con éxito");
+            reviewService.censure(reviewId);
+            model.put("success", "La review se ha censurado con éxito");
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
         }

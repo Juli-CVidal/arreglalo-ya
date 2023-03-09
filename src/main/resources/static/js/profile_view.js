@@ -50,7 +50,7 @@ const reviewBtns = document.querySelectorAll(".btn.btn-outline-dark");
   </div> */
 }
 
-reviewBtns.forEach((button) => {
+reviewBtns?.forEach((button) => {
     button.addEventListener("click", () => {
         const article =
             button.parentElement.parentElement.parentElement.nextElementSibling;
@@ -60,8 +60,13 @@ reviewBtns.forEach((button) => {
 });
 
 //SWEET ALERT
-addListeners(document.getElementById("report"));
-document.querySelectorAll(".censor").forEach((form) => addListeners(form));
+function addFormListeners() {
+    const reportForm = document.getElementById("report");
+    if (reportForm) {
+        addListeners(reportForm)
+    }
+    document.querySelectorAll(".censor").forEach((form) => addListeners(form));
+}
 
 function launchAlert(event) {
     Swal.fire({
@@ -86,3 +91,71 @@ function addListeners(form) {
         launchAlert(event);
     });
 }
+
+
+//RELATED TO WORKS
+function askPrice(form) {
+    const priceInput = document.createElement("input");
+    priceInput.setAttribute("type", "hidden");
+    priceInput.setAttribute("name", "price");
+    priceInput.setAttribute("id", "price");
+    form.appendChild(priceInput);
+
+    const getPrice = () => {
+        Swal.fire({
+            title: 'Ingrese el precio',
+            input: 'number',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: "Cancelar",
+            inputValidator: (value) => {
+                if (!/^\d+(\.\d+)?$/.test(value) || parseFloat(value) <= 0) {
+                    return 'El precio debe ser positivo';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                priceInput.value = parseFloat(result.value);
+                form.submit();
+            } else {
+                getPrice();
+            }
+        });
+    }
+
+    getPrice();
+}
+
+
+function addWorkListeners() {
+    document.querySelectorAll(".work__select")?.forEach(select => {
+        select.addEventListener("change", () => {
+            const option = select.options[select.selectedIndex];
+            const form = select.parentElement;
+            form.setAttribute("action", `/work/${option.value.toLowerCase()}`)
+            if (option.value == "accept") {
+                askPrice(form);
+                return
+            }
+            Swal.fire({
+                title: `Seguro que quieres ${option.text.toLowerCase()}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Si',
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+        })
+    })
+}
+
+
+window.addEventListener("load", () => {
+    addFormListeners();
+    addWorkListeners();
+})
