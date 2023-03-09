@@ -11,15 +11,18 @@
 				<div class="row">
 					<div class="col-12 col-md-4 mb-4" th:each="supplier : ${supplierList}">
 						<div class="card bg-dark">
-							<div class="card swiper-slide shadow">
-								<img src="https://virtualpiano.net/wp-content/uploads/2021/07/Never-Gonna-Give-You-Up-Intermediate-Rick-Astley-Best-Online-Piano-Keyboard-Virtual-Piano.jpg"
-									class="card-img-top rounded-top imagenstyle" alt="Supplier" />
-								<div class="card-body">
-									<h3 class="card-title text-capitalize fs-2">[[${supplier.name}]]
-										[[${supplier.lastname}]]</h3>
-									<p class="card-text" th:text="${supplier.profession}"></p>
-									<div th:attr="data-score=${supplier.generalScore}" class="review__stars d-flex"></div>
-								</div>
+							<img style="height:200px;width:353px" src="https://cloudfront-us-east-1.images.arcpublishing.com/infobae/V35IA375E5CNZMHKDUR2X6RMPE.jpg"
+								class="card-img-top rounded-3 imagenstyle" alt="Imagen HTML">
+							<div class="card-body">
+								<h3 class="card-title text-white text-capitalize fs-2" th:text="${supplier.name}"></h3>
+								<p class="card-text text-white m-0">
+									Servicio : <small class="text-muted fst-italic  text-capitalize"
+										th:text="${supplier.profession}"></small>
+								</p>
+								<p class="card-text text-white m-0">
+									<small class="text-muted fst-italic  text-capitalize"
+										th:text="${supplier.biography}"></small>
+								</p>
 							</div>
 						</div>
 					</div>

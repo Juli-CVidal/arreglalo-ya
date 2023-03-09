@@ -28,15 +28,12 @@ public class ReviewService {
     private UsersService usersService;
 
     @Transactional
-    public void create(Review review, Users user, Integer supplierId) throws ServicesException {
-        if (countContractedTimes(user.getId(),supplierId) == 0){
+    public void create(Review review, Integer supplierId) throws ServicesException {
+        if (countContractedTimes(review.getUser().getId(),supplierId) == 0){
             throw new ServicesException("El usuario no ha contratado anteriormente al proveedor");
         }
-        review.setUser(user);
         review.setSupplier(usersService.findSupplierById(supplierId));
         review.setCreationDate(new Date(System.currentTimeMillis()));
-
-
         usersService.updateGeneralScore(supplierId, reviewRepository.getGeneralScore(supplierId));
         reviewRepository.save(review);
     }
@@ -71,7 +68,7 @@ public class ReviewService {
     @Transactional
     public void censure(Integer id) throws ServicesException {
         Review review = findById(id);
-        review.setContent("CENSURADO");
+        review.setContent("[CENSURADO]");
         reviewRepository.save(review);
     }
 

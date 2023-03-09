@@ -39,24 +39,19 @@ public class UsersService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Users users = usersRepository.findByEmail(email);
-        if (users == null) {
-            throw new UsernameNotFoundException("Error al crear usuario");
+        Users user = usersRepository.findByEmail(email);
+        if (null == user) {
+            throw new UsernameNotFoundException("No se ha encontrado el usuario");
         }
 
-        List<GrantedAuthority> permissions = new ArrayList<>();
-
-        GrantedAuthority grantedAuth = new SimpleGrantedAuthority("ROLE_" + users.getRol().toString());
-
+        List<GrantedAuthority> permissions = new ArrayList();
+        GrantedAuthority grantedAuth = new SimpleGrantedAuthority("ROLE_" + user.getRol().toString());
         permissions.add(grantedAuth);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
         HttpSession session = attr.getRequest().getSession(true);
-
-        session.setAttribute("userSession", users);
-
-        return new User(users.getEmail(), users.getPassword(), permissions);
+        session.setAttribute("userSession", user);
+        return new User(user.getEmail(), user.getPassword(), permissions);
     }
 
     @Transactional
@@ -66,6 +61,7 @@ public class UsersService implements UserDetailsService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         usersRepository.save(user);
     }
+
     // ======= READ ========
 
     @Transactional(readOnly = true)
@@ -113,6 +109,7 @@ public class UsersService implements UserDetailsService {
         supplier.setGeneralScore(generalScore);
         usersRepository.save(supplier);
     }
+
     // ======== DELETE ========
 
     @Transactional
