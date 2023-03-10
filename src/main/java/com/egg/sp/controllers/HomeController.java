@@ -6,6 +6,8 @@ import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.UsersService;
+import java.io.IOException;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -71,13 +74,13 @@ public class HomeController {
     }
 
     @PostMapping("/signup/user")
-    public String signUpUser(@Valid Users user, ModelMap model, BindingResult result) {
+    public String signUpUser(@Valid Users user, @RequestParam(value="imageFile",required=false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             model.put("users", user);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-
+        ConvertImageToString(user, image);
         return createAccount(user, Rol.CUSTOMER, model);
     }
 
@@ -90,13 +93,14 @@ public class HomeController {
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Users supplier, ModelMap model, BindingResult result) {
+    public String signUpSupplier(@Valid Users supplier, @RequestParam(value="imageFile",required=false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
 
         if (result.hasErrors()) {
             model.put("users", supplier);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
+        ConvertImageToString(supplier, image);
         return createAccount(supplier, Rol.SUPPLIER, model);
     }
 
@@ -112,9 +116,15 @@ public class HomeController {
 
         model.put("success", "su cuenta ha sido creada exitosamente!");
         //To the account profile
+
         return "redirect:/login";
     }
 
+    private void ConvertImageToString(Users user, MultipartFile image) throws IOException {
+        byte[] imageBytes = image.getBytes();
+        String Image = Base64.getEncoder().encodeToString(imageBytes);
+        user.setImage(Image);
+    }
 
     @GetMapping("/complaint/{id}")
     public String complaint(@PathVariable("id") Integer id, HttpSession session, ModelMap model) {

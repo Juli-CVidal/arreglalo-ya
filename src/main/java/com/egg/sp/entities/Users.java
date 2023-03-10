@@ -47,6 +47,7 @@ public class Users {
     @NotBlank(message = "Inserte un mail válido")
     protected String email;
 
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     protected String image;
 
     @Column(nullable = false)
