@@ -28,28 +28,28 @@ import lombok.Setter;
 @Table(name = "review")
 public class Review {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-	
-	private String content;
-	
-	@Column(nullable = false, columnDefinition = "MEDIUMTEXT")
-	private String image;
-	
-	@NotNull(message = "Inserte su calificacion")
-	@Min(value = 1, message = "Por favor ingrese una calificación válida")
-	@Max(value = 5, message = "Por favor ingrese una calificación válida")
-	private Double score;
-	
-	@Temporal(TemporalType.DATE)
-	private Date creationDate;
-	
-	@ManyToOne
-	@JoinColumn(name = "users_id")
-	private Users user;
-	
-	@ManyToOne
-	@JoinColumn(name = "supplier_id")
-	private Users supplier;
+
+    private String content;
+
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    protected String image;
+
+    @NotNull(message = "Inserte su calificacion")
+    @Min(value = 1, message = "Por favor ingrese una calificación válida")
+    @Max(value = 5, message = "Por favor ingrese una calificación válida")
+    private Double score;
+
+    @Temporal(TemporalType.DATE)
+    private Date creationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Users supplier;
 }

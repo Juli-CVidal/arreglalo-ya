@@ -28,10 +28,8 @@ public class WorkService {
     //======== CREATE ========
 
     @Transactional
-    public void create(Work work, Users supplier) throws ServicesException {
-        work.setSupplier(supplier);
-
-        if (!professionService.exists(work.getType())){
+    public void create(Work work) throws ServicesException {
+        if (!professionService.exists(work.getType())) {
             throw new ServicesException("La solicitud no contiene un tipo de servicio actual");
         }
 
@@ -97,7 +95,6 @@ public class WorkService {
     public int countDistinctCustomers(int supplierId) {
         return workRepository.countDistinctCustomers(supplierId);
     }
-
 
 
     // ======== UPDATE ========
