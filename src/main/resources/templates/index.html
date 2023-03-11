@@ -64,7 +64,7 @@
 
     <section
             id="works"
-            class="w-100 p-3 shadow-sm border rounded-bottom border-black"
+            class="w-100 p-3 shadow-sm border rounded-bottom border-black position-relative"
     >
         <div class="container-fluid mt-3">
             <div
@@ -201,13 +201,14 @@
                         </div>
                         <a th:href="@{/user/1}" class="btn btn-primary">Ver perfil</a>
                     </div>
+                </div>
             </div>
         </div>
     </section>
-
+    <footer th:replace="layout/staticsFragments :: footer"></footer>
 </main>
 
-<footer th:replace="layout/staticsFragments :: footer"></footer>
+
 <!-- SWIPER JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 

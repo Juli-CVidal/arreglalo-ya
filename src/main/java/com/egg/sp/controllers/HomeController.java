@@ -45,15 +45,17 @@ public class HomeController {
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_SUPPLIER','ROLE_ADMIN')")
     @GetMapping("/index")
     public String index(HttpSession session) {
-
         Users user = (Users) session.getAttribute("userSession");
-
         if (user.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
-
         return "index.html";
 
+    }
+
+    @GetMapping("/signup-select")
+    public String getSelectPage(){
+        return "signup-select.html";
     }
 
     @GetMapping("/login")
@@ -62,13 +64,11 @@ public class HomeController {
         if (error != null) {
             model.put("error", "Usuario o contraseña invalida");
         }
-
         return "login.html";
     }
 
     @GetMapping("/signup/user")
     public String getFormUser(ModelMap model) {
-        model.put("professions", professionService.findAll());
         model.put("users", new Users());
         return "new-user.html";
     }
@@ -87,9 +87,8 @@ public class HomeController {
     @GetMapping("/signup/supplier")
     public String getFormSupplier(ModelMap model) {
         model.put("professions", professionService.findAll());
-        model.put("rol", "supplier");
         model.put("users", new Users());
-        return "new-user.html";
+        return "new-supplier.html";
     }
 
     @PostMapping("/signup/supplier")
