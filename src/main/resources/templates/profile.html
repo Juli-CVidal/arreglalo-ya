@@ -150,7 +150,7 @@
                     <a
                             th:if="${userId != profile.id && !works.isEmpty()}"
                             th:href="@{/review/create/__${profile.id}__}"
-                            class="btn btn-primary shadow me-2"
+                            class="btn btn-primary shadow mx-3"
                     >Dejar reseña</a
                     >
                     <a th:if="${userId != profile.id && !works.isEmpty()}"
@@ -174,25 +174,24 @@
                             </div>
                         </div>
                         <div th:text="${work.description}" class="card-body"></div>
-                        <div class="col w-50 mt-4 ms-4 h3"
-                             th:if="${work.acceptance.toString == 'ACEPTADO'
-                             || work.acceptance.toString == 'FINALIZADO'}"
-                             th:text="${'$' + work.price}"></div>
+                        <div class="col w-50 mt-4 ms-4 h5"
+                             th:if="${work.acceptance.toString() != 'ENVIADO'}"
+                             th:text="${'$' + work.price + ' ' +(work.acceptance.toString().toLowerCase())}"></div>
                         <div
-                                th:if="${userId == profile.id}"
                                 class="row justify-content-end mx-3 my-3"
                         >
                             <div class="col-auto">
-                                <p th:if="${userId != profile.id}" th:text="${work.acceptance.toString()}"></p>
-                                <div th:if="${userId == profile.id}">
-
-                                    <p th:if="${work.acceptance.toString() == 'FINALIZADO'}">Completado</p>
+                                <div>
                                     <form method="POST" th:if="${work.acceptance.toString() != 'FINALIZADO'}">
                                         <input type="hidden" id="workId" name="workId" th:value="${work.id}">
                                         <select class="form-select work__select">
                                             <option disabled selected>En espera</option>
-                                            <option th:selected="${work.acceptance.toString() == 'ACEPTADO'}"
+                                            <option th:selected="${work.acceptance.toString() == 'PRESUPUESTADO'}"
                                                     th:disabled="${work.acceptance.toString() != 'ENVIADO'}"
+                                                    th:value="setPrice">PRESUPUESTAR
+                                            </option>
+                                            <option th:selected="${work.acceptance.toString() == 'ACEPTADO'}"
+                                                    th:disabled="${userId == profile.id || work.acceptance.toString() != 'PRESUPUESTADO'}"
                                                     th:value="accept">ACEPTAR
                                             </option>
 
@@ -201,6 +200,8 @@
                                             </option>
 
                                             <option th:selected="${work.acceptance.toString() == 'FINALIZADO'}"
+                                                    th:disabled="${profile.id != userId || work.acceptance.toString() == 'ENVIADO' ||
+                                                    work.acceptance.toString() == 'PRESUPUESTADO'}"
                                                     th:value="complete">Finalizar
                                             </option>
                                         </select>
@@ -226,6 +227,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
         <!-- CUSTOM JS -->
+        <script th:src="@{../js/stars-script.js}"></script>
         <script th:src="@{../js/profile_view.js}"></script>
     </div>
 </main>

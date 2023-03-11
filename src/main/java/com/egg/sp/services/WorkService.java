@@ -104,18 +104,12 @@ public class WorkService {
         work.setAcceptance(state);
 
         workRepository.save(work);
-
     }
 
     @Transactional
-    public void acceptWork(Integer id, Double price) throws ServicesException {
+    public void acceptWork(Integer id) throws ServicesException {
         Work work = findById(id);
         work.setAcceptance(Acceptance.ACEPTADO);
-
-        if (price <= 0) {
-            throw new ServicesException("No se ha ingresado un precio válido");
-        }
-        work.setPrice(price);
         workRepository.save(work);
     }
 
@@ -124,6 +118,16 @@ public class WorkService {
             throw new ServicesException("No se ha encontrado el supplier");
         }
         return workOpt.get();
+    }
+
+    public void setPrice(Integer workId, Double price) throws ServicesException {
+        Work work = findById(workId);
+        work.setAcceptance(Acceptance.PRESUPUESTADO);
+        if (price <= 0) {
+            throw new ServicesException("No se ha ingresado un precio válido");
+        }
+        work.setPrice(price);
+        workRepository.save(work);
     }
 
 

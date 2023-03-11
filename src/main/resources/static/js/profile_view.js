@@ -9,25 +9,6 @@ const reviewsContainer = new Swiper(".reviews__container", {
     },
 });
 
-function createStars(score) {
-    const roundedScore = (Math.round(score * 2) / 2).toString().split(".");
-    const stars = [];
-    for (let index = 0; index < roundedScore[0]; index++) {
-        stars.push(`<i class="ri-star-fill"></i>`);
-    }
-    if (roundedScore[1] != undefined) {
-        stars.push(`<i class="ri-star-half-fill"></i>`);
-    }
-    return stars.join("");
-}
-
-const starsContainer = document.querySelectorAll(".review__stars");
-starsContainer.forEach((container) => {
-    const score = parseFloat(container.getAttribute("data-score"));
-    const stars = createStars(score);
-    container.innerHTML = stars;
-});
-
 //EXPAND BTNS
 const reviewBtns = document.querySelectorAll(".btn.btn-outline-dark");
 
@@ -107,18 +88,23 @@ function askPrice(form) {
             input: 'number',
             showCancelButton: true,
             confirmButtonText: 'Aceptar',
-            cancelButtonText: "Cancelar",
+            cancelButtonText: 'Cancelar',
             inputValidator: (value) => {
-                if (!/^\d+(\.\d+)?$/.test(value) || parseFloat(value) <= 0) {
-                    return 'El precio debe ser positivo';
+                if (!value) {
+                    return 'Ingrese un valor';
+                }
+                if (isNaN(value)) {
+                    return 'Ingrese un valor numérico';
+                }
+                if (parseFloat(value) <= 0) {
+                    return 'Ingrese un valor numérico y positivo';
                 }
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                priceInput.value = parseFloat(result.value);
+                const value = parseFloat(result.value);
+                priceInput.value = value;
                 form.submit();
-            } else {
-                getPrice();
             }
         });
     }
@@ -133,7 +119,7 @@ function addWorkListeners() {
             const option = select.options[select.selectedIndex];
             const form = select.parentElement;
             form.setAttribute("action", `/work/${option.value.toLowerCase()}`)
-            if (option.value == "accept") {
+            if (option.value == "setPrice") {
                 askPrice(form);
                 return
             }
