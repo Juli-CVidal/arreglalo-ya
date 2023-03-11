@@ -68,10 +68,15 @@ public class WorkController {
     }
 
     @PostMapping("/accept")
+    public String accept(@RequestParam("workId") Integer workId, ModelMap model) {
+        return changeWorkState(workId, Acceptance.ACEPTADO, model);
+    }
+
+    @PostMapping("/setprice")
     public String accept(@RequestParam("workId") Integer workId, @RequestParam("price") Double price, ModelMap model) {
         try {
-            workService.acceptWork(workId, price);
-            model.put("success", "El trabajo ha sido aceptado con éxito!");
+            workService.setPrice(workId, price);
+            model.put("success", "El trabajo ha sido presupuestado con éxito!");
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
         }

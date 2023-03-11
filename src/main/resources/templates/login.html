@@ -37,13 +37,15 @@
 			</form>
 			<div class="mt-3">
 				<p class="mb-0 text-center">
-					[[#{login.form.sin.cuenta}]]<a th:href="@{/signup/user}"
+					[[#{login.form.sin.cuenta}]]<a th:href="@{/signup-select}"
 						class="text-primary fw-bold"> [[#{login.form.crear.cuenta}]]</a>
 				</p>
 			</div>
 		</div>
 	</div>
-	<div th:replace="layout/staticsFragments :: footer"></div>
+	<div class="bottom-0 position-absolute w-100">
+		<footer th:replace="layout/staticsFragments :: footer"></footer>
+	</div>
 	<script th:src="@{../js/login_form.js}"></script>
 </body>
 </html>
