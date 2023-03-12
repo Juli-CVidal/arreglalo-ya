@@ -1,28 +1,24 @@
 package com.egg.sp.controllers;
 
-import com.egg.sp.entities.Profession;
 import com.egg.sp.entities.Users;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.UsersService;
-import java.io.IOException;
-import java.util.Base64;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -35,26 +31,22 @@ public class HomeController {
     private ProfessionService professionService;
 
     @GetMapping
-    public String getIndex(ModelMap model) {
-        List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
-        supplierList.sort(Comparator.comparing(Users::getName));
-        model.put("suppliers", supplierList);
-        return "index.html";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_SUPPLIER','ROLE_ADMIN')")
-    @GetMapping("/index")
-    public String index(HttpSession session) {
+    public String getIndex(HttpSession session, ModelMap model) {
         Users user = (Users) session.getAttribute("userSession");
-        if (user.getRol().toString().equals("ADMIN")) {
+        if (null != user && user.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
-        return "index.html";
+        model.put("logged", user != null);
+        List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
+        supplierList.sort(Comparator.comparing(Users::getGeneralScore));
+        model.put("suppliers", supplierList);
 
+        model.put("professions", professionService.findAll());
+        return "index.html";
     }
 
     @GetMapping("/signup-select")
-    public String getSelectPage(){
+    public String getSelectPage() {
         return "signup-select.html";
     }
 
@@ -74,7 +66,7 @@ public class HomeController {
     }
 
     @PostMapping("/signup/user")
-    public String signUpUser(@Valid Users user, @RequestParam(value="imageFile",required=false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpUser(@Valid Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             model.put("users", user);
             model.put("errors", result.getAllErrors());
@@ -92,7 +84,7 @@ public class HomeController {
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Users supplier, @RequestParam(value="imageFile",required=false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpSupplier(@Valid Users supplier, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
 
         if (result.hasErrors()) {
             model.put("users", supplier);

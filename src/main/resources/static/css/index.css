@@ -69,6 +69,12 @@ header {
 #search-work{
     box-shadow: 21px 15px 54px -3px rgba(0,0,0,0.22);
 }
+.work__image {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 .works__container {
     width: 90%;
@@ -81,20 +87,16 @@ header {
 
 .card {
     width: 250px;
-    border-radius: 1rem;
     overflow: hidden;
+    transition: all .3s ease-in-out;
 }
 
-.work__image {
-    width: 50%;
-    height: 50%;
-    object-fit: cover;
-    border-radius: 50%;
-    margin: 0 auto;
-    margin-top: 1rem;
+
+.card:hover {
+    transform: scale(1.04);
+    border-radius: 6%;
+    box-shadow:   0 1rem 3rem rgba(0,0,0, .175);;
 }
 
-.card h1 {
-    margin-top: 1rem;
-    font-size: 1.5rem;
-}
+
+
