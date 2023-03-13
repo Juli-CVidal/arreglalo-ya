@@ -40,7 +40,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		String lastname = oAuth2User.getlastName();
 		
 		if(users == null) {
-			userService.createNewCustomerAfterOAuthLoginSuccess(email, name,lastname, Provider.GOOGLE);
+			userService.createNewCustomerAfterOAuthLoginSuccess(lastname, email, name, Provider.GOOGLE);
 		}else {
 			userService.updateUserAfterOAuthLoginSuccess(users, name, Provider.GOOGLE);
 		}
