@@ -22,70 +22,39 @@
 <body>
 	<header th:fragment="navbar" class="top-0">
 		<nav
-				class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm"
-		>
+			class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
 			<div class="container-fluid">
-				<a class="navbar-brand h1" href="#">Arreglalo Ya</a>
-				<button
-						class="navbar-toggler"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#navbarNavDropdown"
-				>
+				<a class="navbar-brand h1" th:href="@{/}">[[#{nombre.logo}]]</a>
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-
 				<div class="collapse navbar-collapse" id="navbarNavDropdown">
 					<div class="navbar-nav ms-auto">
-						<a
-								class="nav-link mx-2 text-uppercase active"
-								aria-current="page"
-								href="#"
-						>
-							Home
-						</a>
-						<a class="nav-link mx-2 text-uppercase" th:href="@{/user/suppliers}"
-						>Suppliers</a
-						>
-						<a class="nav-link mx-2 text-uppercase" th:href="@{/about}">About</a>
+						<a class="nav-link mx-2 " aria-current="page"
+							th:href="@{/}">[[#{navbar.home}]]</a> <a
+							class="nav-link mx-2 " th:href="@{/user/suppliers}">[[#{navbar.suppliers}]]</a>
+						<a class="nav-link mx-2 " th:href="@{/about}">[[#{navbar.acerca}]]</a>
 					</div>
 					<div class="navbar-nav ms-auto right__menu">
 						<ul class="navbar-nav">
-							<li class="nav-item dropdown">
-								<a
-										class="nav-link dropdown-toggle mx-2"
-										href="#"
-										data-bs-toggle="dropdown"
-										aria-expanded="false"
-								>Idioma</a
-								>
+							<li class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle mx-2" href="#"
+								data-bs-toggle="dropdown" aria-expanded="false">[[#{navbar.idiomas}]]</a>
 								<ul class="dropdown-menu mb-2">
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=es)}"
-										><img
-												class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/spain-circular.png "
-										/>Español</a
-										>
+									<li><a class="dropdown-item" th:href="@{?(lang=es)}"><img
+											class="me-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/spain-circular.png " />Español</a>
 									</li>
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=en)}"
-										><img
-												class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/usa-circular.png "
-										/>Ingles</a
-										>
+									<li><a class="dropdown-item" th:href="@{?(lang=en)}"><img
+											class="me-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/usa-circular.png " />Ingles</a>
 									</li>
-									<li>
-										<a class="dropdown-item" th:href="@{?(lang=pt)}"
-										><img
-												class="me-1 mb-1"
-												src="https://img.icons8.com/fluency/32/000000/brazil-circular.png "
-										/>Portugues</a
-										>
+									<li><a class="dropdown-item" th:href="@{?(lang=pt)}"><img
+											class="me-1 mb-1"
+											src="https://img.icons8.com/fluency/32/000000/brazil-circular.png " />Portugues</a>
 									</li>
-								</ul>
-							</li>
+								</ul></li>
 						</ul>
 
 						<div sec:authorize="!isAuthenticated()">
@@ -96,13 +65,13 @@
 
 						<div sec:authorize="!isAuthenticated()">
 							<a th:href="@{/login}" class="nav-link mx-2" href="#"> <i
-									class="ri-user-add-line"></i> [[#{navbar.login}]]
+								class="ri-user-add-line"></i> [[#{navbar.login}]]
 							</a>
 						</div>
 
 						<div sec:authorize="isAuthenticated()">
 							<a th:href="@{/logout}" class="nav-link mx-2" href="#"> <i
-									class="ri-user-unfollow-line"></i> [[#{navbar.logout}]]
+								class="ri-user-unfollow-line"></i> [[#{navbar.logout}]]
 							</a>
 						</div>
 					</div>
@@ -119,21 +88,28 @@
 </body>
 <footer th:fragment="footer" class="container-fluid bg-white">
 
-		<div class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
-			<p class="col-md-4 mb-0 text-muted">&copy; 2022 Company, Inc</p>
+	<div
+		class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
+		<p class="col-md-4 mb-0 text-muted">
+			[[#{nombre.logo}]] &copy;
+	<script>
+          now = new Date
+          theYear=now.getYear()
+          if (theYear < 1900)
+          theYear=theYear+1900
+          document.write(theYear)
+    </script>
+		</p>
 
-			<a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-				<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-			</a>
-
-			<ul class="nav col-md-4 justify-content-end">
-				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-			</ul>
-		</div>
+		<ul class="nav col-md-4 justify-content-end">
+			<li class="nav-item"><a th:href="@{/}"
+				class="nav-link px-2 text-muted">[[#{navbar.home}]]</a></li>
+			<li class="nav-item"><a th:href="@{/faqs}"
+				class="nav-link px-2 text-muted">[[#{navbar.faqs}]]</a></li>
+			<li class="nav-item"><a th:href="@{/about}"
+				class="nav-link px-2 text-muted">[[#{navbar.acerca}]]</a></li>
+		</ul>
+	</div>
 </footer>
 
 

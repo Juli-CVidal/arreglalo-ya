@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.egg.sp.security.oauth.CustomOAuth2UserService;
+import com.egg.sp.security.oauth.OAuth2LoginSuccessHandler;
 import com.egg.sp.services.UsersService;
 
 @SuppressWarnings("deprecation")
@@ -29,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
+		.antMatchers("/oauth2/**").permitAll()
 		.antMatchers("/admin/*")
 		.hasRole("ADMIN")
 		.antMatchers("/css/*", "/img/*", "/js/*", "/**")
@@ -39,11 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .usernameParameter("email")
 	    .passwordParameter("password")
 	    .defaultSuccessUrl("/")
-	    .permitAll().and()
+	    .permitAll().and().oauth2Login().loginPage("/login")
+	    .userInfoEndpoint().userService(oAuth2UserService).and()
+	    .successHandler(oAuth2LoginSuccessHandler)
+	    .and()
 	    .logout()
 	    .logoutUrl("/logout")
 		.logoutSuccessUrl("/login")
 		.permitAll().and().csrf().disable();
 	}
+	
+	@Autowired
+	private CustomOAuth2UserService oAuth2UserService;
+	
+	@Autowired
+	private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
 }

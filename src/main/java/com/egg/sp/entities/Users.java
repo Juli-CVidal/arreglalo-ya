@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
 
+import com.egg.sp.enums.Provider;
 import com.egg.sp.enums.Rol;
 
 import lombok.*;
@@ -27,46 +28,37 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte su nombre")
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
     protected String name;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte su apellido")
     @Size(min = 3, max = 30, message = "El apellido debe tener entre 3 y 30 caracteres")
     protected String lastname;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte su número de teléfono")
     @Size(min = 7, max = 20, message = "El número debe tener entre 7 y 20 digitos")
     protected String phoneNumber;
 
-    @Column(nullable = false, unique = true)
-    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
-    @NotBlank(message = "Inserte un mail válido")
+    @Column(unique = true)
     protected String email;
 
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     protected String image;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Inserte una contraseña")
     protected String password;
 
     @Enumerated(EnumType.STRING)
     protected Rol rol;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="auth_provider")
+    protected Provider provider;
 
-    @Column(nullable = false)
-    protected Boolean state;
+    private Boolean state;
 
     // ======= ROL.CUSTOMER ========
 
     protected String neighborhood;
 
-
     protected String street;
-
 
     protected Integer height;
 
