@@ -129,7 +129,7 @@
                     <div th:each="supplier : ${suppliers}" class="card swiper-slide shadow text-center supplier">
                         <img class="profile__photo card-img-top rounded-top mx-auto mb-0 mt-1"
                              th:src="'data:image/png;base64,' + ${supplier.image}"
-                             alt=""/>
+                             onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"/>
                         <div class="card-body">
                             <h3 th:text="${supplier.lastname + ', ' + supplier.name}" class="card-title text-capitalize fs-2"></h3>
                             <p th:text="${supplier.profession}" class="card-text"></p>
