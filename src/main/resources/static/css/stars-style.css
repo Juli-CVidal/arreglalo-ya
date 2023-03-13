@@ -1,0 +1,17 @@
+.ri-star-half-fill,
+.ri-star-fill {
+	font-size: 1.75rem;
+	color: gold;
+}
+
+.card {
+	width: 250px;
+	overflow: hidden;
+	transition: all .3s ease-in-out;
+	min-height: 400px;
+}
+
+.card img {
+	width: 250px;
+	height: 200px;
+}
