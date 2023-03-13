@@ -31,7 +31,7 @@ searchInput.addEventListener("keyup", (event) => {
     let results = false;
     const currentSearch = event.target.value.toLowerCase();
     worksCards.forEach((card) => {
-        const h1 = card.querySelector("h1");
+        const h1 = card.querySelector("h3");
         const match = h1.innerText.toLowerCase().startsWith(currentSearch);
         card.style.display = match ? "flex" : "none";
         if (match) {
