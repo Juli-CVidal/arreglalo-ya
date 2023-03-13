@@ -18,20 +18,20 @@
 						<tr>
 							<th scope="col">#</th>
 							<th scope="col">Name</th>
+							<th scope="col">Lastname</th>
 							<th scope="col">Email</th>
-							<th scope="col">Barrio</th>
-							<th scope="col">Direccion</th>
-							<th scope="col"></th>
+							<th scope="col">Rol</th>
+							
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="customer, contador : ${customers}">
+						<tr th:each="user, contador : ${usersList}">
 							<td>[[${contador.count}]]</td>
-							<td>[[${customer.name}]]</td>
-							<td>[[${customer.mail}]]</td>
-							<td>[[${customer.neighborhood}]]</td>
-							<td>[[${customer.street}]] [[${customer.height}]]</td>
-							<td><a href="#"><i class="ri-flag-2-line"></i></a></td>
+							<td>[[${user.name}]]</td>
+							<td>[[${user.lastname}]]</td>
+							<td>[[${user.email}]]</td>
+							<td>[[${user.rol}]]</td>
+							
 						</tr>
 
 					</tbody>
