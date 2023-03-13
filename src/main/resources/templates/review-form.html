@@ -15,26 +15,26 @@
 					class="w-100 rounded-1 p-4 border bg-white border rounded-5 border-black needs-validation"
 					enctype="multipart/form-data" novalidate>
 
-					<h3 class="text-center">Deje su reseña</h3>
+					<h3 class="text-center">[[#{review.deje}]]</h3>
 					<input type="hidden" name="supplierId" id="supplierId"
 						th:value="${supplierId}" /> <label
-						class="form-label mt-3" for="score">Puntaje</label> <input
+						class="form-label mt-3" for="score">[[#{review.puntaje}]]</label> <input
 						name="score" type="number" min="0" max="5" step="0.5"
-						class="form-control" th:field="*{score}" required />
+						class="form-control" th:field="*{score}" th:placeholder="#{review.placeholder.1}" required />
 
-					<label class="form-label mt-4" for="content">Comentario</label>
+					<label class="form-label mt-4" for="content">[[#{review.comentario}]]</label>
 					<textarea style="resize: none; overflow: hidden;" name="content"
 						class="form-control" rows="3"
-						placeholder="Me encanta cómo trabajás!" th:field="*{content}"></textarea>
+						th:placeholder="#{review.placeholder}" th:field="*{content}"></textarea>
 
 					<div class="mt-4">
-						<label for="image">Adjunte una imagen</label> <input class="mt-2"
+						<label for="image">[[#{review.image}]]</label> <input class="mt-2"
 							type="file" name="imageFile">
 
 					</div>
 					<div class=" mt-4 d-grid gap-2">
-						<button class="btn btn-primary" type="submit">Dejar
-							reseña</button>
+						<button class="btn btn-primary" type="submit">[[#{review.button}]]
+							</button>
 					</div>
 				</form>
 			</div>

@@ -19,15 +19,15 @@
 
                 <input type="hidden" name="email" id="email" th:value="${user.email}">
 
-                <label class="form-label mb-4" for="receipt">Imagen del problema</label>
+                <label class="form-label mt-2" for="receipt">[[#{complaint.imagen}]]</label>
                 <input name="receipt" type="file" class="form-control" required/>
 
-                <label class="mb-4" for="message"> Problema</label>
-                <textarea name="message" class="form-control" rows="3" placeholder="Por favor describe tu problema"
+                <label class="form-label mt-2" for="message">[[#{complaint.problema}]]</label>
+                <textarea name="message" class="form-control" rows="3" th:placeholder="#{complaint.placeholder}"
                           required></textarea>
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-danger" type="button" onclick="showSuccess()">Denunciar</button>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-danger" type="button" onclick="showSuccess()">[[#{complaint.denunciar}]]</button>
                 </div>
             </form>
         </div>
