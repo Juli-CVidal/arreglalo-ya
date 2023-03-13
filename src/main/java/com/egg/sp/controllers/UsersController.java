@@ -5,6 +5,7 @@ import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
+import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.ReviewService;
 import com.egg.sp.services.UsersService;
 import com.egg.sp.services.WorkService;
@@ -31,6 +32,8 @@ public class UsersController {
     private ReviewService reviewService;
     @Autowired
     private WorkService workService;
+    @Autowired
+    private ProfessionService professionService;
 
     /**
      * This method is going to be used when an account wants to see his proper
@@ -101,7 +104,8 @@ public class UsersController {
 
     @GetMapping("/suppliers")
     public String getAllSuppliers(ModelMap model) {
-        model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+    	model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+    	model.put("professions", professionService.findAll());
         return "suppliers-view";
     }
 

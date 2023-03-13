@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -38,7 +40,11 @@ public class HomeController {
         }
         model.put("logged", user != null);
         List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
-        supplierList.sort(Comparator.comparing(Users::getGeneralScore));
+        supplierList.stream()
+        .filter(Objects::nonNull)
+        .sorted(Comparator.comparingDouble(Users::getGeneralScore))
+        .collect(Collectors.toList());
+
         model.put("suppliers", supplierList);
 
         model.put("professions", professionService.findAll());

@@ -85,7 +85,7 @@
                 <div class="swiper-wrapper">
                     <!-- CARD 1 -->
                     <div th:each="profession : ${professions}"
-                         class="card supplier swiper-slide rounded-4 border shadow-sm mx-3">
+                         class="card profession swiper-slide rounded-4 border shadow-sm mx-3">
                         <img
 
                                 th:src="@{../img/ArreglaloYa.png}"
@@ -126,7 +126,7 @@
         <div class="container-fluid mt-3">
             <div class="suppliers__container container-fluid swiper">
                 <div class="swiper-wrapper p-3">
-                    <div th:each="supplier : ${suppliers}" class="card swiper-slide shadow text-center">
+                    <div th:each="supplier : ${suppliers}" class="card swiper-slide shadow text-center supplier">
                         <img class="profile__photo card-img-top rounded-top mx-auto mb-0 mt-1"
                              th:src="'data:image/png;base64,' + ${supplier.image}"
                              alt=""/>

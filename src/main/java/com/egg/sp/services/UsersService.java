@@ -60,6 +60,7 @@ public class UsersService implements UserDetailsService {
         validateFields(user);
         user.setState(true);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setGeneralScore(0D);
         usersRepository.save(user);
     }
 
