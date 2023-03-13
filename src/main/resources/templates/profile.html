@@ -187,7 +187,7 @@
                                         <select class="form-select work__select">
                                             <option disabled selected>En espera</option>
                                             <option th:selected="${work.acceptance.toString() == 'PRESUPUESTADO'}"
-                                                    th:disabled="${work.acceptance.toString() != 'ENVIADO'}"
+                                                    th:disabled="${(userId != profile.id && profile.rol.toString() == 'SUPPLIER') || work.acceptance.toString() != 'ENVIADO'}"
                                                     th:value="setPrice">PRESUPUESTAR
                                             </option>
                                             <option th:selected="${work.acceptance.toString() == 'ACEPTADO'}"
@@ -223,7 +223,7 @@
         <!-- SWIPER JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.js"></script>
 
-        <!-- SWEET ALERT CSS -->
+        <!-- SWEET ALERT JS -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
         <!-- CUSTOM JS -->
