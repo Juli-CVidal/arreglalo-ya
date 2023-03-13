@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns="http://www.w3.org/1999/xhml"
@@ -14,10 +13,17 @@
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
             crossorigin="anonymous"
     />
-    <title>Solicitar un servicio</title>
+     <!-- BOOTSTRAP -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"
+    ></script>
+    <title>[[#{nombre.logo}]]</title>
 </head>
 <body>
 <header th:replace="layout/staticsFragments :: navbar"></header>
+
 <div class="container-fluid">
     <div class="row mx-0 justify-content-center pt-3">
         <div class="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
@@ -28,16 +34,16 @@
                     class="w-100 rounded-1 p-4 border bg-white border rounded-5 border-black needs-validation"
                     novalidate
             >
-                <h3 class="text-center">Solicitar un servicio</h3>
+                <h3 class="text-center">[[#{solicitar.solicitar}]]</h3>
                 <input
                         type="hidden"
                         name="supplierId"
                         id="supplierId"
                         th:value="${supplierId}"
                 />
-                <div class="invalid-feedback">Elija una opción</div>
+                <div class="invalid-feedback">[[#{solicitar.elija}]]</div>
                 <div>
-                    <label class="form-label">Tipo</label>
+                    <label class="form-label">[[#{solicitar.tipo}]]</label>
                     <select
                             th:field="*{type}"
                             name="type"
@@ -45,7 +51,7 @@
                             class="form-select"
                             required
                     >
-                        <option value="" dislabed selected>Elija una</option>
+                        <option value="" disabled selected>[[#{solicitar.elija.una}]]</option>
 
                         <option
                                 th:each="profession: ${professions}"
@@ -53,39 +59,39 @@
                                 th:text="${profession.name}"
                         />
                     </select>
-                    <div class="invalid-feedback">Seleccione un tipo</div>
+                    <div class="invalid-feedback">[[#{solicitar.seleccione}]]</div>
                 </div>
                 <div class="mt-3 mb-3">
-                    <label class="form-label">Añada una descripción</label>
+                    <label class="form-label">[[#{solicitar.descripcion}]]</label>
                     <textarea
                             th:field="*{description}"
                             name="description"
                             id="description"
                             class="form-control"
                             rows="3"
-                            placeholder="Necesito ayuda para reparar mi baño,..."
+                            th:placeholder="#{solicitar.placeholder}"
                             required
                     ></textarea>
                     <div class="invalid-feedback">
-                        Por favor ingrese una descripción
+                        [[#{solicitar.descripcion.error}]]
                     </div>
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">Solicitar</button>
+                    <button class="btn btn-primary" type="submit">[[#{solicitar.button}]]</button>
                 </div>
             </form>
         </div>
     </div>
-    <!-- BOOTSTRAP -->
+</div>
+<!-- BOOTSTRAP -->
     <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"
     ></script>
+    <div th:replace="layout/staticsFragments :: footer"></div>
 
     <script th:src="@{../../js/bootstrap-validation.js}"></script>
-</div>
-<div th:replace="layout/staticsFragments :: footer"></div>
 </body>
 </html>

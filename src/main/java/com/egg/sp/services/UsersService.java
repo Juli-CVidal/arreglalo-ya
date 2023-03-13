@@ -1,10 +1,12 @@
 package com.egg.sp.services;
 
 import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Provider;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -32,7 +34,6 @@ public class UsersService implements UserDetailsService {
 
     @Autowired
     private ProfessionService professionService;
-
 
     // ======== CREATE ========
 
@@ -166,12 +167,26 @@ public class UsersService implements UserDetailsService {
         }
     }
 
-
-    // Auxiliar method
     private Users getFromOptional(Optional<Users> userOpt) throws ServicesException {
         if (userOpt.isPresent()) {
             return userOpt.get();
         }
         throw new ServicesException("No se ha encontrado un usuario");
     }
+
+	public void createNewCustomerAfterOAuthLoginSuccess(String lastname, String email, String name, Provider provider) {
+		Users user = new Users();
+		user.setEmail(email);
+		user.setName(name);
+		user.setLastname(lastname);
+		user.setProvider(Provider.GOOGLE);
+		user.setRol(Rol.CUSTOMER);
+		usersRepository.save(user);
+	}
+
+	public void updateUserAfterOAuthLoginSuccess(Users users, String name, Provider google) {
+		users.setName(name);
+		users.setProvider(Provider.GOOGLE);
+		usersRepository.save(users);		
+	}
 }

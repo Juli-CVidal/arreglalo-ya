@@ -122,6 +122,16 @@ public class HomeController {
         String Image = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(Image);
     }
+    
+    @GetMapping("/about")
+    public String about() {
+    	return "about.html";
+    }
+    
+    @GetMapping("/faqs")
+    public String faqs() {
+    	return "faqs.html";
+    }
 
     @GetMapping("/complaint/{id}")
     public String complaint(@PathVariable("id") Integer id, HttpSession session, ModelMap model) {

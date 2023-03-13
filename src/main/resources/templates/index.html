@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
->
+      xmlns="http://www.w3.org/1999/xhml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -28,7 +29,7 @@
 
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" th:href="@{../css/index.css}"/>
-    <title>ArreglaloYa!</title>
+    <title>[[#{nombre.logo}]]</title>
 </head>
 <body>
 <header th:replace="layout/staticsFragments :: navbar"></header>
@@ -41,21 +42,21 @@
                     <img th:src="@{../img/img1.jpg}" alt=""/>
                     <div>
                         <h1>[[#{nombre.logo}]]</h1>
-                        <p>A clicks de su casa soñada</p>
+                        <p>[[#{index.slider.1}]]</p>
                     </div>
                 </div>
                 <div class="hero__slide swiper-slide">
                     <img th:src="@{../img/img2.webp}" alt=""/>
                     <div>
-                        <h1>Los mejores proveedores</h1>
-                        <p>En un lugar</p>
+                        <h1>[[#{index.slider.2}]]</h1>
+                        <p>[[#{index.parrafo.1}]]</p>
                     </div>
                 </div>
                 <div class="hero__slide swiper-slide">
                     <img th:src="@{../img/img3.jpg}" alt=""/>
                     <div>
-                        <h1>Todos los servicios</h1>
-                        <p>A su alcance</p>
+                        <h1>[[#{index.slider.3}]]</h1>
+                        <p>[[#{index.parrafo.2}]]</p>
                     </div>
                 </div>
             </div>
@@ -75,7 +76,7 @@
                         type="text"
                         name="search-work"
                         id="search-work"
-                        placeholder="Qué desea buscar?"
+                        th:placeholder="#{placeholder.search}"
                 />
             </div>
             <div
@@ -107,7 +108,7 @@
                                 alt="..."
                         />
                         <div class="card-body text-center">
-                            <h3>No encuentras lo que buscas?</h3>
+                            <h3>[[#{index.no.encuentras}]]</h3>
                         </div>
                     </div>
                 </div>
@@ -120,7 +121,7 @@
             class="w-100 p-3 shadow-sm border rounded-bottom border-black"
     >
         <div class="container-fluid d-flex justify-content-center">
-            <h1>Nuestros mejores proveedores</h1>
+            <h1>[[#{index.mejores.suppliers}]]</h1>
         </div>
         <div class="container-fluid mt-3">
             <div class="suppliers__container container-fluid swiper">
@@ -133,7 +134,7 @@
                             <h3 th:text="${supplier.lastname + ', ' + supplier.name}" class="card-title text-capitalize fs-2"></h3>
                             <p th:text="${supplier.profession}" class="card-text"></p>
                         </div>
-                        <a th:href="@{/user/__${supplier.id}__}" class="btn btn-primary profile__link">Ver perfil</a>
+                        <a th:href="@{/user/__${supplier.id}__}" class="btn btn-primary profile__link">[[#{index.ver.perfil}]]</a>
                     </div>
                 </div>
             </div>

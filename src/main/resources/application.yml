@@ -1,0 +1,34 @@
+ spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/services_project?allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=GMT&characterEncoding=UTF-8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    cache: 'false'
+  main:
+    banner-mode: 'off'
+  security:
+    oauth2:
+      client:
+        registration:
+         google:
+          clientId: 590418585274-918265bn0c4breudkmhnsa0duv7rh5cu.apps.googleusercontent.com
+          clientSecret: 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
+          scope:
+           - email
+           - profile
+                    
+         facebook:
+          clientId: YOUR_FACEBOOK_APP_CLIENT_ID
+          clientSecret: YOUR_FACEBOOK_APP_SECRET_KEY
+          scope:
+           - email
+           - public_profile
