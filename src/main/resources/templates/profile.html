@@ -50,15 +50,15 @@
 				<div class="col-6">
 					<div class="d-flex">
 
-						<img class="profile__photo rounded-circle border shadow-lg"
-							th:src="'data:image/png;base64,' + ${profile.image}" alt="" />
+						<img class="profile__photo rounded-circle border shadow-lg"                                                                                                 
+                                                th:src="'data:image/png;base64,' + ${profile.image}" onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'">
 
 						<div class="row ms-3 me-3">
 							<div class="h-25">
 								<h2 th:text="${profile.name}" class="mb-0"></h2>
 								<h4 th:text="${profile.profession}"></h4>
 								<div th:attr="data-score=${profile.generalScore}"
-									class="review__stars d-flex"></div>
+									 class="review__stars d-flex"></div>
 								<div th:if="${userId == profile.id}"
 									class="form-check form-switch">
 									<input type="checkbox" role="switch" id="state" name="state"

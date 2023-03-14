@@ -6,7 +6,6 @@ import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

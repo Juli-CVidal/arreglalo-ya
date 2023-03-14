@@ -21,28 +21,40 @@
 	<div class="container-fluid vh-100">
 
 		<div class="py-5 mb-5 container">
-			<div class="search__container container mb-3 d-flex justify-content-center">
-				<input class="form-control w-50" type="text" name="search-work" id="search-work"
-					placeholder="Ingrese el nombre del prestador deseado" />
-			</div>
-			<div class="container-flex">
-				<button type="button" class="btn btn-outline-dark">Todos</button>
+			<div class="container d-flex justify-content-center">
+				<button type="button" class="btn btn-outline-dark profession__filter me-2" id="todos">Todos</button>
 				<button th:each="profession : ${professions}" th:id="${profession.name}" th:text="${profession.name}"
-					type="button" class="btn btn-outline-dark"></button>
+					type="button" class="btn btn-outline-dark profession__filter me-2"></button>
+			</div>
+			<div class="search__container container mt-3 d-flex justify-content-center">
+				<input class="form-control w-50" type="text" name="search-name" id="search-name"
+					   placeholder="Ingrese el nombre del prestador deseado" />
 			</div>
 			<div class="container-fluid mt-3">
 				<div class="suppliers__container container-fluid swiper">
-					<div class="swiper-wrapper p-3">
-						<div th:each="supplier : ${supplierList}" class="card swiper-slide shadow text-center">
-							<img class="profile__photo card-img-top rounded-top mx-auto mb-0 mt-1"
+					<div class="swiper-wrapper p-3 d-none">
+						<div th:each="supplier : ${supplierList}" class="card supplier swiper-slide shadow text-center">
+							<img class="profile__photo card-img-top rounded-top mx-auto mb-0"
 								th:src="'data:image/png;base64,' + ${supplier.image}" alt="" />
 							<div class="card-body">
 								<h3 th:text="${supplier.lastname + ', ' + supplier.name}"
 									class="card-title text-capitalize fs-2"></h3>
 								<p th:text="${supplier.profession}" class="card-text"></p>
+								<div th:attr="data-score=${supplier.generalScore}" class="review__stars d-flex justify-content-center"></div>
 							</div>
+
 							<a th:href="@{/user/__${supplier.id}__}" class="btn btn-primary profile__link">Ver
 								perfil</a>
+						</div>
+						<div id="no-results" class="card swiper-slide shadow text-center d-none">
+							<img class="profile__photo card-img-top rounded-top mx-auto mb-0"
+								 src="https://img.freepik.com/vector-gratis/ups-error-404-ilustracion-concepto-robot-roto_114360-5529.jpg?w=2000" alt="" />
+							<div class="card-body">
+								<p class="card-title">
+									No hay un proveedor que cumpla con lo que buscas
+								</p>
+							</div>
+							<a th:href="@{/}" class="btn btn-primary profile__link">Volver</a>
 						</div>
 					</div>
 					<div class="swiper-button-next"></div>
@@ -56,6 +68,7 @@
 	<footer th:replace="layout/staticsFragments :: footer"></footer>
 	<!-- SWIPER JS CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
 	<script th:src="@{../js/stars-script.js}"></script>
 	<script th:src="@{../js/supplier-view.js}"></script>
 
