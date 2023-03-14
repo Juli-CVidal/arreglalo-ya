@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhml"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-      
+>
+
 <head th:replace="layout/staticsFragments :: head"></head>
 <header th:replace="layout/staticsFragments :: navbar"></header>
-<body >
+<body>
 <!-- th:style="'background-image: url(' + @{../img/background-user.png} + ')'" -->
 <div
         class="mt-5 mb-5 w-50 mx-auto bg-white rounded-5 shadow-lg border border-black text-center position-relative"
 >
     <p class="position-absolute top-0 end-0 p-4">
-       [[#{signup.cambio.opinion}]]<a th:href="@{/signup-select}">[[#{signup.cambio.regresar}]]</a>
+        [[#{signup.cambio.opinion}]]<a th:href="@{/signup-select}">[[#{signup.cambio.regresar}]]</a>
     </p>
     <div class="p-5 shadow-sm">
         <h2 class="text-center mb-4 text-black">[[#{signup.unase.cliente}]]</h2>
@@ -23,6 +23,28 @@
                 enctype="multipart/form-data"
                 novalidate
         >
+            <div class="row mb-3">
+                <div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <img src="http://cdn.onlinewebfonts.com/svg/img_464447.png"
+                             class="rounded-circle" alt="example placeholder" style="width: 200px; height: 200px"
+                             id="preview"/>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="btn btn-primary btn-rounded">
+                            <label for="imageFile" class="btn btn-primary"
+                            >[[#{signup.form.image}]]</label
+                            >
+                            <input
+                                    type="file"
+                                    name="imageFile"
+                                    id="imageFile"
+                                    class="d-none imageFile"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row mb-3">
                 <div class="col">
                     <label for="name" class="form-label"
@@ -123,22 +145,6 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="d-flex justify-content-center">
-                    <label for="imageFile" class="btn btn-primary"
-                    >[[#{signup.form.image}]]</label
-                    >
-                    <input
-                            type="file"
-                            name="imageFile"
-                            id="imageFile"
-                            class="d-none"
-                    />
-
-                    <div class="invalid-feedback">[[#{signup.form.image.error}]]</div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
                 <div class="col mb-3">
                     <label for="street" class="form-label"
                     >[[#{signup.form.calle}]]</label
@@ -212,6 +218,7 @@
 
 <!-- CUSTOM JS -->
 <script th:src="@{../js/sign_up_form.js}"></script>
+<script th:src="@{../js/show-input-image.js}"></script>
 </body>
 
 </html>
