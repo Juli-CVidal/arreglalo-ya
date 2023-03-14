@@ -67,7 +67,7 @@
 								</div>
 
 								<a th:if="${userId == profile.id}"
-									href="https://www.youtube.com/watch?v=XBxnKSdz48c&ab_channel=iPerol"
+									th:href="@{/user/update/__${profile.id}__}"
 									target="_blank" class="link-secondary text-uppercase">[[#{user.modificar.perfil}]]</a>
 							</div>
 						</div>

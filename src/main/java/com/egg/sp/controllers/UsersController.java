@@ -120,7 +120,7 @@ public class UsersController {
     public String getForm(@PathVariable("id") Integer id, ModelMap model) {
         try {
             Users user = usersService.findById(id);
-            model.put("users", user);
+            model.put("user", user);
             return "profile-form";
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
