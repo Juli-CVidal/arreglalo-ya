@@ -34,8 +34,8 @@ public class ReviewService {
         }
         review.setSupplier(usersService.findSupplierById(supplierId));
         review.setCreationDate(new Date(System.currentTimeMillis()));
-        usersService.updateGeneralScore(supplierId, reviewRepository.getGeneralScore(supplierId));
         reviewRepository.save(review);
+        usersService.updateGeneralScore(supplierId, reviewRepository.getGeneralScore(supplierId));
     }
 
 
