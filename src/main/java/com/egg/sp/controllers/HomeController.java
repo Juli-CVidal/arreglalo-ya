@@ -1,6 +1,7 @@
 package com.egg.sp.controllers;
 
 import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Provider;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
@@ -118,6 +119,7 @@ public class HomeController {
     private String createAccount(Users user, Rol accountType, ModelMap model) {
         try {
             user.setRol(accountType);
+            user.setProvider(Provider.LOCAL);
             usersService.create(user);
         } catch (ServicesException se) {
             model.put("users", user);

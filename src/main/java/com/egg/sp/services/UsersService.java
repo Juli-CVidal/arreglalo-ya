@@ -58,6 +58,7 @@ public class UsersService implements UserDetailsService {
     public void create(Users user) throws ServicesException {
         validateFields(user);
         user.setGeneralScore(0D);
+        user.setProvider(Provider.LOCAL);
         user.setState(true);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         usersRepository.save(user);
@@ -99,7 +100,10 @@ public class UsersService implements UserDetailsService {
     // ======== UPDATE ========
 
     @Transactional
-    public void update(Users user) throws ServicesException {
+    public void update(Users user, String confirm) throws ServicesException {
+        if (!new BCryptPasswordEncoder().matches(confirm,user.getPassword())){
+            throw new ServicesException("Contraseña incorrecta, reintente");
+        }
       validateFields(user);
       usersRepository.save(user);
     }
@@ -110,6 +114,13 @@ public class UsersService implements UserDetailsService {
         Users supplier = findSupplierById(supplierId);
         supplier.setGeneralScore(generalScore);
         usersRepository.save(supplier);
+    }
+
+    @Transactional
+    public void becomeSupplier(Users user) throws ServicesException{
+        user.setGeneralScore(0D);
+        user.setRol(Rol.SUPPLIER);
+        usersRepository.save(user);
     }
 
     // ======== DELETE ========

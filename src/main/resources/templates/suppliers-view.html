@@ -34,8 +34,9 @@
 				<div class="suppliers__container container-fluid swiper">
 					<div class="swiper-wrapper p-3 d-none">
 						<div th:each="supplier : ${supplierList}" class="card supplier swiper-slide shadow text-center">
-							<img class="profile__photo card-img-top rounded-top mx-auto mb-0"
-								th:src="'data:image/png;base64,' + ${supplier.image}" alt="" />
+							<img th:src="'data:image/png;base64,' + ${supplier.image}"
+								 onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"class="profile__photo card-img-top rounded-top mx-auto mb-0"
+								 />
 							<div class="card-body">
 								<h3 th:text="${supplier.lastname + ', ' + supplier.name}"
 									class="card-title text-capitalize fs-2"></h3>
