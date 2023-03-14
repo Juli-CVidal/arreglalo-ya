@@ -85,7 +85,7 @@
                 <div class="swiper-wrapper">
                     <!-- CARD 1 -->
                     <div th:each="profession : ${professions}"
-                         class="card profession swiper-slide rounded-4 border shadow-sm mx-3">
+                         class="card profession swiper-slide rounded-4 border shadow-sm mx-3" th:id="${profession.name}">
                         <img
 
                                 th:src="@{../img/ArreglaloYa.png}"
@@ -99,7 +99,7 @@
                     <!-- NO RESULTS CARD -->
                     <div
                             id="no-results"
-                            class="card supplier swiper-slide rounded-4 border shadow-sm mx-3"
+                            class="card profession swiper-slide rounded-4 border shadow-sm mx-3"
                             style="display: none"
                     >
                         <img

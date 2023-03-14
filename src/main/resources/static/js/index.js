@@ -25,12 +25,25 @@ const noResults = document.getElementById("no-results");
 const searchInput = document.getElementById("search-work");
 
 //The last card is shown when search returns no results
-const worksCards = Array.from(document.querySelectorAll(".profession")).slice(0, -1);
+const professionCards = Array.from(document.querySelectorAll(".profession")).slice(0, -1);
+
+professionCards.forEach(card => {
+    card.addEventListener("click", event => {
+        if (!LOGGED) {
+            event.preventDefault();
+            showLoginMessage();
+            return;
+        }
+        console.log(card.id)
+        localStorage.setItem("profession", card.id);
+        window.location.href = "/user/suppliers";
+    })
+})
 
 searchInput.addEventListener("keyup", (event) => {
     let results = false;
     const currentSearch = event.target.value.toLowerCase();
-    worksCards.forEach((card) => {
+    professionCards.forEach((card) => {
         const h1 = card.querySelector("h3");
         const match = h1.innerText.toLowerCase().startsWith(currentSearch);
         card.style.display = match ? "flex" : "none";
@@ -52,7 +65,7 @@ const supplierSlider = new Swiper(".suppliers__container", {
 
 
 //CHECK IF USER IS LOGGED
-function showLoginMessage(){
+function showLoginMessage() {
     Swal.fire({
         title: 'Espera!',
         html: "<p>No estás logueado<br>Si quieres ver más, inicia sesión</p>",
@@ -73,7 +86,7 @@ const LOGGED = document.getElementById("logged");
 const PROFILE_LINKS = document.querySelectorAll(".profile__link");
 
 PROFILE_LINKS.forEach(link => link.addEventListener("click", event => {
-    if (!LOGGED){
+    if (!LOGGED) {
         event.preventDefault();
         showLoginMessage();
     }
