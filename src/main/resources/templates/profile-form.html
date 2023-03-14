@@ -1,86 +1,242 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhml"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhml">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!-- BOOTSTRAP -->
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-            crossorigin="anonymous"></script>
-
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- BOOTSTRAP -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-            crossorigin="anonymous"/>
+            crossorigin="anonymous"
+    />
 
     <!-- REMIX ICONS -->
     <link
             href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-            rel="stylesheet"/>
+            rel="stylesheet"
+    />
 
-    <!-- SWIPER CSS -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.css"/>
-
-    <!-- SWEET ALERT CSS -->
-    <link
-            href="
-    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css
-    "
-            rel="stylesheet"/>
     <title>[[#{nombre.logo}]]</title>
 </head>
 <body>
 <header th:replace="layout/staticsFragments :: navbar"></header>
-
-<main class="container-fluid d-flex justify-content-center shadow-lg">
-    <div class="w-75 mx-auto mt-5">
-        <div
-                class="container-fluid min-vh-100 p-5 shadow-sm border rounded-5 border-black row">
-            <div class="col-6">
-                <div class="d-flex">
-
-                    <img class="profile__photo rounded-circle border shadow-lg"
-                         th:src="'data:image/png;base64,' + ${user.image}"
-                         onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'">
-
-                    <div class="row ms-3 me-3">
-                        <div class="h-25">
-                            <h2 th:text="${user.name}" class="mb-0"></h2>
-                            <h4 th:text="${user.profession}"></h4>
-                            <div th:attr="data-score=${user.generalScore}"
-                                 class="review__stars d-flex"></div>
+<body>
+<!-- th:style="'background-image: url(' + @{../img/background-user.png} + ')'" -->
+<div
+        class="mt-5 mb-5 w-50 mx-auto bg-white rounded-5 shadow-lg border border-black text-center position-relative"
+>
+    <p class="position-absolute top-0 end-0 p-4">
+        [[#{signup.cambio.opinion}]]<a th:href="@{/signup-select}">[[#{signup.cambio.regresar}]]</a>
+    </p>
+    <div class="p-5 shadow-sm">
+        <h2 class="text-center mb-4 text-black">[[#{signup.unase.cliente}]]</h2>
+        <form
+                th:action="@{/user}"
+                method="POST"
+                class="needs-validation"
+                th:object="${user}"
+                enctype="multipart/form-data"
+                novalidate
+        >
+            <input type="hidden" name="id" id="id" th:field="${user.id}">
+            <input type="hidden" name="rol" id="rol" th:field="${user.rol}">
+            <input type="hidden" name="email" id="email" th:field="${user.email}">
+            <div class="row mb-3">
+                <div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <img    th:src="'data:image/png;base64,' + ${user.image}" onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"
+                             class="rounded-circle" alt="example placeholder" style="width: 200px; height: 200px"
+                             id="preview"/>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="btn btn-primary btn-rounded">
+                            <label for="imageFile" class="btn btn-primary"
+                            >[[#{signup.form.image}]]</label
+                            >
+                            <input
+                                    type="file"
+                                    name="imageFile"
+                                    id="imageFile"
+                                    class="d-none imageFile"
+                            />
                         </div>
                     </div>
                 </div>
-
-                <blockquote th:text="${user.biography}"
-                            class="blockquote mt-4 mb-4"></blockquote>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="name" class="form-label"
+                    >[[#{signup.form.nombre}]]</label
+                    >
+                    <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            th:field="*{name}"
+                            required
+                    />
+                    <div class="invalid-feedback">
+                        [[#{signup.form.nombre.error}]]
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="lastname" class="form-label"
+                    >[[#{signup.form.apellido}]]</label
+                    >
+                    <input
+                            type="text"
+                            id="lastname"
+                            name="lastname"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            th:field="*{lastname}"
+                            required
+                    />
+                    <div class="invalid-feedback">
+                        [[#{signup.form.apellido.error}]]
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="confirm" class="form-label"
+                    >[[#{signup.form.contra}]]</label
+                    >
+                    <input
+                            type="hidden"
+                            id="password"
+                            name="password"
+                            th:value="${user.password}"
+                    />
+                    <input
+                        type="password"
+                        id="confirm"
+                        name="confirm"
+                        class="form-control border border-black"
+                        th:placeholder="#{signup.form.contra.placeholder}"
+                        />
+                    <div class="invalid-feedback">
+                        [[#{signup.form.contra.error}]]
+                    </div>
+                </div>
+            </div>
+            <!-- CUSTOMER FIELDS -->
+            <div class="row mb-3" th:if="${user.rol.toString() == 'CUSTOMER'}">
+                <div class="col mb-3">
+                    <label for="street" class="form-label"
+                    >[[#{signup.form.calle}]]</label
+                    >
+                    <input
+                            type="text"
+                            id="street"
+                            name="street"
+                            th:field="*{street}"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            required
+                    />
+                </div>
+                <div class="col mb-3">
+                    <label for="height" class="form-label"
+                    >[[#{signup.form.altura}]]</label
+                    >
+                    <input
+                            type="number"
+                            id="height"
+                            name="height"
+                            th:field="*{height}"
+                            class="form-control border border-black"
+                            autocomplete="off"
+                            min="0"
+                            required
+                    />
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                    <select
+                            name="neighborhood"
+                            id="neighborhood"
+                            th:field="*{neighborhood}"
+                            class="form-select w-50 text-center"
+                            required
+                    >
+                        <option value="" disabled selected>[[#{signup.barrio}]]</option>
+                        <option value="BARRIO1">[[#{signup.barrio.1}]]</option>
+                        <option value="BARRIO2">[[#{signup.barrio.2}]]</option>
+                        <option value="BARRIO2">[[#{signup.barrio.3}]]</option>
+                    </select>
+                </div>
             </div>
 
-        </div>
+
+            <!-- CUSTOMER FIELDS -->
+            <div th:if="${user.rol.toString() == 'SUPPLIER'}">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="biography" class="form-label"
+                        >[[#{signup.form.cuentenos}]]</label
+                        >
+                        <textarea
+                                name="biography"
+                                id="biography"
+                                th:field="*{biography}"
+                                class="form-control"
+                                required
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3 d-flex justify-content-center">
+                    <label for="profession" class="form-label"
+                    >[[#{signup.eliga}]]</label
+                    >
+
+                    <select
+                            name="profession"
+                            id="profession"
+                            class="form-select w-50 text-center"
+                            th:field="*{profession}"
+                            required
+                    >
+                        <option value="" selected disabled="disabled" >[[#{signup.eliga}]]</option>
+                        <option
+                                th:each="profession: ${professions}"
+                                th:value="${profession.name}"
+                                th:text="${profession.name}"
+                        />
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">
+                    [[#{signup.ingresar}]]
+                </button>
+            </div>
+        </form>
     </div>
-    <!-- BOOTSTRAP -->
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-            crossorigin="anonymous"></script>
+    <!-- <div th:if="${success}" class="alert alert-success" role="alert">
+    <span th:text="${success}"></span>
+  </div>
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
+  </div> -->
+</div>
 
-    <!-- SWIPER JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.2/swiper-bundle.min.js"></script>
+</body>
 
-    <!-- SWEET ALERT JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
-    <!-- CUSTOM JS -->
-    </div>
-</main>
+<!-- BOOTSTRAP -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"
+></script>
+
+<script th:src="@{../../js/update-profile.js}"></script>
+<!-- CUSTOM JS -->
+<script th:src="@{../../js/show-input-image.js}"></script>
 </body>
 </html>

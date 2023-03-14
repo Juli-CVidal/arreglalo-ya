@@ -6,7 +6,6 @@ import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -41,9 +40,9 @@ public class HomeController {
         model.put("logged", user != null);
         List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
         supplierList.stream()
-        .filter(Objects::nonNull)
-        .sorted(Comparator.comparingDouble(Users::getGeneralScore))
-        .collect(Collectors.toList());
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparingDouble(Users::getGeneralScore))
+                .collect(Collectors.toList());
 
         model.put("suppliers", supplierList);
 
@@ -72,13 +71,19 @@ public class HomeController {
     }
 
     @PostMapping("/signup/user")
-    public String signUpUser(@Valid Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpUser(@Valid Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) {
         if (result.hasErrors()) {
             model.put("users", user);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-        ConvertImageToString(user, image);
+        try {
+            setImage(user, image);
+        } catch (IOException ioe) {
+            model.put("error", "No se ha podido cargar la imagen, por favor ingrese otra");
+            model.put("users", user);
+            return "new-user.html";
+        }
         return createAccount(user, Rol.CUSTOMER, model);
     }
 
@@ -90,14 +95,21 @@ public class HomeController {
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Users supplier, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpSupplier(@Valid Users supplier, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) {
 
         if (result.hasErrors()) {
             model.put("users", supplier);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-        ConvertImageToString(supplier, image);
+        try {
+            setImage(supplier, image);
+        } catch (IOException ioe) {
+            model.put("error", "No se ha podido cargar la imagen, por favor ingrese otra");
+            model.put("users", supplier);
+            return "new-user.html";
+        }
+
         return createAccount(supplier, Rol.SUPPLIER, model);
     }
 
@@ -117,20 +129,20 @@ public class HomeController {
         return "redirect:/login";
     }
 
-    private void ConvertImageToString(Users user, MultipartFile image) throws IOException {
+    private void setImage(Users user, MultipartFile image) throws IOException {
         byte[] imageBytes = image.getBytes();
         String Image = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(Image);
     }
-    
+
     @GetMapping("/about")
     public String about() {
-    	return "about.html";
+        return "about.html";
     }
-    
+
     @GetMapping("/faqs")
     public String faqs() {
-    	return "faqs.html";
+        return "faqs.html";
     }
 
     @GetMapping("/complaint/{id}")

@@ -12,6 +12,8 @@ import com.egg.sp.services.WorkService;
 import java.io.IOException;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -109,27 +113,22 @@ public class UsersController {
         return "suppliers-view";
     }
 
-    /**
-     * This method is going to be used
-     *
-     * @param id
-     * @param model
-     * @return
-     */
+
     @GetMapping("/update/{id}")
     public String getForm(@PathVariable("id") Integer id, ModelMap model) {
         try {
             Users user = usersService.findById(id);
             model.put("user", user);
-            return "profile-form";
+            model.put("professions", professionService.findAll());
+            return "profile-form.html";
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
             return "index.html";
         }
     }
 
-    @PostMapping("/{id}")
-    public String updateProfile(@ModelAttribute("users") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, BindingResult result, ModelMap model) {
+    @PostMapping()
+    public String updateProfile(@ModelAttribute("user") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             model.put("users", user);
@@ -137,8 +136,9 @@ public class UsersController {
         }
 
         try {
+            setImage(user,image);
             usersService.update(user);
-        } catch (ServicesException se) {
+        } catch (ServicesException | IOException se) {
             model.put("error", se.getMessage());
             model.put("users", user);
             return "profile.form";
@@ -147,7 +147,17 @@ public class UsersController {
         return "redirect:/user";
     }
 
-    private void ConvertImageToString(Users user, MultipartFile image) throws IOException {
+
+    @PostMapping("/check-password")
+    public ResponseEntity<Boolean> checkPassword(@RequestBody Map<String, String> data){
+        System.out.println("A´CA ESTOY");
+        String password = data.get("password");
+        String confirm = data.get("confirm");
+        boolean match = new BCryptPasswordEncoder().matches(confirm, password);
+        return ResponseEntity.ok(match);
+    }
+
+    private void setImage(Users user, MultipartFile image) throws IOException {
         byte[] imageBytes = image.getBytes();
         String Image = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(Image);
