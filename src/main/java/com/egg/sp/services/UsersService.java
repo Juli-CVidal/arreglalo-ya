@@ -57,6 +57,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public void create(Users user) throws ServicesException {
         validateFields(user);
+        user.setGeneralScore(0D);
         user.setState(true);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         usersRepository.save(user);

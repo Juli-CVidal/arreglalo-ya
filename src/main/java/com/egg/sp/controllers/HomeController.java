@@ -45,7 +45,9 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         model.put("suppliers", supplierList);
-
+        if(user != null){
+        	model.put("user", user);
+        }
         model.put("professions", professionService.findAll());
         return "index.html";
     }
