@@ -50,8 +50,9 @@
 				<div class="col-6">
 					<div class="d-flex">
 
-						<img th:src="'data:image/png;base64,' + ${profile.image}" onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"
-							 class="rounded-circle" alt="example placeholder" style="width: 200px; height: 200px"/>
+						<img th:src="'data:image/png;base64,' + ${profile.image}"
+							 onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'" class="rounded-circle" alt="example placeholder" style="width: 200px; height: 200px"
+						/>
 						<div class="row ms-3 me-3">
 							<div class="h-25">
 								<h2 th:text="${profile.name}" class="mb-0"></h2>
@@ -125,7 +126,7 @@
 					<div class="border border-black rounded-5">
 						<h4 class="text-center pt-3 pb-3">[[#{user.trabajos}]]</h4>
 
-						<div th:each="work : ${works}" class="card rounded-5 mb-2">
+						<div th:each="work : ${works}" class="card rounded-5 mb-2 mx-1">
 							<div class="rounded-top">
 								<div class="row p-3 pb-0">
 									<div class="col-6">

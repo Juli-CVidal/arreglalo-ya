@@ -30,6 +30,8 @@ public interface ReviewRepository extends JpaRepository<Review,Integer>{
 
 
 
-	@Query("SELECT AVG(r.score) FROM Review r WHERE r.supplier.id = :supplierId")
+	//The COALESCE(value1,value2,...,valueN) function returns the first NonNull value on the argument's list
+	//In this case, the AVG(r.score) returned null if no reviews were found, therefore COALESCE(null,0) returns 0
+	@Query("SELECT COALESCE(AVG(r.score), 0) FROM Review r WHERE r.supplier.id = :supplierId")
 	Double getGeneralScore(@Param("supplierId") Integer supplierId);
 }

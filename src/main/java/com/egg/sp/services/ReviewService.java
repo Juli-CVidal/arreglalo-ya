@@ -32,6 +32,7 @@ public class ReviewService {
         if (countContractedTimes(review.getUser().getId(),supplierId) == 0){
             throw new ServicesException("El usuario no ha contratado anteriormente al proveedor");
         }
+        System.out.println("Creando review");
         review.setSupplier(usersService.findSupplierById(supplierId));
         review.setCreationDate(new Date(System.currentTimeMillis()));
         reviewRepository.save(review);
