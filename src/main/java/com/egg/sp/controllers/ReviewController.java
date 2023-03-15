@@ -41,6 +41,7 @@ public class ReviewController {
             reviewService.create(review, supplierId);
             model.put("success", "¡Reseña añadida correctamente!");
         } catch (ServicesException se) {
+            System.out.println(se.getMessage());
             model.put("error", se.getMessage());
             model.put("user",  user);
             model.put("review", review);
