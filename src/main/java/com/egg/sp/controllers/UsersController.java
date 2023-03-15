@@ -104,8 +104,13 @@ public class UsersController {
     }
 
     @GetMapping("/suppliers")
-    public String getAllSuppliers(ModelMap model) {
+    public String getAllSuppliers(ModelMap model, HttpSession session) {
+        Users user = (Users) session.getAttribute("userSession");
+        if (user != null){
+            model.put("user",user);
+        }
     	model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+        model.put("logged", user != null);
     	model.put("professions", professionService.findAll());
         return "suppliers-view";
     }
@@ -137,6 +142,8 @@ public class UsersController {
             if (null != image){
                 setImage(user,image);
             }
+
+            user.setGeneralScore(reviewService.getGeneralScore(user.getId()));
             usersService.update(user, confirm);
         } catch (ServicesException | IOException se) {
             model.put("error", se.getMessage());

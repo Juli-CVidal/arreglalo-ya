@@ -55,7 +55,7 @@
 									No hay un proveedor que cumpla con lo que buscas
 								</p>
 							</div>
-							<a th:href="@{/}" class="btn btn-primary profile__link">Volver</a>
+							<a th:href="@{/}" class="btn btn-primary">Volver</a>
 						</div>
 					</div>
 					<div class="swiper-button-next"></div>
@@ -66,11 +66,16 @@
 		</div>
 	</div>
 	</div>
+	<div th:if="${logged}" id="logged"></div>
 	<footer th:replace="layout/staticsFragments :: footer"></footer>
 	<!-- SWIPER JS CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
+	<!-- SWEET ALERT JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
 	<script th:src="@{../js/stars-script.js}"></script>
+	<script th:src="@{../js/check-logged.js}"></script>
 	<script th:src="@{../js/supplier-view.js}"></script>
 
 

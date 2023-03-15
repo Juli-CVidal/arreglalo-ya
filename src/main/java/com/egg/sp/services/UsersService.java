@@ -101,7 +101,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public void update(Users user, String confirm) throws ServicesException {
-        if (!new BCryptPasswordEncoder().matches(confirm,user.getPassword())){
+        if (!new BCryptPasswordEncoder().matches(confirm,user.getPassword())) {
             throw new ServicesException("Contraseña incorrecta, reintente");
         }
       validateFields(user);

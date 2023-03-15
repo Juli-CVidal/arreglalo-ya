@@ -92,13 +92,14 @@
 												class="btn btn-outline-dark d-block me-2">[[#{user.expandir}]]
 											</button>
 											<form th:if="${review.content != '[CENSURADO]'}"
-												sec:authorize="hasAnyRole('SUPPLIER','ADMIN')" method="POST"
+												sec:authorize="hasAnyRole('ADMIN')" method="POST"
 												class="censor" th:action="@{/review/censure}">
 												<input type="hidden" name="reviewId" id="reviewId"
 													th:value="${review.id}"> <input type="hidden"
 													name="supplierId" id="supplierId" th:value="${profile.id}">
 												<button class="btn btn-danger">[[#{user.censurar}]]</button>
 											</form>
+											<button th:if="${!review.image.isEmpty()}" th:attr="data-source='data:image/png;base64,' + ${review.image}" class="review__image btn btn-outline-dark">Ver imagen</button>
 										</div>
 									</div>
 								</div>
@@ -110,7 +111,7 @@
 					</div>
 				</div>
 				<div class="col-6">
-					<div class="mb-5 d-flex">
+					<div class="mb-5 d-flex justify-content-end">
 						<a th:if="${userId != profile.id}"
 							th:href="@{/work/create/__${profile.id}__}"
 							class="btn btn-primary shadow">[[#{user.solicitar}]]</a> <a

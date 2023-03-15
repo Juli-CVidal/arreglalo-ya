@@ -35,6 +35,7 @@
 							th:href="@{/}">[[#{navbar.home}]]</a> <a
 							class="nav-link mx-2 " th:href="@{/user/suppliers}">[[#{navbar.suppliers}]]</a>
 						<a class="nav-link mx-2 " th:href="@{/about}">[[#{navbar.acerca}]]</a>
+						<a class="nav-link mx-2 " sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" >Dashboard</a>
 					</div>
 					<div class="navbar-nav ms-auto right__menu">
 						<ul class="navbar-nav">
