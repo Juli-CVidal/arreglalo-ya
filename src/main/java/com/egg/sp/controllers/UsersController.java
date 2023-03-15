@@ -12,8 +12,6 @@ import com.egg.sp.services.WorkService;
 import java.io.IOException;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -107,8 +104,13 @@ public class UsersController {
     }
 
     @GetMapping("/suppliers")
-    public String getAllSuppliers(ModelMap model) {
+    public String getAllSuppliers(ModelMap model, HttpSession session) {
+        Users user = (Users) session.getAttribute("userSession");
+        if (user != null){
+            model.put("user",user);
+        }
     	model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+        model.put("logged", user != null);
     	model.put("professions", professionService.findAll());
         return "suppliers-view";
     }
@@ -128,7 +130,8 @@ public class UsersController {
     }
 
     @PostMapping()
-    public String updateProfile(@ModelAttribute("user") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, BindingResult result, ModelMap model) {
+    public String updateProfile(@ModelAttribute("user") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image,
+            @RequestParam(value="confirm") String confirm, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             model.put("users", user);
@@ -136,25 +139,34 @@ public class UsersController {
         }
 
         try {
-            setImage(user,image);
-            usersService.update(user);
+            if (null != image){
+                setImage(user,image);
+            }
+
+            user.setGeneralScore(reviewService.getGeneralScore(user.getId()));
+            usersService.update(user, confirm);
         } catch (ServicesException | IOException se) {
             model.put("error", se.getMessage());
+            model.put("professions", professionService.findAll());
             model.put("users", user);
-            return "profile.form";
+            return "profile-form";
         }
         model.put("success", "El perfil ha sido actualizado!");
         return "redirect:/user";
     }
 
-
-    @PostMapping("/check-password")
-    public ResponseEntity<Boolean> checkPassword(@RequestBody Map<String, String> data){
-        System.out.println("A´CA ESTOY");
-        String password = data.get("password");
-        String confirm = data.get("confirm");
-        boolean match = new BCryptPasswordEncoder().matches(confirm, password);
-        return ResponseEntity.ok(match);
+    @PostMapping("/become-supplier")
+    public String becomeSupplier(@RequestParam("id") Integer id, ModelMap model){
+        try {
+            Users user = usersService.findById(id);
+            usersService.becomeSupplier(user);
+            model.put("user", user);
+            model.put("professions", professionService.findAll());
+            return "profile-form.html";
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            return "/user/" + id;
+        }
     }
 
     private void setImage(Users user, MultipartFile image) throws IOException {

@@ -133,6 +133,7 @@
                         <div class="card-body">
                             <h3 th:text="${supplier.lastname + ', ' + supplier.name}" class="card-title text-capitalize fs-2"></h3>
                             <p th:text="${supplier.profession}" class="card-text"></p>
+                            <div th:attr="data-score=${supplier.generalScore}" class="review__stars d-flex justify-content-center"></div>
                         </div>
                         <a th:href="@{/user/__${supplier.id}__}" class="btn btn-primary profile__link">[[#{index.ver.perfil}]]</a>
                     </div>
@@ -152,6 +153,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 <!-- CUSTOM JS -->
+<script th:src="@{../js/check-logged.js}"></script>
+<script th:src="@{../js/stars-script.js}"></script>
 <script th:src="@{../js/index.js}"></script>
 </body>
 </html>

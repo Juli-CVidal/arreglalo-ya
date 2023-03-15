@@ -141,7 +141,24 @@ function addWorkListeners() {
 }
 
 
+//SHOW IMAGE REVIEW
+function handleReviewImages() {
+    document.querySelectorAll(".review__image").forEach(button => {
+        button.addEventListener("click", () => {
+            const source = button.getAttribute("data-source");
+            Swal.fire({
+                html: `<img class="card-img-top rounded-top mx-auto mb-0" src="${source}" alt=" "/>`,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
+            });
+        });
+    });
+}
+
+
 window.addEventListener("load", () => {
     addFormListeners();
     addWorkListeners();
+    handleReviewImages();
 })

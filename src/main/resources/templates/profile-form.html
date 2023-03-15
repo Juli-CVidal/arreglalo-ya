@@ -32,7 +32,14 @@
 <div
         class="mt-5 mb-5 w-50 mx-auto bg-white rounded-5 shadow-lg border border-black text-center position-relative"
 >
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
     <div class="p-5 shadow-sm">
+
         <h2 class="text-center mb-4 text-black">[[#{modificar.titulo}]]</h2>
         <form
                 th:action="@{/user}"
@@ -219,12 +226,7 @@
             </div>
         </form>
     </div>
-    <!-- <div th:if="${success}" class="alert alert-success" role="alert">
-    <span th:text="${success}"></span>
-  </div>
-  <div th:if="${error}" class="alert alert-danger" role="alert">
-    <span th:text="${error}"></span>
-  </div> -->
+
 </div>
 
 </body>
@@ -238,8 +240,8 @@
 ></script>
 	<footer th:replace="layout/staticsFragments :: footer"></footer>
 
-<script th:src="@{../../js/update-profile.js}"></script>
 <!-- CUSTOM JS -->
+<script th:src="@{../../js/bootstrap-validation.js}"></script>
 <script th:src="@{../../js/show-input-image.js}"></script>
 </body>
 </html>

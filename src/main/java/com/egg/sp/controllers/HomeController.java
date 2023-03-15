@@ -1,11 +1,13 @@
 package com.egg.sp.controllers;
 
 import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Provider;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,9 +36,6 @@ public class HomeController {
     @GetMapping
     public String getIndex(HttpSession session, ModelMap model) {
         Users user = (Users) session.getAttribute("userSession");
-        if (null != user && user.getRol().toString().equals("ADMIN")) {
-            return "redirect:/admin/dashboard";
-        }
         model.put("logged", user != null);
         List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
         supplierList.stream()
@@ -118,6 +117,7 @@ public class HomeController {
     private String createAccount(Users user, Rol accountType, ModelMap model) {
         try {
             user.setRol(accountType);
+            user.setProvider(Provider.LOCAL);
             usersService.create(user);
         } catch (ServicesException se) {
             model.put("users", user);

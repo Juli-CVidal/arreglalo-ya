@@ -35,6 +35,7 @@
 							th:href="@{/}">[[#{navbar.home}]]</a> <a
 							class="nav-link mx-2 " th:href="@{/user/suppliers}">[[#{navbar.suppliers}]]</a>
 						<a class="nav-link mx-2 " th:href="@{/about}">[[#{navbar.acerca}]]</a>
+						<a class="nav-link mx-2 " sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" >Dashboard</a>
 					</div>
 					<div class="navbar-nav ms-auto right__menu">
 						<ul class="navbar-nav">
@@ -85,6 +86,12 @@
 										<ul class="dropdown-menu dropdown-menu-white">
 											<li><a class="dropdown-item" th:href="@{/user}">Perfil</a></li>
 											<li><a class="dropdown-item" th:href="@{/user/update/__${user.id}__}">Editar Perfil</a></li>
+											<li th:if="${user.rol.toString() == 'CUSTOMER'}">
+												<form class="dropdown-item" th:action="@{/user/become-supplier}" method="post">
+													<input type="hidden" name="id" id="id" th:value="${user.id}">
+													<button type="submit" class="dropdown-item p-0 ms-0">Ser supplier</button>
+												</form>
+											</li>
 										</ul>
 										</li>
 								</ul>
