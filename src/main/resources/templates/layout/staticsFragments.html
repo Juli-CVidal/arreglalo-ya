@@ -22,7 +22,7 @@
 <body>
 	<header th:fragment="navbar" class="top-0">
 		<nav
-			class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
+			class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm d-flex justify-content-center">
 			<div class="container-fluid">
 				<a class="navbar-brand h1" th:href="@{/}">[[#{nombre.logo}]]</a>
 				<button class="navbar-toggler" type="button"
@@ -35,6 +35,7 @@
 							th:href="@{/}">[[#{navbar.home}]]</a> <a
 							class="nav-link mx-2 " th:href="@{/user/suppliers}">[[#{navbar.suppliers}]]</a>
 						<a class="nav-link mx-2 " th:href="@{/about}">[[#{navbar.acerca}]]</a>
+						<a class="nav-link mx-2 " sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" >Dashboard</a>
 					</div>
 					<div class="navbar-nav ms-auto right__menu">
 						<ul class="navbar-nav">
@@ -73,6 +74,32 @@
 							<a th:href="@{/logout}" class="nav-link mx-2" href="#"> <i
 								class="ri-user-unfollow-line"></i> [[#{navbar.logout}]]
 							</a>
+						</div>
+						<div th:if="${user != null}" sec:authorize="isAuthenticated()">
+							<div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+								<ul class="navbar-nav">
+									<li class="nav-item dropdown dropstart">
+									<a th:text="${user.name}"
+										class="nav-link dropdown-toggle" href="#" role="button"
+										data-bs-toggle="dropdown" aria-expanded="false">
+									</a>
+										<ul class="dropdown-menu dropdown-menu-white">
+											<li><a class="dropdown-item" th:href="@{/user}">Perfil</a></li>
+											<li><a class="dropdown-item" th:href="@{/user/update/__${user.id}__}">Editar Perfil</a></li>
+											<li th:if="${user.rol.toString() == 'CUSTOMER'}">
+												<form class="dropdown-item" th:action="@{/user/become-supplier}" method="post">
+													<input type="hidden" name="id" id="id" th:value="${user.id}">
+													<button type="submit" class="dropdown-item p-0 ms-0">Ser supplier</button>
+												</form>
+											</li>
+										</ul>
+										</li>
+								</ul>
+								<img th:src="'data:image/png;base64,' + ${user.image}"
+									onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"
+									class="rounded-circle" alt="example placeholder"
+									style="width: 20px; height: 20px" id="preview" />
+							</div>
 						</div>
 					</div>
 				</div>

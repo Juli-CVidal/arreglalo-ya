@@ -51,6 +51,9 @@ public class Users {
     @Enumerated(EnumType.STRING)
     @Column(name="auth_provider")
     protected Provider provider;
+    
+    @Column(name="reset_password_token")
+    protected String resetPasswordToken;
 
     private Boolean state;
 

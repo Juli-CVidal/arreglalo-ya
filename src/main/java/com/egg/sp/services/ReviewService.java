@@ -65,6 +65,11 @@ public class ReviewService {
         return getFromOptional(reviewRepository.findById(id));
     }
 
+    @Transactional(readOnly = true)
+    public Double getGeneralScore(Integer id){
+        return reviewRepository.getGeneralScore(id);
+    }
+
     @Transactional
     public void censure(Integer id) throws ServicesException {
         Review review = findById(id);

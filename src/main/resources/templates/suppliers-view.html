@@ -34,8 +34,9 @@
 				<div class="suppliers__container container-fluid swiper">
 					<div class="swiper-wrapper p-3 d-none">
 						<div th:each="supplier : ${supplierList}" class="card supplier swiper-slide shadow text-center">
-							<img class="profile__photo card-img-top rounded-top mx-auto mb-0"
-								th:src="'data:image/png;base64,' + ${supplier.image}" alt="" />
+							<img th:src="'data:image/png;base64,' + ${supplier.image}"
+								 onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"class="profile__photo card-img-top rounded-top mx-auto mb-0"
+								 />
 							<div class="card-body">
 								<h3 th:text="${supplier.lastname + ', ' + supplier.name}"
 									class="card-title text-capitalize fs-2"></h3>
@@ -54,7 +55,7 @@
 									No hay un proveedor que cumpla con lo que buscas
 								</p>
 							</div>
-							<a th:href="@{/}" class="btn btn-primary profile__link">Volver</a>
+							<a th:href="@{/}" class="btn btn-primary">Volver</a>
 						</div>
 					</div>
 					<div class="swiper-button-next"></div>
@@ -65,11 +66,16 @@
 		</div>
 	</div>
 	</div>
+	<div th:if="${logged}" id="logged"></div>
 	<footer th:replace="layout/staticsFragments :: footer"></footer>
 	<!-- SWIPER JS CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
+	<!-- SWEET ALERT JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
 	<script th:src="@{../js/stars-script.js}"></script>
+	<script th:src="@{../js/check-logged.js}"></script>
 	<script th:src="@{../js/supplier-view.js}"></script>
 
 

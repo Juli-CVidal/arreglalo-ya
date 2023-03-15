@@ -94,6 +94,18 @@ function initFields(){
 	 NO_RESULTS = document.getElementById("no-results");
 }
 
+
+//CHECK IF USER IS LOGGED
+function checkLogged(){
+	document.querySelectorAll(".profile__link").forEach(button => button.addEventListener("click", (event)=>{
+		if (!LOGGED) {
+			event.preventDefault();
+			showLoginMessage();
+		}
+	}))
+}
+
+
 function init(){
 	initFields();
 	NAME_FILTER.addEventListener("keyup", () => {
@@ -105,6 +117,7 @@ function init(){
 			handleButtonFilter(button.id);
 		})
 	})
+	checkLogged();
 	checkLocalStorage();
 }
 

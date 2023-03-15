@@ -1,6 +1,7 @@
 package com.egg.sp.controllers;
 
 import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Provider;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
@@ -35,18 +36,17 @@ public class HomeController {
     @GetMapping
     public String getIndex(HttpSession session, ModelMap model) {
         Users user = (Users) session.getAttribute("userSession");
-        if (null != user && user.getRol().toString().equals("ADMIN")) {
-            return "redirect:/admin/dashboard";
-        }
         model.put("logged", user != null);
         List<Users> supplierList = usersService.findAllByRol(Rol.SUPPLIER);
         supplierList.stream()
-        .filter(Objects::nonNull)
-        .sorted(Comparator.comparingDouble(Users::getGeneralScore))
-        .collect(Collectors.toList());
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparingDouble(Users::getGeneralScore))
+                .collect(Collectors.toList());
 
         model.put("suppliers", supplierList);
-
+        if(user != null){
+        	model.put("user", user);
+        }
         model.put("professions", professionService.findAll());
         return "index.html";
     }
@@ -72,13 +72,19 @@ public class HomeController {
     }
 
     @PostMapping("/signup/user")
-    public String signUpUser(@Valid Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpUser(@Valid Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) {
         if (result.hasErrors()) {
             model.put("users", user);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-        ConvertImageToString(user, image);
+        try {
+            setImage(user, image);
+        } catch (IOException ioe) {
+            model.put("error", "No se ha podido cargar la imagen, por favor ingrese otra");
+            model.put("users", user);
+            return "new-user.html";
+        }
         return createAccount(user, Rol.CUSTOMER, model);
     }
 
@@ -90,20 +96,28 @@ public class HomeController {
     }
 
     @PostMapping("/signup/supplier")
-    public String signUpSupplier(@Valid Users supplier, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) throws IOException {
+    public String signUpSupplier(@Valid Users supplier, @RequestParam(value = "imageFile", required = false) MultipartFile image, ModelMap model, BindingResult result) {
 
         if (result.hasErrors()) {
             model.put("users", supplier);
             model.put("errors", result.getAllErrors());
             return "new-user.html";
         }
-        ConvertImageToString(supplier, image);
+        try {
+            setImage(supplier, image);
+        } catch (IOException ioe) {
+            model.put("error", "No se ha podido cargar la imagen, por favor ingrese otra");
+            model.put("users", supplier);
+            return "new-user.html";
+        }
+
         return createAccount(supplier, Rol.SUPPLIER, model);
     }
 
     private String createAccount(Users user, Rol accountType, ModelMap model) {
         try {
             user.setRol(accountType);
+            user.setProvider(Provider.LOCAL);
             usersService.create(user);
         } catch (ServicesException se) {
             model.put("users", user);
@@ -117,20 +131,20 @@ public class HomeController {
         return "redirect:/login";
     }
 
-    private void ConvertImageToString(Users user, MultipartFile image) throws IOException {
+    private void setImage(Users user, MultipartFile image) throws IOException {
         byte[] imageBytes = image.getBytes();
         String Image = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(Image);
     }
-    
+
     @GetMapping("/about")
     public String about() {
-    	return "about.html";
+        return "about.html";
     }
-    
+
     @GetMapping("/faqs")
     public String faqs() {
-    	return "faqs.html";
+        return "faqs.html";
     }
 
     @GetMapping("/complaint/{id}")

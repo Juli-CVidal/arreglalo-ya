@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -103,33 +104,34 @@ public class UsersController {
     }
 
     @GetMapping("/suppliers")
-    public String getAllSuppliers(ModelMap model) {
+    public String getAllSuppliers(ModelMap model, HttpSession session) {
+        Users user = (Users) session.getAttribute("userSession");
+        if (user != null){
+            model.put("user",user);
+        }
     	model.put("supplierList", usersService.findAllByRol(Rol.SUPPLIER));
+        model.put("logged", user != null);
     	model.put("professions", professionService.findAll());
         return "suppliers-view";
     }
 
-    /**
-     * This method is going to be used
-     *
-     * @param id
-     * @param model
-     * @return
-     */
+
     @GetMapping("/update/{id}")
     public String getForm(@PathVariable("id") Integer id, ModelMap model) {
         try {
             Users user = usersService.findById(id);
-            model.put("users", user);
-            return "profile-form";
+            model.put("user", user);
+            model.put("professions", professionService.findAll());
+            return "profile-form.html";
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
             return "index.html";
         }
     }
 
-    @PostMapping("/{id}")
-    public String updateProfile(@ModelAttribute("users") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image, BindingResult result, ModelMap model) {
+    @PostMapping()
+    public String updateProfile(@ModelAttribute("user") Users user, @RequestParam(value = "imageFile", required = false) MultipartFile image,
+            @RequestParam(value="confirm") String confirm, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             model.put("users", user);
@@ -137,17 +139,37 @@ public class UsersController {
         }
 
         try {
-            usersService.update(user);
-        } catch (ServicesException se) {
+            if (null != image){
+                setImage(user,image);
+            }
+
+            user.setGeneralScore(reviewService.getGeneralScore(user.getId()));
+            usersService.update(user, confirm);
+        } catch (ServicesException | IOException se) {
             model.put("error", se.getMessage());
+            model.put("professions", professionService.findAll());
             model.put("users", user);
-            return "profile.form";
+            return "profile-form";
         }
         model.put("success", "El perfil ha sido actualizado!");
         return "redirect:/user";
     }
 
-    private void ConvertImageToString(Users user, MultipartFile image) throws IOException {
+    @PostMapping("/become-supplier")
+    public String becomeSupplier(@RequestParam("id") Integer id, ModelMap model){
+        try {
+            Users user = usersService.findById(id);
+            usersService.becomeSupplier(user);
+            model.put("user", user);
+            model.put("professions", professionService.findAll());
+            return "profile-form.html";
+        } catch (ServicesException se) {
+            model.put("error", se.getMessage());
+            return "/user/" + id;
+        }
+    }
+
+    private void setImage(Users user, MultipartFile image) throws IOException {
         byte[] imageBytes = image.getBytes();
         String Image = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(Image);
