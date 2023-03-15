@@ -1,10 +1,12 @@
 package com.egg.sp.services;
 
-import com.egg.sp.entities.Users;
-import com.egg.sp.enums.Provider;
-import com.egg.sp.enums.Rol;
-import com.egg.sp.exceptions.ServicesException;
-import com.egg.sp.repositories.UsersRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,12 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.egg.sp.entities.Users;
+import com.egg.sp.enums.Provider;
+import com.egg.sp.enums.Rol;
+import com.egg.sp.exceptions.ServicesException;
+import com.egg.sp.exceptions.UserNotFoundException;
+import com.egg.sp.repositories.UsersRepository;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -198,6 +200,32 @@ public class UsersService implements UserDetailsService {
 	public void updateUserAfterOAuthLoginSuccess(Users users, String name, Provider google) {
 		users.setName(name);
 		users.setProvider(Provider.GOOGLE);
-		usersRepository.save(users);		
+		usersRepository.save(users);
 	}
+
+	public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+
+		Users user = usersRepository.findByEmail(email);
+
+		if (user != null) {
+			user.setResetPasswordToken(token);
+			usersRepository.save(user);
+		} else {
+			throw new UserNotFoundException("No se pudo encontrar ningun usuario con este email: " + email);
+		}
+
+	}
+
+	public Users get(String resetPasswordToken) {
+		return usersRepository.findByResetPasswordToken(resetPasswordToken);
+	}
+
+	public void updatePassword(Users user, String newPassword) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(newPassword);
+		user.setPassword(encodedPassword);
+		user.setResetPasswordToken(null);
+		usersRepository.save(user);
+	}
+
 }
