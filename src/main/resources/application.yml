@@ -5,12 +5,23 @@
     driverClassName: com.mysql.cj.jdbc.Driver
     password: root
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: 'true'
-    hibernate:
-      ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    password: cspeljtimqllsnak
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    username: contacto.arreglaloya@gmail.com
   thymeleaf:
     cache: 'false'
   main:
@@ -26,9 +37,4 @@
            - email
            - profile
                     
-         facebook:
-          clientId: YOUR_FACEBOOK_APP_CLIENT_ID
-          clientSecret: YOUR_FACEBOOK_APP_SECRET_KEY
-          scope:
-           - email
-           - public_profile
+         

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhml"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/staticsFragments :: head"></head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<body>
+	<header th:replace="layout/staticsFragments :: navbar"></header>
+	<div class="container-fluid vh-100 d-flex justify-content-center">
+		<div class="text.center">
+			<h2 class="text-warning mt-5">[[${message}]]</h2>
+			<a class="btn btn-primary" th:href="@{/login}"> Iniciar
+				sesión</a>
+		</div>
+	</div>
+	<footer th:replace="layout/staticsFragments :: footer"></footer>
+</body>
+</html>
