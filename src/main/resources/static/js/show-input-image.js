@@ -1,10 +1,12 @@
+const preview = document.querySelector(".preview");
+//const inputLabel = document.querySelector(".image__label");
+const inputImage = document.querySelector(".imageFile");
+
 function addListener(){
-    document.getElementById("imageFile")
+   inputImage
         .addEventListener("change", event =>{
-            const preview = document.getElementById("preview");
             preview.src= URL.createObjectURL(event.target.files[0])
         })
-
 }
 
 window.addEventListener("load", () => addListener())

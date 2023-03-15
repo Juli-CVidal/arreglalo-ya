@@ -126,8 +126,7 @@ public class HomeController {
         }
 
         model.put("success", "su cuenta ha sido creada exitosamente!");
-        //To the account profile
-
+        model.put("email",user.getEmail());
         return "redirect:/login";
     }
 

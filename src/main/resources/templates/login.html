@@ -8,6 +8,9 @@
 <body>
 	<header th:replace="layout/staticsFragments :: navbar"></header>
 
+	<div th:if="${success}" class="alert alert-success" role="alert">
+		<span th:text="${success}"></span>
+	</div>
 	<div th:if="${error}" class="alert alert-danger container-fluid"
 		role="alert">
 		<span th:text="${error}"></span>
@@ -20,7 +23,7 @@
 				<div class="mb-3">
 					<label for="email" class="form-label">[[#{login.form.usuario}]]</label>
 					<input autocomplete="off" type="email" name="email"
-						class="form-control border border-black" id="email" required>
+						class="form-control border border-black" id="email" th:value="${email}" required>
 					<div class="invalid-feedback">[[#{login.form.usuario.error}]]</div>
 				</div>
 				<div class="mb-3">

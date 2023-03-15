@@ -1,5 +1,4 @@
 function createStars(score) {
-    console.log(score);
     const roundedScore = (Math.round(score * 2) / 2).toString().split(".");
     const stars = [];
     for (let index = 0; index < roundedScore[0]; index++) {
@@ -12,7 +11,6 @@ function createStars(score) {
 }
 
 const starsContainer = document.querySelectorAll(".review__stars");
-console.log(starsContainer)
 starsContainer.forEach((container) => {
     const score = parseFloat(container.getAttribute("data-score"));
     const stars = createStars(score);
