@@ -21,6 +21,7 @@ import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -44,8 +45,8 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         model.put("suppliers", supplierList);
-        if(user != null){
-        	model.put("user", user);
+        if (user != null) {
+            model.put("user", user);
         }
         model.put("professions", professionService.findAll());
         return "index.html";
@@ -116,6 +117,16 @@ public class HomeController {
 
     private String createAccount(Users user, Rol accountType, ModelMap model) {
         try {
+            Optional<Users> email = usersService.findByEmail(user.getEmail());
+            Optional<Users> phoneNumber = usersService.findByPhoneNumber(user.getPhoneNumber());
+
+            if (email.isPresent() && phoneNumber.isPresent()) {
+                throw new ServicesException("El correo electrónico y el número ya están registrados.");
+            } else if (email.isPresent()) {
+                throw new ServicesException("El correo electrónico ya está registrado.");
+            } else if (phoneNumber.isPresent()) {
+                throw new ServicesException("El número de teléfono ya está registrado.");
+            }
             user.setRol(accountType);
             user.setProvider(Provider.LOCAL);
             usersService.create(user);
@@ -126,7 +137,7 @@ public class HomeController {
         }
 
         model.put("success", "su cuenta ha sido creada exitosamente!");
-        model.put("email",user.getEmail());
+        model.put("email", user.getEmail());
         return "redirect:/login";
     }
 
