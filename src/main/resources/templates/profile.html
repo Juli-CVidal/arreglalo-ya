@@ -57,6 +57,7 @@
 							<div class="h-25">
 								<h2 th:text="${profile.name}" class="mb-0"></h2>
 								<h4 th:text="${profile.profession}"></h4>
+
 								<div th:attr="data-score=${profile.generalScore}"
 									 class="review__stars d-flex"></div>
 								<div th:if="${userId == profile.id}"
@@ -75,7 +76,8 @@
 
 					<blockquote th:text="${profile.biography}"
 						class="blockquote mt-4 mb-4"></blockquote>
-
+					<p th:if="${profile.rol.toString() == 'SUPPLIER'}" th:text="${'Teléfono: ' + profile.phoneNumber}"></p>
+					<p th:if="${profile.rol.toString() == 'SUPPLIER'}" th:text="${'Mail: ' + profile.email}"></p>
 					<div
 						class="reviews__container swiper mt-5 shadow-sm border rounded-5 border-black">
 						<div class="swiper-wrapper">
@@ -83,12 +85,12 @@
 								class="card swiper-slide rounded-5 w-75 mb-3 mt-3">
 								<div class="rounded-top">
 									<div class="row p-3 pb-0">
-										<div class="col-6">
+										<div class="col-4">
 											<h5 th:text="${review.user.name}"></h5>
 											<div th:attr="data-score=${review.score}"
 												class="review__stars d-flex"></div>
 										</div>
-										<div class="col-6 d-flex align-items-start m-0 p-0">
+										<div class="col-8 d-flex align-items-start m-0 p-0">
 											<button th:if="${review.content != '[CENSURADO]'}"
 												class="btn btn-outline-dark d-block me-2">[[#{user.expandir}]]
 											</button>
@@ -98,7 +100,7 @@
 												<input type="hidden" name="reviewId" id="reviewId"
 													th:value="${review.id}"> <input type="hidden"
 													name="supplierId" id="supplierId" th:value="${profile.id}">
-												<button class="btn btn-danger">[[#{user.censurar}]]</button>
+												<button class="btn btn-danger me-2">[[#{user.censurar}]]</button>
 											</form>
 											<button th:if="${!review.image.isEmpty()}" th:attr="data-source='data:image/png;base64,' + ${review.image}" class="review__image btn btn-outline-dark">Ver imagen</button>
 										</div>
@@ -116,17 +118,17 @@
 						<a th:if="${userId != profile.id}"
 							th:href="@{/work/create/__${profile.id}__}"
 							class="btn btn-primary shadow">[[#{user.solicitar}]]</a> <a
-							th:if="${userId != profile.id && !works.isEmpty()}"
+							th:if="${userId != profile.id && has_accepted_work}"
 							th:href="@{/review/create/__${profile.id}__}"
 							class="btn btn-primary shadow mx-3">[[#{user.dejar}]] </a> <a
-							th:if="${userId != profile.id && !works.isEmpty()}"
+							th:if="${userId != profile.id && has_accepted_work}"
 							th:href="@{/complaint/__${profile.id}__}"
 							class="btn btn-danger shadow">[[#{user.denunciar}]]</a>
 					</div>
 					<div class="border border-black rounded-5">
 						<h4 class="text-center pt-3 pb-3">[[#{user.trabajos}]]</h4>
 
-						<div th:each="work : ${works}" class="card rounded-5 mb-2 mx-1">
+						<div th:each="work : ${works}" class="card rounded-5 mb-2 mx-1 position-relative">
 							<div class="rounded-top">
 								<div class="row p-3 pb-0">
 									<div class="col-6">
@@ -138,9 +140,12 @@
 								</div>
 							</div>
 							<div th:text="${work.description}" class="card-body"></div>
-							<div class="col w-50 mt-4 ms-4 h5"
+							<div class="col w-50 mt-4 ms-4 mb-1 h5"
 								th:if="${work.acceptance.toString() != 'ENVIADO'}"
 								th:text="${'$' + work.price + ' ' +(work.acceptance.toString().toLowerCase())}"></div>
+							<div class="row justify-content-start mx-3 my-3">
+								<p th:text="${work.creationDate}"></p>
+							</div>
 							<div class="row justify-content-end mx-3 my-3">
 								<div class="col-auto">
 									<div>

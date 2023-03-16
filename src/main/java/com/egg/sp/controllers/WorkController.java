@@ -3,6 +3,7 @@ package com.egg.sp.controllers;
 import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
 import com.egg.sp.enums.Acceptance;
+import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
 import com.egg.sp.services.UsersService;
@@ -63,13 +64,13 @@ public class WorkController {
     }
 
     @PostMapping("/refuse")
-    public String refuse(@RequestParam("workId") Integer workId, ModelMap model) {
-        return changeWorkState(workId, Acceptance.RECHAZADO, model);
+    public String refuse(@RequestParam("workId") Integer workId, ModelMap model , HttpSession session) {
+        return changeWorkState(workId, Acceptance.RECHAZADO, model, session);
     }
 
     @PostMapping("/accept")
-    public String accept(@RequestParam("workId") Integer workId, ModelMap model) {
-        return changeWorkState(workId, Acceptance.ACEPTADO, model);
+    public String accept(@RequestParam("workId") Integer workId, ModelMap model, HttpSession session) {
+        return changeWorkState(workId, Acceptance.ACEPTADO, model, session);
     }
 
     @PostMapping("/setprice")
@@ -84,14 +85,19 @@ public class WorkController {
     }
 
     @PostMapping("/complete")
-    public String complete(@RequestParam("workId") Integer workId, ModelMap model) {
-        return changeWorkState(workId, Acceptance.FINALIZADO, model);
+    public String complete(@RequestParam("workId") Integer workId, ModelMap model, HttpSession session) {
+        return changeWorkState(workId, Acceptance.FINALIZADO, model, session);
     }
 
-    private String changeWorkState(Integer id, Acceptance state, ModelMap model) {
+    private String changeWorkState(Integer id, Acceptance state, ModelMap model, HttpSession session) {
+        Users user = (Users) session.getAttribute("userSession");
         try {
             workService.modifyState(id, state);
+            Work work = workService.findById(id);
             model.put("success", "El trabajo ha sido " + state.toString().toLowerCase());
+            if (user.getRol() == Rol.CUSTOMER){
+                return "redirect:/user/" + work.getSupplier().getId();
+            }
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
         }

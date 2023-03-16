@@ -3,6 +3,7 @@ package com.egg.sp.controllers;
 import com.egg.sp.entities.Review;
 import com.egg.sp.entities.Users;
 import com.egg.sp.entities.Work;
+import com.egg.sp.enums.Acceptance;
 import com.egg.sp.enums.Rol;
 import com.egg.sp.exceptions.ServicesException;
 import com.egg.sp.services.ProfessionService;
@@ -95,7 +96,9 @@ public class UsersController {
             model.put("profile", user);
             model.put("image", image);
             model.put("reviews", reviewService.getBySupplier(id));
-            model.put("works", workService.findWorksHistory(customer.getId(), id));
+            List<Work> worksList =  workService.findWorksHistory(customer.getId(), id);
+            model.put("has_accepted_work", worksList.stream().anyMatch(work -> work.getAcceptance() == Acceptance.ACEPTADO));
+            model.put("works", worksList);
         } catch (ServicesException se) {
             model.put("error", se.getMessage());
             return "index";

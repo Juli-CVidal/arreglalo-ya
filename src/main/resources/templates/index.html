@@ -128,7 +128,7 @@
             <div class="suppliers__container container-fluid swiper">
                 <div class="swiper-wrapper p-3">
                     <div th:each="supplier : ${suppliers}" class="card swiper-slide shadow text-center supplier">
-                        <img class="profile__photo card-img-top rounded-top mx-auto mb-0 mt-1"
+                        <img class="profile__photo card-img-top rounded-top mx-auto mb-0"
                              th:src="'data:image/png;base64,' + ${supplier.image}"
                              onerror="this.src='http://cdn.onlinewebfonts.com/svg/img_464447.png'"/>
                         <div class="card-body">

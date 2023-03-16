@@ -40,7 +40,7 @@
         <div class="container">
             <form th:action="@{/admin/new-profession}" method="POST" th:object="${profession}" class="needs-validation" novalidate>
                 <label for="name" class="form-label">¿Que nuevo servicio desea agregar?</label>
-                <input type="text" class="form-control" name="name" id="name" th:field="*{name}" required>
+                <input type="text" class="form-control" name="name" id="name" th:field="*{name}" autocomplete="off" required>
                 <div class="invalid-feedback">
                     No ha ingresado una profesión
                 </div>
