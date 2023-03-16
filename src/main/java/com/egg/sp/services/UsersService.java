@@ -37,7 +37,6 @@ public class UsersService implements UserDetailsService {
     private ProfessionService professionService;
 
     // ======== CREATE ========
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -67,7 +66,6 @@ public class UsersService implements UserDetailsService {
     }
 
     // ======= READ ========
-
     @Transactional(readOnly = true)
     public List<Users> getAll() {
         return usersRepository.findAll();
@@ -99,17 +97,25 @@ public class UsersService implements UserDetailsService {
         return getFromOptional(usersRepository.findByName(name));
     }
 
-    // ======== UPDATE ========
-
-    @Transactional
-    public void update(Users user, String confirm) throws ServicesException {
-        if (!new BCryptPasswordEncoder().matches(confirm,user.getPassword())) {
-            throw new ServicesException("Contraseña incorrecta, reintente");
-        }
-      validateFields(user);
-      usersRepository.save(user);
+    @Transactional(readOnly = true)
+    public Optional<Users> findByEmail(@NotNull String email) throws ServicesException {
+        return (usersRepository.findUserByEmail(email));
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Users> findByPhoneNumber(@NotNull String phoneNumber) throws ServicesException {
+        return (usersRepository.findByNumberPhone(phoneNumber));
+    }
+
+    // ======== UPDATE ========
+    @Transactional
+    public void update(Users user, String confirm) throws ServicesException {
+        if (!new BCryptPasswordEncoder().matches(confirm, user.getPassword())) {
+            throw new ServicesException("Contraseña incorrecta, reintente");
+        }
+        validateFields(user);
+        usersRepository.save(user);
+    }
 
     @Transactional
     public void updateGeneralScore(Integer supplierId, Double generalScore) throws ServicesException {
@@ -119,14 +125,13 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public void becomeSupplier(Users user) throws ServicesException{
+    public void becomeSupplier(Users user) throws ServicesException {
         user.setGeneralScore(0D);
         user.setRol(Rol.SUPPLIER);
         usersRepository.save(user);
     }
 
     // ======== DELETE ========
-
     @Transactional
     // soft delete (change state to false)
     public void delete(@NotNull Integer id) throws ServicesException {
@@ -187,45 +192,45 @@ public class UsersService implements UserDetailsService {
         throw new ServicesException("No se ha encontrado un usuario");
     }
 
-	public void createNewCustomerAfterOAuthLoginSuccess(String lastname, String email, String name, Provider provider) {
-		Users user = new Users();
-		user.setEmail(email);
-		user.setName(name);
-		user.setLastname(lastname);
-		user.setProvider(Provider.GOOGLE);
-		user.setRol(Rol.CUSTOMER);
-		usersRepository.save(user);
-	}
+    public void createNewCustomerAfterOAuthLoginSuccess(String lastname, String email, String name, Provider provider) {
+        Users user = new Users();
+        user.setEmail(email);
+        user.setName(name);
+        user.setLastname(lastname);
+        user.setProvider(Provider.GOOGLE);
+        user.setRol(Rol.CUSTOMER);
+        usersRepository.save(user);
+    }
 
-	public void updateUserAfterOAuthLoginSuccess(Users users, String name, Provider google) {
-		users.setName(name);
-		users.setProvider(Provider.GOOGLE);
-		usersRepository.save(users);
-	}
+    public void updateUserAfterOAuthLoginSuccess(Users users, String name, Provider google) {
+        users.setName(name);
+        users.setProvider(Provider.GOOGLE);
+        usersRepository.save(users);
+    }
 
-	public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
 
-		Users user = usersRepository.findByEmail(email);
+        Users user = usersRepository.findByEmail(email);
 
-		if (user != null) {
-			user.setResetPasswordToken(token);
-			usersRepository.save(user);
-		} else {
-			throw new UserNotFoundException("No se pudo encontrar ningun usuario con este email: " + email);
-		}
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            usersRepository.save(user);
+        } else {
+            throw new UserNotFoundException("No se pudo encontrar ningun usuario con este email: " + email);
+        }
 
-	}
+    }
 
-	public Users get(String resetPasswordToken) {
-		return usersRepository.findByResetPasswordToken(resetPasswordToken);
-	}
+    public Users get(String resetPasswordToken) {
+        return usersRepository.findByResetPasswordToken(resetPasswordToken);
+    }
 
-	public void updatePassword(Users user, String newPassword) {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String encodedPassword = passwordEncoder.encode(newPassword);
-		user.setPassword(encodedPassword);
-		user.setResetPasswordToken(null);
-		usersRepository.save(user);
-	}
+    public void updatePassword(Users user, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        user.setResetPasswordToken(null);
+        usersRepository.save(user);
+    }
 
 }
