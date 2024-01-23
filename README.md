@@ -4,21 +4,42 @@
 
 <h1 align="center">ArreglaloYa</h1>
 
-<h3 align="center">With ArreglaloYa, you can request plumbing, electrical services and more, quickly and easily</h3>
+<h1 align="center">Plataforma de Contratación de Servicios</h1>
 
-## Requirements
 
-For building and running the application you need:
+## Bienvenido a la Plataforma de Contratación de Servicios, un proyecto que facilita la contratación de diversos servicios, como electricistas, fontaneros, entre otros. Los usuarios pueden acceder a profesionales con puntuaciones y elegir según sus necesidades.
 
-- [JDK 11](https://www.oracle.com/ar/java/technologies/javase/jdk11-archive-downloads.html)
-- [Maven 3](https://maven.apache.org)
+## Características Principales
 
-## Running the application locally
+- **Autenticación Versátil:**
+  - Inicio de sesión tanto para clientes como para empleados.
+  - Autenticación a través de Google para una mayor comodidad.
 
-There are several ways to run a Spring Boot application on your local machine. One way is to execute the `main` method in the `com.egg.sp.ServicesProjectApplication` class from your IDE.
+- **Evaluación de Profesionales:**
+  - Cada profesional cuenta con un sistema de puntuación en estrellas.
+  - Los clientes pueden tomar decisiones informadas basadas en las experiencias de otros usuarios.
+  - Los clientes pueden dejar una foto en las reseñas.
 
-Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
+- **Recuperación de Contraseñas:**
+  - Utilización de Java Mail Sender para recuperar contraseñas.
 
-```shell
-mvn spring-boot:run
-```
+- **Internacionalización (i18n):**
+  - La aplicación es compatible con múltiples idiomas para una experiencia global.
+
+## Tecnologías Utilizadas
+
+### Backend
+- SpringBoot
+- Java
+- MySQL
+- Spring Security
+
+### Frontend
+- HTML
+- CSS
+- Bootstrap
+- JavaScript
+- Thymeleaf
+
+## Imagenes del Proyecto
+
