@@ -43,3 +43,26 @@
 
 ## Imagenes del Proyecto
 
+#### - Vista principal del proyecto en la cual se encuentran las distintas categorias y los mejores proveedores de la aplicación.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/b6ca8975-d02f-4e9b-b19c-15f5d25af31f)
+
+#### - LogIn de la aplicación en el cual podemos utilizar autenticación con Google y crear una cuenta en caso de no poseer.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/710652e6-994a-49fd-9fc4-4b00e85275a0)
+
+#### - Formulario para crear una cuenta como proveedor en el cual podemos observar la implementación de la i18n y validación en los campos del formulario.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/181a7a87-4f01-4ae5-b8a4-1b9e505c9497)
+
+#### - Formulario para crear una cuenta como usuario en el cual todos los campos se encuentran validados al igual que en el formulario anterior.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/b1d126f1-0ee1-4d99-9774-923ecaa9eb65)
+
+#### - Vista de los mejores proveedores de la aplicación en la cual podemos realizar una busqueda por nombre o por apellido ademas de por profesión.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/dd46bcee-8fba-4f2e-8b5f-aeda946fb6b5)
+
+#### - Vista del perfil del proveedor en la cual podemos observar los comentarios y los trabajos que tiene en el momento.
+
+![image](https://github.com/Agslz/arreglalo-ya/assets/83142033/a4ef0de6-67b7-4bc9-bbf1-04087eb9f5d2)
