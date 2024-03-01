@@ -33,6 +33,8 @@
 - Java
 - MySQL
 - Spring Security
+- OAuth2
+- Java Mail Sender
 
 ### Frontend
 - HTML
